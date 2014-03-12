@@ -1,5 +1,8 @@
 #varnish
 
+[![Build
+Status](https://travis-ci.org/BashtonLtd/puppet-varnish.png?branch=master)](https://travis-ci.org/BashtonLtd/puppet-varnish)
+
 Installs and configures Varnish.  Requires you to have a VCL specified
 in a parameter.
 
