@@ -1,0 +1,24 @@
+### This file created by Puppet, modification is probably futile
+VARNISH_VCL_CONF=<%= scope['::varnish::vcl_conf'] %>
+VARNISH_LISTEN_ADDRESS=<%= scope['::varnish::listen_address'] %>
+VARNISH_LISTEN_PORT=<%= scope['::varnish::listen_port'] %>
+VARNISH_ADMIN_LISTEN_ADDRESS=
+VARNISH_ADMIN_LISTEN_PORT=
+VARNISH_SECRET_FILE=
+VARNISH_MIN_THREADS=
+VARNISH_MAX_THREADS=
+VARNISH_THREAD_TIMEOUT=
+VARNISH_STORAGE_FILE=
+VARNISH_STORAGE_SIZE=
+VARNISH_STORAGE="file,${VARNISH_STORAGE_FILE},${VARNISH_STORAGE_SIZE}"
+VARNISH_TTL=120
+
+DAEMON_OPTS="-a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
+             -f ${VARNISH_VCL_CONF} \
+             -T ${VARNISH_ADMIN_LISTEN_ADDRESS}:${VARNISH_ADMIN_LISTEN_PORT} \
+             -t ${VARNISH_TTL} \
+             -w ${VARNISH_MIN_THREADS},${VARNISH_MAX_THREADS},${VARNISH_THREAD_TIMEOUT} \
+             -u varnish -g varnish \
+             -S ${VARNISH_SECRET_FILE} \
+             -s ${VARNISH_STORAGE}"
+

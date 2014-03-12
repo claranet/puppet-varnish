@@ -1,0 +1,10 @@
+name          'bashtoni-varnish'
+version       '0.0.1'
+source        'UNKNOWN'
+author        'Bashton Ltd'
+license       'Apache License, Version 2.0'
+summary       'Install and configure Varnish Cache'
+description   'Install and configure Varnish Cache'
+project_page  'https://github.com/BashtonLtd/puppet-varnish'
+
+dependency 'puppetlabs/stdlib', '>= 3.2.0'
