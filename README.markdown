@@ -6,6 +6,8 @@ in a parameter.
 Currently only working on EL6 derived distros (RHEL6, CentOS 6, OEL 6,
 Amazon Linux)
 
+Requires Puppet >= 3.0
+
 ## Basic Usage
 
 ```puppet
