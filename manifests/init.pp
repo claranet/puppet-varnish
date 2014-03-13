@@ -17,7 +17,7 @@ class varnish (
   $admin_port = $varnish::params::admin_port,
   $min_threads = $varnish::params::min_threads,
   $max_threads = $varnish::params::max_threads,
-  $thread_timeout = $varnish::params::threads,
+  $thread_timeout = $varnish::params::thread_timeout,
   $storage_file = $varnish::params::storage_file,
   $storage_size = $varnish::params::storage_size
 ) inherits varnish::params {
