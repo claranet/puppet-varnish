@@ -21,6 +21,7 @@ describe 'varnish' do
 
         it { should contain_package('varnish') }
         it { should contain_file('/etc/varnish/secret') }
+        it { should contain_file('/etc/sysconfig/varnish') }
         it { should contain_service('varnish') }
       end
     end
