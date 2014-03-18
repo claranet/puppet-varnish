@@ -10,6 +10,7 @@
 class varnish (
   $addrepo = true,
   $secret = 'notsosecret',
+  $secret_file = $varnish::params::secret_file,
   $vcl_conf = $varnish::params::vcl_conf,
   $listen = $varnish::params::listen,
   $listen_port = $varnish::params::listen_port,
