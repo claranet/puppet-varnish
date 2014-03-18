@@ -40,4 +40,25 @@ describe 'varnish' do
       it { expect { should }.to raise_error(Puppet::Error, /Nexenta not supported/) }
     end
   end
+
+  context 'lots of params' do
+    describe 'varnish class with many params on RedHat' do
+      let(:facts) {{
+        :osfamily => 'RedHat'
+      }}
+      let(:params) {{
+        :storage_size         => '50%',
+        :listen_port          => 80,
+        :runtime_params       => {
+          'first_byte_timeout' => 10,
+          'gzip_level'         => 9
+        }
+      }}
+
+      it { should compile.with_all_deps }
+      it { should contain_file('/etc/sysconfig/varnish') \
+          .with_content(/-p first_byte_timeout=10/) }
+
+    end
+  end
 end

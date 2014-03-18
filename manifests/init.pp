@@ -20,7 +20,8 @@ class varnish (
   $max_threads = $varnish::params::max_threads,
   $thread_timeout = $varnish::params::thread_timeout,
   $storage_file = $varnish::params::storage_file,
-  $storage_size = $varnish::params::storage_size
+  $storage_size = $varnish::params::storage_size,
+  $runtime_params = {}
 ) inherits varnish::params {
 
   validate_bool($addrepo)

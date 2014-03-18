@@ -22,4 +22,6 @@ DAEMON_OPTS="-a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
              -u varnish -g varnish \
              -S ${VARNISH_SECRET_FILE} \
              -s ${VARNISH_STORAGE}"
-
+<% scope['::varnish::runtime_params'].each do |k,v| -%>
+DAEMON_OPTS="${DAEMON_OPTS} -p <%= k %>=<%= v %>"
+<% end -%>
