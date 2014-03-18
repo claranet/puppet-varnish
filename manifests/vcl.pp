@@ -7,6 +7,7 @@ define varnish::vcl (
   $content,
   $file = $name) {
 
+  include varnish
   include varnish::params
 
   exec { 'vcl_reload':
@@ -20,5 +21,6 @@ define varnish::vcl (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
+    require => Class['varnish::install'],
   }
 }
