@@ -6,7 +6,7 @@ class varnish::secret {
     owner   => 'root',
     group   => 'root',
     mode    => '0600',
-    content => "${varnish::params::secret}\n",
+    content => "${varnish::secret}\n",
   }
 
 }

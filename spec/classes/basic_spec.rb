@@ -4,7 +4,9 @@ describe 'varnish' do
   context 'supported operating systems' do
     ['RedHat'].each do |osfamily|
       describe "varnish class without any parameters on #{osfamily}" do
-        let(:params) {{ }}
+        let(:params) {{ 
+          :secret => 'foobar'
+        }}
         let(:facts) {{
           :osfamily => osfamily,
         }}
@@ -20,7 +22,8 @@ describe 'varnish' do
         it { should contain_class('varnish::service').that_subscribes_to('varnish::config') }
 
         it { should contain_package('varnish') }
-        it { should contain_file('/etc/varnish/secret') }
+        it { should contain_file('/etc/varnish/secret') \
+          .with_content("foobar\n") }
         it { should contain_file('/etc/sysconfig/varnish') }
         it { should contain_service('varnish') }
       end
