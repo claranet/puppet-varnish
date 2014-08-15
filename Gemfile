@@ -6,7 +6,7 @@ group :test do
   gem 'rspec-puppet', '~> 1.0.0'
   gem 'rspec-system-puppet'
   gem 'puppetlabs_spec_helper'
-  gem 'puppet-syntax'
+  gem 'puppet-syntax', '~> 1.2.0'
 end
 
 group :development do
