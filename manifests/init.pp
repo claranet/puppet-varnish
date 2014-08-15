@@ -21,6 +21,7 @@ class varnish (
   $thread_timeout = $varnish::params::thread_timeout,
   $storage_file = $varnish::params::storage_file,
   $storage_size = $varnish::params::storage_size,
+  $varnish_version = $varnish::params::varnish_version,
   $runtime_params = {}
 ) inherits varnish::params {
 
@@ -33,6 +34,7 @@ class varnish (
   validate_re($max_threads, '^[0-9]+$')
   validate_absolute_path($storage_file)
   validate_hash($runtime_params)
+  validate_re($varnish_version, '^[3-4]\.0')
 
   if ($addrepo) {
     class { $varnish::params::repoclass:

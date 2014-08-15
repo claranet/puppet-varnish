@@ -32,6 +32,7 @@ secret.
 |Parameter|Description|
 |---------|-----------|
 |addrepo|Whether to add the official Varnish repos|
+|varnish_version|Major Varnish version - should be 3.0 or 4.0|
 |secret|Secret for admin access|
 |secret_file|File to store the secret|
 |vcl_conf|Varnish vcl config file path|

@@ -18,15 +18,16 @@ class varnish::params {
   }
 
   # Standard Varnish sysconfig settings
-  $vcl_conf       = '/etc/varnish/default.vcl'
-  $listen         = '0.0.0.0'
-  $listen_port    = 6081
-  $admin_listen   = '127.0.0.1'
-  $admin_port     = 6082
-  $secret_file    = '/etc/varnish/secret'
-  $min_threads    = 50
-  $max_threads    = 1000
-  $thread_timeout = 120
-  $storage_file   = '/var/lib/varnish/varnish_storage.bin'
-  $storage_size   = '1G'
+  $vcl_conf        = '/etc/varnish/default.vcl'
+  $listen          = '0.0.0.0'
+  $listen_port     = 6081
+  $admin_listen    = '127.0.0.1'
+  $admin_port      = 6082
+  $secret_file     = '/etc/varnish/secret'
+  $min_threads     = 50
+  $max_threads     = 1000
+  $thread_timeout  = 120
+  $storage_file    = '/var/lib/varnish/varnish_storage.bin'
+  $storage_size    = '1G'
+  $varnish_version = '3.0' # Major Varnish version; 3.0 or 4.0
 }

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'varnish' do
   context 'supported operating systems' do
     ['RedHat'].each do |osfamily|
-      describe "varnish class without any parameters on #{osfamily}" do
+      describe "varnish class with minimal parameters on #{osfamily}" do
         let(:params) {{ 
           :secret => 'foobar'
         }}
@@ -61,4 +61,24 @@ describe 'varnish' do
 
     end
   end
+
+  context 'varnish 4' do
+    describe 'varnish 4 installation on RedHat' do
+      let(:facts) {{
+        :osfamily => 'RedHat'
+      }}
+      let(:params) {{
+        :storage_size         => '50%',
+        :listen_port          => 80,
+        :varnish_version      => '4.0',
+      }}
+
+      it { should compile.with_all_deps }
+      it { should contain_yumrepo('varnish-cache') \
+        .with_baseurl(/4\.0/) }
+
+    end
+  end
+
+
 end
