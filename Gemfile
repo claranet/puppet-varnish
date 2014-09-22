@@ -7,12 +7,12 @@ group :test do
   gem 'rspec-system-puppet'
   gem 'puppetlabs_spec_helper'
   gem 'puppet-syntax', '~> 1.2.0'
+  gem 'puppet', ENV['PUPPET_VERSION'] || '~> 3.2.0'
 end
 
 group :development do
   gem 'travis'
   gem 'travis-lint'
-  gem 'puppet', ENV['PUPPET_VERSION'] || '~> 3.2.0'
   gem 'vagrant-wrapper'
   gem 'puppet-blacksmith'
 end
