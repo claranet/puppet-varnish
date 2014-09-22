@@ -4,7 +4,7 @@
 #
 class varnish::config {
 
-  case $::varnish::version {
+  case $::varnish::varnish_version {
     '3.0': {
       $sysconfig_template = 'varnish/varnish-3.sysconfig.erb'
     }
