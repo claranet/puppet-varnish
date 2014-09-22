@@ -1,0 +1,22 @@
+{
+  "name": "bashtoni-varnish",
+  "version": "2.0.0",
+  "source": "https://github.com/BashtonLtd/puppet-varnish",
+  "author": "Bashton Ltd",
+  "license": "Apache License, Version 2.0",
+  "summary": "Install and configure Varnish Cache",
+  "description": "Install and configure Varnish Cache",
+  "project_page": "https://github.com/BashtonLtd/puppet-varnish",
+  "operatingsystem_support": [
+    {
+      "operatingsystem":"RedHat",
+      "operatingsystemrelease":[ "5.0", "6.0" ]
+    }
+  ],
+  "dependencies": [
+    {
+    "name": "puppetlabs/stdlib",
+    "version_requirement": ">= 3.2.0"
+  }
+  ]
+}

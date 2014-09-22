@@ -6,6 +6,8 @@ Status](https://travis-ci.org/BashtonLtd/puppet-varnish.png?branch=master)](http
 Installs and configures Varnish.  Requires you to have a VCL specified
 in a parameter.
 
+Supports Varnish 3 and Varnish 4
+
 Currently only working on EL6 derived distros (RHEL6, CentOS 6, OEL 6,
 Amazon Linux)
 

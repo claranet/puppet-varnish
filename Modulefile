@@ -1,6 +1,6 @@
 name          'bashtoni-varnish'
-version       '1.2.0'
-source        'UNKNOWN'
+version       '2.0.0'
+source        'https://github.com/BashtonLtd/puppet-varnish'
 author        'Bashton Ltd'
 license       'Apache License, Version 2.0'
 summary       'Install and configure Varnish Cache'
