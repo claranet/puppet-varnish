@@ -23,6 +23,7 @@ class varnish (
   $storage_file = $varnish::params::storage_file,
   $storage_size = $varnish::params::storage_size,
   $varnish_version = $varnish::params::varnish_version,
+  $vcl_reload = $varnish::params::vcl_reload,
   $runtime_params = {}
 ) inherits varnish::params {
 
