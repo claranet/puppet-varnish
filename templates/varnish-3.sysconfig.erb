@@ -10,7 +10,7 @@ VARNISH_MIN_THREADS=<%= scope['::varnish::min_threads'] %>
 VARNISH_MAX_THREADS=<%= scope['::varnish::max_threads'] %>
 VARNISH_THREAD_TIMEOUT=<%= scope['::varnish::thread_timeout'] %>
 <% if scope['::varnish::storage_type'] == 'malloc' -%>
-VARNISH_STORAGE_FILE=<%= scope['::varnish::storage_file'] %>
+VARNISH_STORAGE_FILE=malloc
 <% elsif scope['::varnish::storage_type'] == 'file' -%>
 VARNISH_STORAGE_FILE="file,<%= scope['::varnish::storage_file'] %>
 <% end -%>
