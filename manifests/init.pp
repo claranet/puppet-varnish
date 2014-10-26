@@ -36,6 +36,7 @@ class varnish (
   validate_absolute_path($storage_file)
   validate_hash($runtime_params)
   validate_re($varnish_version, '^[3-4]\.0')
+  validate_re($storage_type, '^(malloc|file)$')
 
   if ($addrepo) {
     class { $varnish::params::repoclass:
