@@ -34,6 +34,7 @@ class varnish::params {
   $min_threads     = 50
   $max_threads     = 1000
   $thread_timeout  = 120
+  $storage_type    = 'file'
   $storage_file    = '/var/lib/varnish/varnish_storage.bin'
   $storage_size    = '1G'
   $varnish_version = '3.0' # Major Varnish version; 3.0 or 4.0

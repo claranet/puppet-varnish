@@ -19,22 +19,25 @@ class varnish (
   $min_threads = $varnish::params::min_threads,
   $max_threads = $varnish::params::max_threads,
   $thread_timeout = $varnish::params::thread_timeout,
+  $storage_type = $varnish::params::storage_type,
   $storage_file = $varnish::params::storage_file,
   $storage_size = $varnish::params::storage_size,
   $varnish_version = $varnish::params::varnish_version,
+  $vcl_reload = $varnish::params::vcl_reload,
   $runtime_params = {}
 ) inherits varnish::params {
 
   validate_bool($addrepo)
   validate_string($secret)
   validate_absolute_path($secret_file)
-  validate_re($listen_port, '^[0-9]+$')
-  validate_re($admin_port, '^[0-9]+$')
-  validate_re($min_threads, '^[0-9]+$')
-  validate_re($max_threads, '^[0-9]+$')
+  validate_re("$listen_port", '^[0-9]+$')
+  validate_re("$admin_port", '^[0-9]+$')
+  validate_re("$min_threads", '^[0-9]+$')
+  validate_re("$max_threads", '^[0-9]+$')
   validate_absolute_path($storage_file)
   validate_hash($runtime_params)
-  validate_re($varnish_version, '^[3-4]\.0')
+  validate_re("$varnish_version", '^[3-4]\.0')
+  validate_re("$storage_type", '^(malloc|file)$')
 
   if ($addrepo) {
     class { $varnish::params::repoclass:

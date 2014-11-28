@@ -9,9 +9,13 @@ VARNISH_SECRET_FILE=<%= scope['::varnish::secret_file'] %>
 VARNISH_MIN_THREADS=<%= scope['::varnish::min_threads'] %>
 VARNISH_MAX_THREADS=<%= scope['::varnish::max_threads'] %>
 VARNISH_THREAD_TIMEOUT=<%= scope['::varnish::thread_timeout'] %>
-VARNISH_STORAGE_FILE=<%= scope['::varnish::storage_file'] %>
+<% if scope['::varnish::storage_type'] == 'malloc' -%>
+VARNISH_STORAGE_FILE=malloc
+<% elsif scope['::varnish::storage_type'] == 'file' -%>
+VARNISH_STORAGE_FILE="file,<%= scope['::varnish::storage_file'] %>
+<% end -%>
 VARNISH_STORAGE_SIZE=<%= scope['::varnish::storage_size'] %>
-VARNISH_STORAGE="file,${VARNISH_STORAGE_FILE},${VARNISH_STORAGE_SIZE}"
+VARNISH_STORAGE="${VARNISH_STORAGE_FILE},${VARNISH_STORAGE_SIZE}"
 VARNISH_TTL=120
 
 DAEMON_OPTS="-a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
