@@ -8,9 +8,16 @@ class varnish::params {
     'RedHat', 'Amazon': {
       $package_name = 'varnish'
       $service_name = 'varnish'
-      $repoclass    = 'varnish::repo::el6'
       $sysconfig    = '/etc/sysconfig/varnish'
       $vcl_reload   = '/usr/bin/varnish_reload_vcl'
+      case $::operatingsystemmajrelease {
+        '6', '7': {
+          $repoclass = "varnish::repo::el${::operatingsystemmajrelease}"
+        }
+        default: {
+          fail("el${::operatingsystemmajrelease} not supported")
+        }
+      }
     }
     default: {
       fail("${::operatingsystem} not supported")
