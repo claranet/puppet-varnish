@@ -11,7 +11,7 @@ define varnish::vcl (
   include varnish::params
 
   exec { 'vcl_reload':
-    command     => $varnish::params::vcl_reload,
+    command     => $varnish::vcl_reload,
     refreshonly => true,
   }
 
