@@ -12,7 +12,7 @@ VARNISH_THREAD_TIMEOUT=<%= scope['::varnish::thread_timeout'] %>
 <% if scope['::varnish::storage_type'] == 'malloc' -%>
 VARNISH_STORAGE_FILE=malloc
 <% elsif scope['::varnish::storage_type'] == 'file' -%>
-VARNISH_STORAGE_FILE="file,<%= scope['::varnish::storage_file'] %>
+VARNISH_STORAGE_FILE="file,<%= scope['::varnish::storage_file'] %>"
 <% end -%>
 VARNISH_STORAGE_SIZE=<%= scope['::varnish::storage_size'] %>
 VARNISH_STORAGE="${VARNISH_STORAGE_FILE},${VARNISH_STORAGE_SIZE}"
