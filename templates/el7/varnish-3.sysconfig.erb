@@ -6,20 +6,15 @@ VARNISH_LISTEN_PORT=<%= scope['::varnish::listen_port'] %>
 VARNISH_ADMIN_LISTEN_ADDRESS=<%= scope['::varnish::admin_listen'] %>
 VARNISH_ADMIN_LISTEN_PORT=<%= scope['::varnish::admin_port'] %>
 VARNISH_SECRET_FILE=<%= scope['::varnish::secret_file'] %>
-VARNISH_MIN_THREADS=<%= scope['::varnish::min_threads'] %>
-VARNISH_MAX_THREADS=<%= scope['::varnish::max_threads'] %>
-VARNISH_THREAD_TIMEOUT=<%= scope['::varnish::thread_timeout'] %>
 <% if scope['::varnish::storage_type'] == 'malloc' -%>
 VARNISH_STORAGE_FILE=malloc
 <% elsif scope['::varnish::storage_type'] == 'file' -%>
-VARNISH_STORAGE_FILE="file,<%= scope['::varnish::storage_file'] %>"
+VARNISH_STORAGE="file,<%= scope['::varnish::storage_file'] %>,<%= scope['::varnish::storage_size'] %>"
 <% end -%>
-VARNISH_STORAGE_SIZE=<%= scope['::varnish::storage_size'] %>
-VARNISH_STORAGE="${VARNISH_STORAGE_FILE},${VARNISH_STORAGE_SIZE}"
+VARNISH_USER=varnish
+VARNISH_GROUP=varnish
 VARNISH_TTL=120
 
-DAEMON_OPTS="-w ${VARNISH_MIN_THREADS},${VARNISH_MAX_THREADS},${VARNISH_THREAD_TIMEOUT}"
-
-<% scope['::varnish::runtime_params'].each do |k,v| -%>
-DAEMON_OPTS="${DAEMON_OPTS} -p <%= k %>=<%= v %>"
+DAEMON_OPTS="<% scope['::varnish::runtime_params'].each do |k,v| -%>-p <%= k %>=<%= v %> \
 <% end -%>
+-w <%= scope['::varnish::min_threads'] %>,<%= scope['::varnish::max_threads'] %>,<%= scope['::varnish::thread_timeout'] %>"
