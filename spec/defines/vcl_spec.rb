@@ -4,7 +4,8 @@ describe 'varnish::vcl' do
   context 'vcl content' do
     let(:title) { 'vcltest' }
     let(:facts) {{
-      :osfamily => 'RedHat'
+      :osfamily                  => 'RedHat',
+      :operatingsystemmajrelease => 6
     }}
     let(:params) {{
       :content => 'return(lookup)\n',

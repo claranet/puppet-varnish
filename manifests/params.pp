@@ -11,15 +11,20 @@ class varnish::params {
       $vcl_reload   = '/usr/bin/varnish_reload_vcl'
       case $::operatingsystemmajrelease {
         '6': {
-          $repoclass  = "varnish::repo::el${::operatingsystemmajrelease}"
-          $sysconfig  = '/etc/sysconfig/varnish'
+          $repoclass       = "varnish::repo::el${::operatingsystemmajrelease}"
+          $sysconfig       = '/etc/sysconfig/varnish'
+          $varnish_version = '3.0'
         }
         '7': {
-          $repoclass  = "varnish::repo::el${::operatingsystemmajrelease}"
-          $sysconfig  = '/etc/varnish/varnish.params'
+          $repoclass       = "varnish::repo::el${::operatingsystemmajrelease}"
+          $sysconfig       = '/etc/varnish/varnish.params'
+          $varnish_version = '4.0'
         }
         default: {
-          fail("el${::operatingsystemmajrelease} not supported")
+          # Amazon Linux
+          $repoclass       = "varnish::repo::el${::operatingsystemmajrelease}"
+          $sysconfig       = '/etc/sysconfig/varnish'
+          $varnish_version = '3.0'
         }
       }
     }
@@ -41,5 +46,4 @@ class varnish::params {
   $storage_type    = 'file'
   $storage_file    = '/var/lib/varnish/varnish_storage.bin'
   $storage_size    = '1G'
-  $varnish_version = '3.0' # Major Varnish version; 3.0 or 4.0
 }
