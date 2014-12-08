@@ -6,10 +6,10 @@ Status](https://travis-ci.org/BashtonLtd/puppet-varnish.png?branch=master)](http
 Installs and configures Varnish.  Requires you to have a VCL specified
 in a parameter.
 
-Supports Varnish 3 and Varnish 4
+Supports Varnish 3 and Varnish 4 (4 only for EL7).
 
-Currently only working on EL6 derived distros (RHEL6, CentOS 6, OEL 6,
-Amazon Linux)
+Currently only working on EL derived distros
+(RHEL6/7, CentOS 6/7, OEL 6/7, Amazon Linux)
 
 Requires Puppet >= 3.0
 
@@ -45,6 +45,7 @@ secret.
 |min_threads|Minimum Varnish worker threads|
 |max_threads|Maximum Varnish worker threads|
 |thread_timeout|Terminate threads after this long idle|
+|storage_type|malloc or file|
 |storage_file|File to mmap on disk for cache storage|
-|storage_size|Size of storage file, eg 10G or 50%|
+|storage_size|Size of storage file or RAM, eg 10G or 50%|
 |runtime_params|hash of run-time parameters to be specified at startup|
