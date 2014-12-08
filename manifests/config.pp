@@ -6,10 +6,10 @@ class varnish::config {
 
   case $::varnish::varnish_version {
     '3.0': {
-      $sysconfig_template = 'varnish/varnish-3.sysconfig.erb'
+      $sysconfig_template = "varnish/el${::operatingsystemmajrelease}/varnish-3.sysconfig.erb"
     }
     default: {
-      $sysconfig_template = 'varnish/varnish-4.sysconfig.erb'
+      $sysconfig_template = "varnish/el${::operatingsystemmajrelease}/varnish-4.sysconfig.erb"
     }
   }
 

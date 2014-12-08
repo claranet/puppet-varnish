@@ -1,0 +1,33 @@
+### This file created by Puppet, modification is probably futile
+RELOAD_VCL=1
+VARNISH_VCL_CONF=<%= scope['::varnish::vcl_conf'] %>
+VARNISH_LISTEN_ADDRESS=<%= scope['::varnish::listen'] %>
+VARNISH_LISTEN_PORT=<%= scope['::varnish::listen_port'] %>
+VARNISH_ADMIN_LISTEN_ADDRESS=<%= scope['::varnish::admin_listen'] %>
+VARNISH_ADMIN_LISTEN_PORT=<%= scope['::varnish::admin_port'] %>
+VARNISH_SECRET_FILE=<%= scope['::varnish::secret_file'] %>
+VARNISH_MIN_THREADS=<%= scope['::varnish::min_threads'] %>
+VARNISH_MAX_THREADS=<%= scope['::varnish::max_threads'] %>
+VARNISH_THREAD_TIMEOUT=<%= scope['::varnish::thread_timeout'] %>
+<% if scope['::varnish::storage_type'] == 'malloc' -%>
+VARNISH_STORAGE_FILE=malloc
+<% elsif scope['::varnish::storage_type'] == 'file' -%>
+VARNISH_STORAGE_FILE="file,<%= scope['::varnish::storage_file'] %>"
+<% end -%>
+VARNISH_STORAGE_SIZE=<%= scope['::varnish::storage_size'] %>
+VARNISH_STORAGE="${VARNISH_STORAGE_FILE},${VARNISH_STORAGE_SIZE}"
+VARNISH_USER=varnish
+VARNISH_GROUP=varnish
+VARNISH_TTL=120
+
+DAEMON_OPTS="-a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
+             -f ${VARNISH_VCL_CONF} \
+             -T ${VARNISH_ADMIN_LISTEN_ADDRESS}:${VARNISH_ADMIN_LISTEN_PORT} \
+             -t ${VARNISH_TTL} \
+             -w ${VARNISH_MIN_THREADS},${VARNISH_MAX_THREADS},${VARNISH_THREAD_TIMEOUT} \
+             -u ${VARNISH_USER} -g ${VARNISH_GROUP} \
+             -S ${VARNISH_SECRET_FILE} \
+             -s ${VARNISH_STORAGE}"
+<% scope['::varnish::runtime_params'].each do |k,v| -%>
+DAEMON_OPTS="${DAEMON_OPTS} -p <%= k %>=<%= v %>"
+<% end -%>
