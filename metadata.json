@@ -1,9 +1,9 @@
 {
   "name": "bashtoni-varnish",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "source": "https://github.com/BashtonLtd/puppet-varnish",
   "author": "Bashton Ltd",
-  "license": "Apache License, Version 2.0",
+  "license": "Apache-2.0",
   "summary": "Install and configure Varnish Cache",
   "description": "Install and configure Varnish Cache",
   "project_page": "https://github.com/BashtonLtd/puppet-varnish",
