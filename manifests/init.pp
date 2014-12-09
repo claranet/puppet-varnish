@@ -1,11 +1,39 @@
 # == Class: varnish
 #
-# Full description of class varnish here.
+# Configure Varnish proxy cache
 #
 # === Parameters
 #
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
+# [*addrepo*]
+#   Whether to add the official Varnish repos
+# [*secret*]
+#   Varnish secret (used by varnishadm etc)
+# [*vcl_conf*]
+#   Location of Varnish config file template
+# [*listen*]
+#   IP address for HTTP to listen on
+# [*listen_port*]
+#   Port to listen on for HTTP requests
+# [*admin_listen*]
+#   IP address for admin requests - defaults to 127.0.0.1
+# [*admin_port*]
+#   Port for Varnish admin to listen on
+# [*min_threads*]
+#   Varnish minimum thread pool size
+# [*max_threads*]
+#   Varnish maximum thread pool size
+# [*thread_timeout*]
+#   Thread timeout
+# [*storage_type*]
+#   Whether to use malloc (RAM only) or file storage for cache
+# [*storage_size*]
+#   Size of cache
+# [*varnish_version*]
+#   Major Varnish version to use - 3.0 or 4.0
+# [*vcl_reload*]
+#   Script to use to load new Varnish config
+# [*runtime_params*]
+#   Hash of runtime parameters
 #
 class varnish (
   $addrepo = true,
