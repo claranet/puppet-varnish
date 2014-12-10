@@ -58,10 +58,10 @@ class varnish (
   validate_bool($addrepo)
   validate_string($secret)
   validate_absolute_path($secret_file)
-  validate_re($listen_port, '^[0-9]+$')
-  validate_re($admin_port, '^[0-9]+$')
-  validate_re($min_threads, '^[0-9]+$')
-  validate_re($max_threads, '^[0-9]+$')
+  unless is_integer($listen_port) { fail('listen_port invalid') }
+  unless is_integer($admin_port) { fail('admin_port invalid') }
+  unless is_integer($min_threads) { fail('min_threads invalid') }
+  unless is_integer($max_threads) { fail('max_threads invalid') }
   validate_absolute_path($storage_file)
   validate_hash($runtime_params)
   validate_re($varnish_version, '^[3-4]\.0')
