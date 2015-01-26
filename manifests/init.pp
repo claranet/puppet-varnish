@@ -52,7 +52,7 @@ class varnish (
   $storage_size = $varnish::params::storage_size,
   $varnish_version = $varnish::params::varnish_version,
   $vcl_reload = $varnish::params::vcl_reload,
-  $specific_version = $varnish::params::specific_version,
+  $specific_version = $varnish::params::package_ensure,
   $runtime_params = {}
 ) inherits varnish::params {
 
