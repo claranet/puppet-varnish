@@ -56,7 +56,7 @@ describe 'varnish' do
         :operatingsystem => 'Nexenta',
       }}
 
-      it { expect { should }.to raise_error(Puppet::Error, /Nexenta not supported/) }
+      it { should raise_error(Puppet::Error, /Nexenta not supported/) }
     end
   end
 
