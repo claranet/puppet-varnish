@@ -15,8 +15,12 @@ define varnish::vcl (
     refreshonly => true,
   }
 
+  if $content {
+    $vcl_content = template($content)
+  }
+
   file { $file:
-    content => $content,
+    content => $vcl_content,
     notify  => Exec['vcl_reload'],
     owner   => 'root',
     group   => 'root',
