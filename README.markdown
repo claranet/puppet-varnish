@@ -18,7 +18,8 @@ Requires Puppet >= 3.0
 ```puppet
 
   class { 'varnish':
-    secret => '6565bd1c-b6d1-4ba3-99bc-3c7a41ffd94f',
+    secret         => '6565bd1c-b6d1-4ba3-99bc-3c7a41ffd94f',
+    package_ensure => '3.0.6-1.el6',
   }
 
   varnish::vcl { '/etc/varnish/default.vcl':

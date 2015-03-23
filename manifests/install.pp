@@ -4,6 +4,6 @@ class varnish::install {
   include varnish::params
 
   package { $varnish::params::package_name:
-    ensure => present,
+    ensure => $varnish::package_ensure,
   }
 }
