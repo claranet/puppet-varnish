@@ -7,7 +7,7 @@ VARNISH_ADMIN_LISTEN_ADDRESS=<%= scope['::varnish::admin_listen'] %>
 VARNISH_ADMIN_LISTEN_PORT=<%= scope['::varnish::admin_port'] %>
 VARNISH_SECRET_FILE=<%= scope['::varnish::secret_file'] %>
 <% if scope['::varnish::storage_type'] == 'malloc' -%>
-VARNISH_STORAGE_FILE=malloc
+VARNISH_STORAGE="malloc,<%= scope['::varnish::storage_size'] %>"
 <% elsif scope['::varnish::storage_type'] == 'file' -%>
 VARNISH_STORAGE="file,<%= scope['::varnish::storage_file'] %>,<%= scope['::varnish::storage_size'] %>"
 <% end -%>
