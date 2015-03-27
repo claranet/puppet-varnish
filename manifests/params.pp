@@ -47,12 +47,12 @@ class varnish::params {
           $vcl_reload         = '/usr/share/varnish/reload-vcl'
         }
         default: {
-          fail("${::lsbdistdescription} (${::lsbdistcodename}) not supported")
+          fail("${::operatingsystem} (${::lsbdistdescription}, ${::lsbdistcodename}) not supported")
         }
       }
     }
     default: {
-      fail("${::lsbdistdescription} (${::lsbdistcodename}) not supported")
+      fail("${::operatingsystem} not supported")
     }
   }
 
