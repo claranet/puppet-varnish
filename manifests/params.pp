@@ -18,14 +18,12 @@ class varnish::params {
           $repoclass          = "varnish::repo::el${::operatingsystemmajrelease}"
           $sysconfig          = '/etc/sysconfig/varnish'
           $varnish_version    = '3.0'
-          $sysconfig_template = 'varnish/el6/varnish-3.sysconfig.erb'
         }
         '7': {
           $addrepo            = true
           $repoclass          = "varnish::repo::el${::operatingsystemmajrelease}"
           $sysconfig          = '/etc/varnish/varnish.params'
           $varnish_version    = '4.0'
-          $sysconfig_template = 'varnish/el7/varnish-4.sysconfig.erb'
         }
         default: {
           # Amazon Linux
@@ -33,7 +31,6 @@ class varnish::params {
           $repoclass          = "varnish::repo::el${::operatingsystemmajrelease}"
           $sysconfig          = '/etc/sysconfig/varnish'
           $varnish_version    = '3.0'
-          $sysconfig_template = 'varnish/el6/varnish-3.sysconfig.erb'
         }
       }
     }
@@ -43,7 +40,6 @@ class varnish::params {
           $addrepo            = false
           $sysconfig          = '/etc/default/varnish'
           $varnish_version    = '3.0'
-          $sysconfig_template = 'varnish/debian/varnish-3.default.erb'
           $vcl_reload         = '/usr/share/varnish/reload-vcl'
         }
         default: {
