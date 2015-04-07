@@ -1,6 +1,6 @@
 {
   "name": "bashtoni-varnish",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "source": "https://github.com/BashtonLtd/puppet-varnish",
   "author": "Bashton Ltd",
   "license": "Apache-2.0",
