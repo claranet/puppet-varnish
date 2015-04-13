@@ -98,24 +98,22 @@ describe 'varnish' do
     end
   end
 
-  context 'varnish 4' do
-    describe 'varnish 4 installation on RedHat' do
-      let(:facts) {{
-        :osfamily => 'RedHat',
-        :operatingsystemmajrelease => '6',
-      }}
-      let(:params) {{
-        :storage_size         => '50%',
-        :listen_port          => 80,
-        :varnish_version      => '4.0',
-      }}
+  context "Varnish 4 on EL6 and EL7" do
+    ['6', '7'].each do |operatingsystemmajrelease|
+      describe "Varnish 4 on CentOS #{operatingsystemmajrelease}" do
+        let(:params) {{
+          :varnish_version => '4.0'
+        }}
+        let (:facts) {{
+          :osfamily                  => 'RedHat',
+          :operatingsystemmajrelease => operatingsystemmajrelease
+        }}
 
       it { should compile.with_all_deps }
       it { should contain_yumrepo('varnish-cache') \
         .with_baseurl(/4\.0/) }
-
+      end
     end
   end
-
 
 end
