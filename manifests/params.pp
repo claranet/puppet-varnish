@@ -42,9 +42,6 @@ class varnish::params {
           $varnish_version    = '3.0'
           $vcl_reload         = '/usr/share/varnish/reload-vcl'
 
-          if ($::varnish::addrepo == true) {
-            fail("Sorry, only upstream repos are not supporting on ${::operatingsystem}")
-          }
         }
         default: {
           fail("${::operatingsystem} (${::lsbdistdescription}, ${::lsbdistcodename}) not supported")

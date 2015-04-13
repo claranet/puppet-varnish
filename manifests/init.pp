@@ -71,6 +71,8 @@ class varnish (
   validate_re($storage_type, '^(malloc|file)$')
 
   if ($addrepo) {
+
+    if ($::osfamily == 'Debian') { fail('Only distribution repos supported for Debian-derived distros') }
     class { $varnish::params::repoclass:
       before => Class['varnish::install'],
     }
