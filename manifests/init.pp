@@ -36,7 +36,7 @@
 #   Hash of runtime parameters
 #
 class varnish (
-  $addrepo         = true,
+  $addrepo         = $varnish::params::addrepo,
   $secret          = 'notsosecret',
   $secret_file     = $varnish::params::secret_file,
   $vcl_conf        = $varnish::params::vcl_conf,

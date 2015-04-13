@@ -4,12 +4,26 @@
 #
 class varnish::config {
 
-  case $::varnish::varnish_version {
-    '3.0': {
-      $sysconfig_template = "varnish/el${::operatingsystemmajrelease}/varnish-3.sysconfig.erb"
+  case $::osfamily {
+    'RedHat', 'Amazon': {
+      case $::varnish::varnish_version {
+        '3.0': {
+          $sysconfig_template = "varnish/el${::operatingsystemmajrelease}/varnish-3.sysconfig.erb"
+        }
+        default: {
+          $sysconfig_template = "varnish/el${::operatingsystemmajrelease}/varnish-4.sysconfig.erb"
+        }
+      }
     }
-    default: {
-      $sysconfig_template = "varnish/el${::operatingsystemmajrelease}/varnish-4.sysconfig.erb"
+    'Debian': {
+      case $::varnish::varnish_version {
+        '3.0': {
+          $sysconfig_template = 'varnish/debian/varnish-3.default.erb'
+        }
+        default: {
+          fail("Varnish version ${::varnish::varnish_version} not supported on ${::operatingsystem} (${::lsbdistdescription}, ${::lsbdistcodename})")
+        }
+      }
     }
   }
 

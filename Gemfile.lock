@@ -108,7 +108,7 @@ GEM
       net-http-pipeline
     hiera (1.3.4)
       json_pure
-    highline (1.7.0)
+    highline (1.7.1)
     inflecto (0.0.2)
     ipaddress (0.8.0)
     json (1.8.2)

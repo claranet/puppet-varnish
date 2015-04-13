@@ -22,10 +22,10 @@ in a parameter.
 
 ## Module Description
 
-Supports Varnish 3 and Varnish 4 (4 only for EL7).
-
-Currently only working on EL derived distros
-(RHEL6/7, CentOS 6/7, OEL 6/7, Amazon Linux)
+Supports:
+ * Varnish 3 and 4 on EL6 and derivatives (RHEL, CentOS, OEL, Amazon Linux)
+ * Varnish 3 on Ubuntu 12.04
+ * Varnish 4 on EL7 and derivatives
 
 Requires Puppet >= 3.0
 
@@ -73,9 +73,6 @@ secret.
 
 
 ## Limitations
-
-Currently only working on EL derived distros
-(RHEL6/7, CentOS 6/7, OEL 6/7, Amazon Linux)
 
 ## Development
 

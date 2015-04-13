@@ -4,27 +4,46 @@
 # It sets variables according to platform
 #
 class varnish::params {
+  
+  $package_name = 'varnish'
+  $service_name = 'varnish'
+  
   case $::osfamily {
     'RedHat', 'Amazon': {
-      $package_name = 'varnish'
-      $service_name = 'varnish'
       $vcl_reload   = '/usr/bin/varnish_reload_vcl'
+
       case $::operatingsystemmajrelease {
         '6': {
-          $repoclass       = "varnish::repo::el${::operatingsystemmajrelease}"
-          $sysconfig       = '/etc/sysconfig/varnish'
-          $varnish_version = '3.0'
+          $addrepo            = true
+          $repoclass          = "varnish::repo::el${::operatingsystemmajrelease}"
+          $sysconfig          = '/etc/sysconfig/varnish'
+          $varnish_version    = '3.0'
         }
         '7': {
-          $repoclass       = "varnish::repo::el${::operatingsystemmajrelease}"
-          $sysconfig       = '/etc/varnish/varnish.params'
-          $varnish_version = '4.0'
+          $addrepo            = true
+          $repoclass          = "varnish::repo::el${::operatingsystemmajrelease}"
+          $sysconfig          = '/etc/varnish/varnish.params'
+          $varnish_version    = '4.0'
         }
         default: {
           # Amazon Linux
-          $repoclass       = "varnish::repo::el${::operatingsystemmajrelease}"
-          $sysconfig       = '/etc/sysconfig/varnish'
-          $varnish_version = '3.0'
+          $addrepo            = true
+          $repoclass          = "varnish::repo::el${::operatingsystemmajrelease}"
+          $sysconfig          = '/etc/sysconfig/varnish'
+          $varnish_version    = '3.0'
+        }
+      }
+    }
+    'Debian': {
+      case $::lsbdistcodename {
+        'precise': {
+          $addrepo            = false
+          $sysconfig          = '/etc/default/varnish'
+          $varnish_version    = '3.0'
+          $vcl_reload         = '/usr/share/varnish/reload-vcl'
+        }
+        default: {
+          fail("${::operatingsystem} (${::lsbdistdescription}, ${::lsbdistcodename}) not supported")
         }
       }
     }
@@ -48,3 +67,4 @@ class varnish::params {
   $storage_size   = '1G'
   $package_ensure = 'present'
 }
+
