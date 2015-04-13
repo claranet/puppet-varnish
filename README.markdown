@@ -69,6 +69,7 @@ secret.
 |storage_type|malloc or file|
 |storage_file|File to mmap on disk for cache storage|
 |storage_size|Size of storage file or RAM, eg 10G or 50%|
+|package_ensure|Version of Varnish package to install, eg 3.0.5-1.el6|
 |runtime_params|hash of run-time parameters to be specified at startup|
 
 

@@ -32,6 +32,8 @@
 #   Major Varnish version to use - 3.0 or 4.0
 # [*vcl_reload*]
 #   Script to use to load new Varnish config
+# [*package_ensure*]
+#   Ensure specific package version for Varnish, eg 3.0.5-1.el6
 # [*runtime_params*]
 #   Hash of runtime parameters
 #
