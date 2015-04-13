@@ -1,6 +1,6 @@
 {
   "name": "bashtoni-varnish",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "source": "https://github.com/BashtonLtd/puppet-varnish",
   "author": "Bashton Ltd",
   "license": "Apache-2.0",
@@ -41,9 +41,7 @@
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "10.04",
-        "12.04",
-        "14.04"
+        "12.04"
       ]
     }
   ],

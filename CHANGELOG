@@ -1,0 +1,6 @@
+# Changelog
+
+## 2.3.0 2015-04-13
+
+- Added support for Ubuntu 12.04
+- Improved tests for Varnish 4 on EL6
