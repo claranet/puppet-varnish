@@ -2,7 +2,15 @@
 # This file can be changed without notifying varnish
 class varnish::secret ($secret) {
 
-  if ($secret == undef) {
+  if $secret {
+    file { $varnish::params::secret_file:
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0600',
+      content => $secret,
+    }
+  }
+  else {
     file { $varnish::params::secret_file:
       owner   => 'root',
       group   => 'root',
@@ -14,13 +22,4 @@ class varnish::secret ($secret) {
       command => "/bin/cp /proc/sys/kernel/random/uuid ${varnish::params::secret_file}",
     }
   }
-  else {
-    file { $varnish::params::secret_file:
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0600',
-      content => $secret,
-    }
-  }
-
 }
