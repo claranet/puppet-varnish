@@ -7,7 +7,7 @@ class varnish::secret ($secret) {
       owner   => 'root',
       group   => 'root',
       mode    => '0600',
-      content => $secret,
+      content => "${secret}\n",
     }
   }
   else {
