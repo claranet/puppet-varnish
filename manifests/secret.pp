@@ -12,9 +12,9 @@ class varnish::secret ($secret) {
   }
   else {
     file { $varnish::params::secret_file:
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0600',
+      owner => 'root',
+      group => 'root',
+      mode  => '0600',
     }
 
     exec { 'Generate Varnish secret file':
