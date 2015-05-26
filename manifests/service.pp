@@ -4,6 +4,7 @@
 # It ensure the service is running
 #
 class varnish::service {
+  include varnish
   include varnish::params
 
   service { $varnish::params::service_name:
@@ -12,4 +13,11 @@ class varnish::service {
     hasstatus  => true,
     hasrestart => true,
   }
+  
+  # This exec resource receives notifications from varnish::vcl resources
+  exec { 'vcl_reload':
+    command     => $varnish::vcl_reload,
+    refreshonly => true,
+  }
+
 }
