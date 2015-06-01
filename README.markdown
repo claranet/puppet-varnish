@@ -26,6 +26,7 @@ Supports:
  * Varnish 3 and 4 on EL6 and derivatives (RHEL, CentOS, OEL, Amazon Linux)
  * Varnish 3 on Ubuntu 12.04
  * Varnish 4 on EL7 and derivatives
+ * Varnish 4 on Ubuntu 14.04
 
 Requires Puppet >= 3.0
 

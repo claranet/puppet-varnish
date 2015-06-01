@@ -41,7 +41,8 @@
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "12.04"
+        "12.04",
+        "14.04"
       ]
     }
   ],
@@ -59,6 +60,10 @@
     {
     "name": "puppetlabs/stdlib",
     "version_requirement": ">= 3.2.0"
+    }
+    {
+    "name": "puppetlabs/apt",
+    "version_requirement": ">= 2.0.0"
     }
   ]
 }
