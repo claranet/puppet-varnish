@@ -1,6 +1,6 @@
 # Specify the secret file for varnishadm
 # This file can be changed without notifying varnish
-class varnish::secret ($secret) {
+class varnish::secret ($secret = undef) {
 
   if $secret {
     file { $varnish::params::secret_file:
