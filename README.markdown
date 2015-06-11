@@ -24,7 +24,7 @@ in a parameter.
 
 Supports:
  * Varnish 3 and 4 on EL6 and derivatives (RHEL, CentOS, OEL, Amazon Linux)
- * Varnish 3 on Ubuntu 12.04
+ * Varnish 3 on Ubuntu 12.04 and 14.04
  * Varnish 4 on EL7 and derivatives
 
 Requires Puppet >= 3.0

@@ -36,12 +36,11 @@ class varnish::params {
     }
     'Debian': {
       case $::lsbdistcodename {
-        'precise': {
+        'precise', 'trusty': {
           $addrepo            = false
           $sysconfig          = '/etc/default/varnish'
           $varnish_version    = '3.0'
           $vcl_reload         = '/usr/share/varnish/reload-vcl'
-
         }
         default: {
           fail("${::operatingsystem} (${::lsbdistdescription}, ${::lsbdistcodename}) not supported")
