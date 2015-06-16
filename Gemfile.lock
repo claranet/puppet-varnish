@@ -142,7 +142,7 @@ GEM
       puppet (>= 2.7.16)
       rest-client
     puppet-lint (1.1.0)
-    puppet-syntax (1.2.3)
+    puppet-syntax (2.0.0)
       rake
     puppetlabs_spec_helper (0.8.2)
       mocha
@@ -170,7 +170,7 @@ GEM
     rspec-expectations (2.99.2)
       diff-lcs (>= 1.1.3, < 2.0)
     rspec-mocks (2.99.3)
-    rspec-puppet (1.0.1)
+    rspec-puppet (2.2.0)
       rspec
     rspec-system (2.8.0)
       fog (~> 1.18)
@@ -212,10 +212,10 @@ DEPENDENCIES
   puppet (~> 3.7.0)
   puppet-blacksmith
   puppet-lint
-  puppet-syntax (~> 1.2.0)
+  puppet-syntax (~> 2.0.0)
   puppetlabs_spec_helper
   rake
-  rspec-puppet (~> 1.0.0)
+  rspec-puppet (~> 2.2.0)
   rspec-system-puppet
   travis
   travis-lint
