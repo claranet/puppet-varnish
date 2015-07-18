@@ -188,6 +188,7 @@ describe 'varnish' do
       it { should contain_apt__source('varnish-cache').with(:repos => 'varnish-4.0', 
         :location => 'http://repo.varnish-cache.org/debian') }
     end
+  end
 
   context 'Varnish 3 on Debian 7' do
     describe 'Varnish 3 on Debian 7' do
@@ -204,6 +205,7 @@ describe 'varnish' do
       it { should contain_apt__source('varnish-cache').with(:repos => 'varnish-3.0',
         :location => 'http://repo.varnish-cache.org/debian') }
     end
+  end
 
   context 'Varnish 4 on Debian 8' do
     describe 'Varnish 4 on Debian 8' do
