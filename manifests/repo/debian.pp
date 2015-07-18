@@ -5,7 +5,7 @@ class varnish::repo::debian {
     apt::source { 'varnish-cache':
         comment  => 'Apt source for Varnish 4',
         location => 'http://repo.varnish-cache.org/debian',
-        repos    => 'varnish-4.0',
+        repos    => "varnish-${::varnish::varnish_version}",
         key      => 'E98C6BBBA1CBC5C3EB2DF21C60E7C096C4DEFFEB'
     }
 }
