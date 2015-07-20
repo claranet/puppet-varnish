@@ -81,6 +81,44 @@ describe 'varnish' do
       it { should contain_class('varnish::service').that_subscribes_to('varnish::config') }
 
     end
+
+    describe "varnish class with minimal parameters on Debian 7" do
+      let(:params) {{
+        :secret => 'foobar'
+      }}
+      let (:facts) {{
+        :osfamily        => 'Debian',
+        # apt looks for lsbdistid
+        :lsbdistid       => 'Debian',
+        :lsbdistcodename => 'wheezy',
+      }}
+
+      it { should compile.with_all_deps }
+      it { should contain_class('varnish::secret') }
+      it { should contain_class('varnish::install').that_comes_before('varnish::config') }
+      it { should contain_class('varnish::config') }
+      it { should contain_class('varnish::service').that_subscribes_to('varnish::config') }
+
+    end
+
+    describe "varnish class with minimal parameters on Debian 8" do
+      let(:params) {{
+        :secret => 'foobar'
+      }}
+      let (:facts) {{
+        :osfamily        => 'Debian',
+        # apt looks for lsbdistid
+        :lsbdistid       => 'Debian',
+        :lsbdistcodename => 'jessie',
+      }}
+
+      it { should compile.with_all_deps }
+      it { should contain_class('varnish::secret') }
+      it { should contain_class('varnish::install').that_comes_before('varnish::config') }
+      it { should contain_class('varnish::config') }
+      it { should contain_class('varnish::service').that_subscribes_to('varnish::config') }
+
+    end
   end
 
 
@@ -148,6 +186,40 @@ describe 'varnish' do
 
       it { should compile.with_all_deps }
       it { should contain_apt__source('varnish-cache').with(:repos => 'varnish-4.0', 
+        :location => 'http://repo.varnish-cache.org/debian') }
+    end
+  end
+
+  context 'Varnish 3 on Debian 7' do
+    describe 'Varnish 3 on Debian 7' do
+      let(:params) {{
+          :varnish_version => '3.0'
+        }}
+        let (:facts) {{
+          :osfamily        => 'Debian',
+          :lsbdistid       => 'Debian',
+          :lsbdistcodename => 'wheezy',
+        }}
+
+      it { should compile.with_all_deps }
+      it { should contain_apt__source('varnish-cache').with(:repos => 'varnish-3.0',
+        :location => 'http://repo.varnish-cache.org/debian') }
+    end
+  end
+
+  context 'Varnish 4 on Debian 8' do
+    describe 'Varnish 4 on Debian 8' do
+      let(:params) {{
+          :varnish_version => '4.0'
+        }}
+        let (:facts) {{
+          :osfamily        => 'Debian',
+          :lsbdistid       => 'Debian',
+          :lsbdistcodename => 'jessie',
+        }}
+
+      it { should compile.with_all_deps }
+      it { should contain_apt__source('varnish-cache').with(:repos => 'varnish-4.0',
         :location => 'http://repo.varnish-cache.org/debian') }
     end
   end
