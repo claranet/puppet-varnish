@@ -10,7 +10,6 @@ class varnish::params {
   
   case $::osfamily {
     'RedHat', 'Amazon': {
-      $vcl_reload   = '/usr/bin/varnish_reload_vcl'
 
       case $::operatingsystemmajrelease {
         '6': {
@@ -18,12 +17,14 @@ class varnish::params {
           $repoclass          = "varnish::repo::el${::operatingsystemmajrelease}"
           $sysconfig          = '/etc/sysconfig/varnish'
           $varnish_version    = '3.0'
+          $vcl_reload         = '/usr/bin/varnish_reload_vcl'
         }
         '7': {
           $addrepo            = true
           $repoclass          = "varnish::repo::el${::operatingsystemmajrelease}"
           $sysconfig          = '/etc/varnish/varnish.params'
           $varnish_version    = '4.0'
+          $vcl_reload         = '/usr/sbin/varnish_reload_vcl'
         }
         default: {
           # Amazon Linux
@@ -31,6 +32,7 @@ class varnish::params {
           $repoclass          = "varnish::repo::el${::operatingsystemmajrelease}"
           $sysconfig          = '/etc/sysconfig/varnish'
           $varnish_version    = '3.0'
+          $vcl_reload         = '/usr/bin/varnish_reload_vcl'
         }
       }
     }
