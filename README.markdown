@@ -28,7 +28,7 @@ Supports:
  * Varnish 3 on Debian 7
  * Varnish 4 on EL7 and derivatives
  * Varnish 4 on Ubuntu 14.04
- * Varnish 4 on Debian 7
+ * Varnish 4 on Debian 7 and 8
 
 Requires Puppet >= 3.0
 

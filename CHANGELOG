@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.0 2015-07-20
+
+- Add support for Debian Wheezy + Jessie
+- Fix Varnish vcl_reload command
+
 ## 2.4.1 2015-06-25
 
 - Relax puppetlabs-apt version dependency because of librarian issues
