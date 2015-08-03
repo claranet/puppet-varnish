@@ -15,6 +15,9 @@ env:
   - PUPPET_VERSION="~> 3.5.0" STRICT_VARIABLES=yes
   - PUPPET_VERSION="~> 3.6.0" STRICT_VARIABLES=yes
   - PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=yes
+  - PUPPET_VERSION="~> 4.0.0"
+  - PUPPET_VERSION="~> 4.1.0"
+  - PUPPET_VERSION="~> 4.2.0"
 matrix:
   exclude:
   - rvm: 2.1.0
@@ -23,3 +26,21 @@ matrix:
     env: PUPPET_VERSION="~> 3.3.0"
   - rvm: 2.1.0
     env: PUPPET_VERSION="~> 3.4.0"
+  - rvm: 1.8.7
+    env: PUPPET_VERSION="~> 4.0.0"
+  - rvm: 1.8.7
+    env: PUPPET_VERSION="~> 4.1.0"
+  - rvm: 1.8.7
+    env: PUPPET_VERSION="~> 4.2.0"
+  - rvm: 1.9.3
+    env: PUPPET_VERSION="~> 4.0.0"
+  - rvm: 1.9.3
+    env: PUPPET_VERSION="~> 4.1.0"
+  - rvm: 1.9.3
+    env: PUPPET_VERSION="~> 4.2.0"
+  - rvm: 2.0.0
+    env: PUPPET_VERSION="~> 4.0.0"
+  - rvm: 2.0.0
+    env: PUPPET_VERSION="~> 4.1.0"
+  - rvm: 2.0.0
+    env: PUPPET_VERSION="~> 4.2.0"
