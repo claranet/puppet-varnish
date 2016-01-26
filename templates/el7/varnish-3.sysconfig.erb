@@ -15,6 +15,6 @@ VARNISH_USER=varnish
 VARNISH_GROUP=varnish
 VARNISH_TTL=120
 
-DAEMON_OPTS="<% scope['::varnish::runtime_params'].each do |k,v| -%>-p <%= k %>=<%= v %> \
+DAEMON_OPTS="<% scope['::varnish::runtime_params'].sort.each do |k,v| -%>-p <%= k %>=<%= v %> \
 <% end -%>
 -w <%= scope['::varnish::min_threads'] %>,<%= scope['::varnish::max_threads'] %>,<%= scope['::varnish::thread_timeout'] %>"
