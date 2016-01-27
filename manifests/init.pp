@@ -37,6 +37,8 @@
 #   Ensure specific package version for Varnish, eg 3.0.5-1.el6
 # [*runtime_params*]
 #   Hash of runtime parameters
+# [*ttl*]
+#   Specifies a hard minimum time to live for cached documents - defaults to 120
 #
 class varnish (
   $addrepo         = $varnish::params::addrepo,
@@ -56,7 +58,8 @@ class varnish (
   $varnish_version = $varnish::params::varnish_version,
   $vcl_reload      = $varnish::params::vcl_reload,
   $package_ensure  = $varnish::params::package_ensure,
-  $runtime_params  = {}
+  $runtime_params  = {},
+  $ttl             = $varnish::params::ttl,
 ) inherits varnish::params {
 
   validate_bool($addrepo)
