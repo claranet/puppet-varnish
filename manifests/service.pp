@@ -17,6 +17,8 @@ class varnish::service {
   # This exec resource receives notifications from varnish::vcl resources
   exec { 'vcl_reload':
     command     => $varnish::vcl_reload,
+    tries       => 3,
+    try_sleep   => 3,
     refreshonly => true,
   }
 

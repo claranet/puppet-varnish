@@ -26,6 +26,12 @@ describe 'varnish' do
         .with_content("foobar\n") }
       it { should contain_file('/etc/sysconfig/varnish') }
       it { should contain_service('varnish') }
+      it { should contain_exec('vcl_reload').with({
+        'command'   => '/usr/bin/varnish_reload_vcl',
+        'tries'     => 3,
+        'try_sleep' => 3,
+        'refreshonly' => true
+      })}
     end
     describe "varnish class with minimal parameters on RedHat 7" do
       let(:params) {{
@@ -44,6 +50,12 @@ describe 'varnish' do
       it { should contain_class('varnish::install').that_comes_before('varnish::config') }
       it { should contain_class('varnish::config') }
       it { should contain_class('varnish::service').that_subscribes_to('varnish::config') }
+      it { should contain_exec('vcl_reload').with({
+        'command'   => '/usr/sbin/varnish_reload_vcl',
+        'tries'     => 3,
+        'try_sleep' => 3,
+        'refreshonly' => true
+      })}
 
     end
     describe "varnish class with minimal parameters on Ubuntu 12.04" do
@@ -60,6 +72,12 @@ describe 'varnish' do
       it { should contain_class('varnish::install').that_comes_before('varnish::config') }
       it { should contain_class('varnish::config') }
       it { should contain_class('varnish::service').that_subscribes_to('varnish::config') }
+      it { should contain_exec('vcl_reload').with({
+        'command'   => '/usr/share/varnish/reload-vcl',
+        'tries'     => 3,
+        'try_sleep' => 3,
+        'refreshonly' => true
+      })}
 
     end
 
@@ -79,6 +97,12 @@ describe 'varnish' do
       it { should contain_class('varnish::install').that_comes_before('varnish::config') }
       it { should contain_class('varnish::config') }
       it { should contain_class('varnish::service').that_subscribes_to('varnish::config') }
+      it { should contain_exec('vcl_reload').with({
+        'command'   => '/usr/share/varnish/reload-vcl',
+        'tries'     => 3,
+        'try_sleep' => 3,
+        'refreshonly' => true
+      })}
 
     end
 
@@ -98,6 +122,12 @@ describe 'varnish' do
       it { should contain_class('varnish::install').that_comes_before('varnish::config') }
       it { should contain_class('varnish::config') }
       it { should contain_class('varnish::service').that_subscribes_to('varnish::config') }
+      it { should contain_exec('vcl_reload').with({
+        'command'   => '/usr/share/varnish/reload-vcl',
+        'tries'     => 3,
+        'try_sleep' => 3,
+        'refreshonly' => true
+      })}
 
     end
 
@@ -117,6 +147,12 @@ describe 'varnish' do
       it { should contain_class('varnish::install').that_comes_before('varnish::config') }
       it { should contain_class('varnish::config') }
       it { should contain_class('varnish::service').that_subscribes_to('varnish::config') }
+      it { should contain_exec('vcl_reload').with({
+        'command'   => '/usr/share/varnish/reload-vcl',
+        'tries'     => 3,
+        'try_sleep' => 3,
+        'refreshonly' => true
+      })}
 
     end
   end
