@@ -8,10 +8,24 @@ class varnish::config {
     'RedHat', 'Amazon': {
       case $::varnish::varnish_version {
         '3.0': {
-          $sysconfig_template = "varnish/el${::operatingsystemmajrelease}/varnish-3.sysconfig.erb"
+          case $::operatingsystemmajrelease {
+            '7': {
+              $sysconfig_template = "varnish/el7/varnish-3.sysconfig.erb"
+            }
+            default: {
+              $sysconfig_template = "varnish/el6/varnish-3.sysconfig.erb"
+            }
+          }
         }
         default: {
-          $sysconfig_template = "varnish/el${::operatingsystemmajrelease}/varnish-4.sysconfig.erb"
+          case $::operatingsystemmajrelease {
+            '7': {
+              $sysconfig_template = "varnish/el7/varnish-3.sysconfig.erb"
+            }
+            default: {
+              $sysconfig_template = "varnish/el6/varnish-3.sysconfig.erb"
+            }
+          }
         }
       }
     }
