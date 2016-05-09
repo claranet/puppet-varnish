@@ -29,6 +29,8 @@
 #   Whether to use malloc (RAM only) or file storage for cache
 # [*storage_size*]
 #   Size of cache
+# [*instance*]
+#   Instance name to use - usually hostname
 # [*varnish_version*]
 #   Major Varnish version to use - 3.0 or 4.0
 # [*vcl_reload*]
@@ -53,6 +55,7 @@ class varnish (
   $storage_type    = $varnish::params::storage_type,
   $storage_file    = $varnish::params::storage_file,
   $storage_size    = $varnish::params::storage_size,
+  $instance        = $varnish::params::instance,
   $varnish_version = $varnish::params::varnish_version,
   $vcl_reload      = $varnish::params::vcl_reload,
   $package_ensure  = $varnish::params::package_ensure,
@@ -61,6 +64,7 @@ class varnish (
 
   validate_bool($addrepo)
   validate_string($secret)
+  validate_string($instance)
   validate_absolute_path($secret_file)
   unless is_integer($listen_port) { fail('listen_port invalid') }
   unless is_integer($admin_port) { fail('admin_port invalid') }

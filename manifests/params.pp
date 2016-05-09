@@ -92,6 +92,7 @@ class varnish::params {
   $storage_type   = 'file'
   $storage_file   = '/var/lib/varnish/varnish_storage.bin'
   $storage_size   = '1G'
+  $instance       = ::fqdn
   $package_ensure = 'present'
 }
 
