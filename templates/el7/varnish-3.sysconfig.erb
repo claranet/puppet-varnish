@@ -14,6 +14,7 @@ VARNISH_STORAGE="file,<%= scope['::varnish::storage_file'] %>,<%= scope['::varni
 VARNISH_USER=varnish
 VARNISH_GROUP=varnish
 VARNISH_TTL=120
+VARNISH_INSTANCE=<%= scope['::varnish::instance'] %>
 
 DAEMON_OPTS="<% scope['::varnish::runtime_params'].each do |k,v| -%>-p <%= k %>=<%= v %> \
 <% end -%>
