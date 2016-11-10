@@ -134,23 +134,6 @@ GEM
       coderay (~> 1.0)
       method_source (~> 0.8)
       slop (~> 3.4)
-    puppet (3.7.4)
-      facter (> 1.6, < 3)
-      hiera (~> 1.0)
-      json_pure
-    puppet-blacksmith (3.1.1)
-      puppet (>= 2.7.16)
-      rest-client
-    puppet-lint (1.1.0)
-    puppet-syntax (2.0.0)
-      rake
-    puppetlabs_spec_helper (0.8.2)
-      mocha
-      puppet-lint
-      puppet-syntax
-      rake
-      rspec
-      rspec-puppet
     pusher-client (0.6.0)
       json
       websocket (~> 1.0)
@@ -209,10 +192,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  puppet (~> 3.7.0)
-  puppet-blacksmith
-  puppet-lint
-  puppet-syntax (~> 2.0.0)
   puppetlabs_spec_helper
   rake
   rspec-puppet (~> 2.2.0)
