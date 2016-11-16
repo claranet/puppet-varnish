@@ -15,11 +15,11 @@ describe 'varnish' do
 
       it { should contain_class('varnish::params') }
 
-      it { should contain_class('varnish::repo::el6').that_comes_before('varnish::install') }
+      it { should contain_class('varnish::repo::el6').that_comes_before('Class[varnish::install]') }
       it { should contain_class('varnish::secret') }
-      it { should contain_class('varnish::install').that_comes_before('varnish::config') }
+      it { should contain_class('varnish::install').that_comes_before('Class[varnish::config]') }
       it { should contain_class('varnish::config') }
-      it { should contain_class('varnish::service').that_subscribes_to('varnish::config') }
+      it { should contain_class('varnish::service').that_subscribes_to('Class[varnish::config]') }
 
       it { should contain_package('varnish') }
       it { should contain_file('/etc/varnish/secret') \
@@ -39,11 +39,11 @@ describe 'varnish' do
       it { should compile.with_all_deps }
       it { should contain_yumrepo('varnish-cache') \
         .with_baseurl(/4\.0/) }
-      it { should contain_class('varnish::repo::el7').that_comes_before('varnish::install') }
+      it { should contain_class('varnish::repo::el7').that_comes_before('Class[varnish::install]') }
       it { should contain_class('varnish::secret') }
-      it { should contain_class('varnish::install').that_comes_before('varnish::config') }
+      it { should contain_class('varnish::install').that_comes_before('Class[varnish::config]') }
       it { should contain_class('varnish::config') }
-      it { should contain_class('varnish::service').that_subscribes_to('varnish::config') }
+      it { should contain_class('varnish::service').that_subscribes_to('Class[varnish::config]') }
 
     end
     describe "varnish class with minimal parameters on Ubuntu 12.04" do
@@ -57,9 +57,9 @@ describe 'varnish' do
 
       it { should compile.with_all_deps }
       it { should contain_class('varnish::secret') }
-      it { should contain_class('varnish::install').that_comes_before('varnish::config') }
+      it { should contain_class('varnish::install').that_comes_before('Class[varnish::config]') }
       it { should contain_class('varnish::config') }
-      it { should contain_class('varnish::service').that_subscribes_to('varnish::config') }
+      it { should contain_class('varnish::service').that_subscribes_to('Class[varnish::config]') }
 
     end
 
@@ -72,13 +72,14 @@ describe 'varnish' do
         # apt looks for lsbdistid
         :lsbdistid       => 'Debian',
         :lsbdistcodename => 'trusty',
+        :puppetversion   => Puppet.version
       }}
 
       it { should compile.with_all_deps }
       it { should contain_class('varnish::secret') }
-      it { should contain_class('varnish::install').that_comes_before('varnish::config') }
+      it { should contain_class('varnish::install').that_comes_before('Class[varnish::config]') }
       it { should contain_class('varnish::config') }
-      it { should contain_class('varnish::service').that_subscribes_to('varnish::config') }
+      it { should contain_class('varnish::service').that_subscribes_to('Class[varnish::config]') }
 
     end
 
@@ -91,13 +92,14 @@ describe 'varnish' do
         # apt looks for lsbdistid
         :lsbdistid       => 'Debian',
         :lsbdistcodename => 'wheezy',
+        :puppetversion   => Puppet.version
       }}
 
       it { should compile.with_all_deps }
       it { should contain_class('varnish::secret') }
-      it { should contain_class('varnish::install').that_comes_before('varnish::config') }
+      it { should contain_class('varnish::install').that_comes_before('Class[varnish::config]') }
       it { should contain_class('varnish::config') }
-      it { should contain_class('varnish::service').that_subscribes_to('varnish::config') }
+      it { should contain_class('varnish::service').that_subscribes_to('Class[varnish::config]') }
 
     end
 
@@ -110,13 +112,14 @@ describe 'varnish' do
         # apt looks for lsbdistid
         :lsbdistid       => 'Debian',
         :lsbdistcodename => 'jessie',
+        :puppetversion   => Puppet.version
       }}
 
       it { should compile.with_all_deps }
       it { should contain_class('varnish::secret') }
-      it { should contain_class('varnish::install').that_comes_before('varnish::config') }
+      it { should contain_class('varnish::install').that_comes_before('Class[varnish::config]') }
       it { should contain_class('varnish::config') }
-      it { should contain_class('varnish::service').that_subscribes_to('varnish::config') }
+      it { should contain_class('varnish::service').that_subscribes_to('Class[varnish::config]') }
 
     end
   end
@@ -182,10 +185,11 @@ describe 'varnish' do
           :osfamily        => 'Debian',
           :lsbdistid       => 'Debian',
           :lsbdistcodename => 'trusty',
+          :puppetversion   => Puppet.version
         }}
 
       it { should compile.with_all_deps }
-      it { should contain_apt__source('varnish-cache').with(:repos => 'varnish-4.0', 
+      it { should contain_apt__source('varnish-cache').with(:repos => 'varnish-4.0',
         :location => 'http://repo.varnish-cache.org/debian') }
     end
   end
@@ -199,6 +203,7 @@ describe 'varnish' do
           :osfamily        => 'Debian',
           :lsbdistid       => 'Debian',
           :lsbdistcodename => 'wheezy',
+          :puppetversion   => Puppet.version
         }}
 
       it { should compile.with_all_deps }
@@ -216,6 +221,7 @@ describe 'varnish' do
           :osfamily        => 'Debian',
           :lsbdistid       => 'Debian',
           :lsbdistcodename => 'jessie',
+          :puppetversion   => Puppet.version
         }}
 
       it { should compile.with_all_deps }

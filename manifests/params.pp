@@ -4,10 +4,10 @@
 # It sets variables according to platform
 #
 class varnish::params {
-  
+
   $package_name = 'varnish'
   $service_name = 'varnish'
-  
+
   case $::osfamily {
     'RedHat', 'Amazon': {
 
@@ -94,4 +94,3 @@ class varnish::params {
   $storage_size   = '1G'
   $package_ensure = 'present'
 }
-

@@ -13,7 +13,7 @@ class varnish::service {
     hasstatus  => true,
     hasrestart => true,
   }
-  
+
   # This exec resource receives notifications from varnish::vcl resources
   exec { 'vcl_reload':
     command     => $varnish::vcl_reload,
