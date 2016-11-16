@@ -93,4 +93,5 @@ class varnish::params {
   $storage_file   = '/var/lib/varnish/varnish_storage.bin'
   $storage_size   = '1G'
   $package_ensure = 'present'
+  $ttl            = 120
 }
