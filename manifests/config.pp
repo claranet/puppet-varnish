@@ -15,6 +15,7 @@ class varnish::config {
         }
       }
     }
+
     'Debian': {
       case $::varnish::varnish_version {
         '3.0': {
@@ -27,6 +28,10 @@ class varnish::config {
           fail("Varnish version ${::varnish::varnish_version} not supported on ${::operatingsystem} (${::lsbdistdescription}, ${::lsbdistcodename})")
         }
       }
+    }
+
+    default: {
+      fail("Varnish version ${::varnish::varnish_version} not supported on ${::operatingsystem} (${::lsbdistdescription}, ${::lsbdistcodename})")
     }
   }
 

@@ -72,6 +72,7 @@ describe 'varnish' do
         # apt looks for lsbdistid
         :lsbdistid       => 'Debian',
         :lsbdistcodename => 'trusty',
+        :puppetversion   => Puppet.version
       }}
 
       it { should compile.with_all_deps }
@@ -91,6 +92,7 @@ describe 'varnish' do
         # apt looks for lsbdistid
         :lsbdistid       => 'Debian',
         :lsbdistcodename => 'wheezy',
+        :puppetversion   => Puppet.version
       }}
 
       it { should compile.with_all_deps }
@@ -110,6 +112,7 @@ describe 'varnish' do
         # apt looks for lsbdistid
         :lsbdistid       => 'Debian',
         :lsbdistcodename => 'jessie',
+        :puppetversion   => Puppet.version
       }}
 
       it { should compile.with_all_deps }
@@ -182,10 +185,11 @@ describe 'varnish' do
           :osfamily        => 'Debian',
           :lsbdistid       => 'Debian',
           :lsbdistcodename => 'trusty',
+          :puppetversion   => Puppet.version
         }}
 
       it { should compile.with_all_deps }
-      it { should contain_apt__source('varnish-cache').with(:repos => 'varnish-4.0', 
+      it { should contain_apt__source('varnish-cache').with(:repos => 'varnish-4.0',
         :location => 'http://repo.varnish-cache.org/debian') }
     end
   end
@@ -199,6 +203,7 @@ describe 'varnish' do
           :osfamily        => 'Debian',
           :lsbdistid       => 'Debian',
           :lsbdistcodename => 'wheezy',
+          :puppetversion   => Puppet.version
         }}
 
       it { should compile.with_all_deps }
@@ -216,6 +221,7 @@ describe 'varnish' do
           :osfamily        => 'Debian',
           :lsbdistid       => 'Debian',
           :lsbdistcodename => 'jessie',
+          :puppetversion   => Puppet.version
         }}
 
       it { should compile.with_all_deps }
