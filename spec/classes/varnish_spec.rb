@@ -86,6 +86,12 @@ describe 'varnish', :type => :class do
               it { should contain_class('varnish::repo::el7').that_comes_before('Class[varnish::install]') }
               it { should contain_yumrepo('varnish-cache').with_baseurl('https://repo.varnish-cache.org/redhat/varnish-4.0/el7/') }
               it { should contain_exec('vcl_reload').with_command('/usr/sbin/varnish_reload_vcl') }
+            else
+              # Amazon Linux
+              it { should contain_file('/etc/sysconfig/varnish') }
+              it { should contain_class('varnish::repo::el6').that_comes_before('Class[varnish::install]') }
+              it { should contain_yumrepo('varnish-cache').with_baseurl('https://repo.varnish-cache.org/redhat/varnish-3.0/el6/') }
+              it { should contain_exec('vcl_reload').with_command('/usr/sbin/varnish_reload_vcl') }
             end
 
           when 'Debian'
