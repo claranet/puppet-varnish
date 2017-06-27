@@ -1,233 +1,110 @@
 require 'spec_helper'
 
-describe 'varnish' do
+describe 'varnish', :type => :class do
   context 'supported operating systems' do
-    describe "varnish class with minimal parameters on RedHat 6" do
-      let(:params) {{
-        :secret => 'foobar'
-      }}
+
+    describe "varnish class fail on unsupported OS" do
       let(:facts) {{
-        :osfamily                  => 'RedHat',
-        :operatingsystemmajrelease => '6',
+        :osfamily        => 'Darwin',
+        :operatingsystem => 'Darwin'
+      }}
+
+      it { is_expected.to raise_error(Puppet::Error, /Darwin not supported/) }
+    end
+
+    describe "varnish class fail on unsupported Debian OS" do
+      let(:facts) {{
+        :osfamily           => 'Debian',
+        :operatingsystem    => 'Ubuntu',
+        :lsbdistcodename    => 'xenial',
+        :lsbdistdescription => 'Ubuntu 16.04.2 LTS'
+      }}
+
+      it { is_expected.to raise_error(Puppet::Error, /Ubuntu \(Ubuntu 16.04.2 LTS, xenial\) not supported/) }
+    end
+
+    describe "varnish with generated secret" do
+
+      let(:facts) {{
+        :osfamily           => 'Debian',
+        :operatingsystem    => 'Ubuntu',
+        :lsbdistcodename    => 'precise',
       }}
 
       it { should compile.with_all_deps }
-
       it { should contain_class('varnish::params') }
-
-      it { should contain_class('varnish::repo::el6').that_comes_before('Class[varnish::install]') }
       it { should contain_class('varnish::secret') }
       it { should contain_class('varnish::install').that_comes_before('Class[varnish::config]') }
       it { should contain_class('varnish::config') }
+      it { should contain_file('/etc/varnish/secret') }
+      it { should contain_exec('Generate Varnish secret file').with_command("/bin/cp /proc/sys/kernel/random/uuid '/etc/varnish/secret'") }
       it { should contain_class('varnish::service').that_subscribes_to('Class[varnish::config]') }
 
       it { should contain_package('varnish') }
-      it { should contain_file('/etc/varnish/secret') \
-        .with_content("foobar\n") }
-      it { should contain_file('/etc/sysconfig/varnish') }
       it { should contain_service('varnish') }
     end
-    describe "varnish class with minimal parameters on RedHat 7" do
+
+    describe "varnish with hardcoded secret" do
+
       let(:params) {{
-        :secret => 'foobar'
+        :secret => 'foobar',
       }}
+
       let(:facts) {{
-        :osfamily                  => 'RedHat',
-        :operatingsystemmajrelease => '7',
+        :osfamily           => 'Debian',
+        :operatingsystem    => 'Ubuntu',
+        :lsbdistcodename    => 'precise',
       }}
 
       it { should compile.with_all_deps }
-      it { should contain_yumrepo('varnish-cache') \
-        .with_baseurl(/4\.0/) }
-      it { should contain_class('varnish::repo::el7').that_comes_before('Class[varnish::install]') }
-      it { should contain_class('varnish::secret') }
-      it { should contain_class('varnish::install').that_comes_before('Class[varnish::config]') }
-      it { should contain_class('varnish::config') }
-      it { should contain_class('varnish::service').that_subscribes_to('Class[varnish::config]') }
-
-    end
-    describe "varnish class with minimal parameters on Ubuntu 12.04" do
-      let(:params) {{
-        :secret => 'foobar'
-      }}
-      let (:facts) {{
-        :osfamily        => 'Debian',
-        :lsbdistcodename => 'precise',
-      }}
-
-      it { should compile.with_all_deps }
-      it { should contain_class('varnish::secret') }
-      it { should contain_class('varnish::install').that_comes_before('Class[varnish::config]') }
-      it { should contain_class('varnish::config') }
-      it { should contain_class('varnish::service').that_subscribes_to('Class[varnish::config]') }
-
+      it { should contain_file('/etc/varnish/secret').with_content("foobar\n") }
     end
 
-    describe "varnish class with minimal parameters on Ubuntu 14.04" do
-      let(:params) {{
-        :secret => 'foobar'
-      }}
-      let (:facts) {{
-        :osfamily        => 'Debian',
-        # apt looks for lsbdistid
-        :lsbdistid       => 'Debian',
-        :lsbdistcodename => 'trusty',
-        :puppetversion   => Puppet.version
-      }}
+    on_supported_os.each do |os, facts|
 
-      it { should compile.with_all_deps }
-      it { should contain_class('varnish::secret') }
-      it { should contain_class('varnish::install').that_comes_before('Class[varnish::config]') }
-      it { should contain_class('varnish::config') }
-      it { should contain_class('varnish::service').that_subscribes_to('Class[varnish::config]') }
+      context "on #{os}" do
+        let(:facts) do
+          facts.merge({
+            :kernel => 'Linux',
+          })
+        end
 
-    end
+        describe "varnish class" do
+          it { should compile.with_all_deps }
 
-    describe "varnish class with minimal parameters on Debian 7" do
-      let(:params) {{
-        :secret => 'foobar'
-      }}
-      let (:facts) {{
-        :osfamily        => 'Debian',
-        # apt looks for lsbdistid
-        :lsbdistid       => 'Debian',
-        :lsbdistcodename => 'wheezy',
-        :puppetversion   => Puppet.version
-      }}
+          case facts[:osfamily]
+          when 'RedHat'
 
-      it { should compile.with_all_deps }
-      it { should contain_class('varnish::secret') }
-      it { should contain_class('varnish::install').that_comes_before('Class[varnish::config]') }
-      it { should contain_class('varnish::config') }
-      it { should contain_class('varnish::service').that_subscribes_to('Class[varnish::config]') }
+            case facts[:operatingsystemmajrelease]
+            when '6'
+              it { should contain_file('/etc/sysconfig/varnish') }
+              it { should contain_class('varnish::repo::el6').that_comes_before('Class[varnish::install]') }
+              it { should contain_yumrepo('varnish-cache').with_baseurl('https://repo.varnish-cache.org/redhat/varnish-3.0/el6/') }
+              it { should contain_exec('vcl_reload').with_command('/usr/bin/varnish_reload_vcl') }
+            when '7'
+              it { should contain_file('/etc/varnish/varnish.params') }
+              it { should contain_class('varnish::repo::el7').that_comes_before('Class[varnish::install]') }
+              it { should contain_yumrepo('varnish-cache').with_baseurl('https://repo.varnish-cache.org/redhat/varnish-4.0/el7/') }
+              it { should contain_exec('vcl_reload').with_command('/usr/sbin/varnish_reload_vcl') }
+            end
 
-    end
+          when 'Debian'
 
-    describe "varnish class with minimal parameters on Debian 8" do
-      let(:params) {{
-        :secret => 'foobar'
-      }}
-      let (:facts) {{
-        :osfamily        => 'Debian',
-        # apt looks for lsbdistid
-        :lsbdistid       => 'Debian',
-        :lsbdistcodename => 'jessie',
-        :puppetversion   => Puppet.version
-      }}
+            case facts[:lsbdistcodename]
 
-      it { should compile.with_all_deps }
-      it { should contain_class('varnish::secret') }
-      it { should contain_class('varnish::install').that_comes_before('Class[varnish::config]') }
-      it { should contain_class('varnish::config') }
-      it { should contain_class('varnish::service').that_subscribes_to('Class[varnish::config]') }
+            when 'precise'
+              it { should_not contain_class('varnish::repo::debian').that_comes_before('Class[varnish::install]') }
+            else
+              it { should contain_class('varnish::repo::debian').that_comes_before('Class[varnish::install]') }
+              it { should contain_apt__source('varnish-cache') }
+            end
 
-    end
-  end
+            it { should contain_file('/etc/default/varnish') }
+            it { should contain_exec('vcl_reload').with_command('/usr/share/varnish/reload-vcl') }
 
-
-  context 'unsupported operating system' do
-    describe 'varnish class without any parameters on Solaris/Nexenta' do
-      let(:facts) {{
-        :osfamily        => 'Solaris',
-        :operatingsystem => 'Nexenta',
-      }}
-
-      it { should raise_error(Puppet::Error, /Nexenta not supported/) }
-    end
-  end
-
-  context 'lots of params' do
-    describe 'varnish class with many params on RedHat' do
-      let(:facts) {{
-        :osfamily => 'RedHat',
-        :operatingsystemmajrelease => '6',
-      }}
-      let(:params) {{
-        :storage_size         => '50%',
-        :listen_port          => 80,
-        :runtime_params       => {
-          'first_byte_timeout' => 10,
-          'gzip_level'         => 9
-        }
-      }}
-
-      it { should compile.with_all_deps }
-      it { should contain_file('/etc/sysconfig/varnish') \
-        .with_content(/-p first_byte_timeout=10/) }
-
-    end
-  end
-
-  context "Varnish 4 on EL6 and EL7" do
-    ['6', '7'].each do |operatingsystemmajrelease|
-      describe "Varnish 4 on CentOS #{operatingsystemmajrelease}" do
-        let(:params) {{
-          :varnish_version => '4.0'
-        }}
-        let (:facts) {{
-          :osfamily                  => 'RedHat',
-          :operatingsystemmajrelease => operatingsystemmajrelease
-        }}
-
-      it { should compile.with_all_deps }
-      it { should contain_yumrepo('varnish-cache') \
-        .with_baseurl(/4\.0/) }
+          end
+        end
       end
     end
   end
-
-  context 'Varnish 4 on Ubuntu 14' do
-    describe 'Varnish 4 on Ubuntu 14.04' do
-      let(:params) {{
-          :varnish_version => '4.0'
-        }}
-        let (:facts) {{
-          :osfamily        => 'Debian',
-          :lsbdistid       => 'Debian',
-          :lsbdistcodename => 'trusty',
-          :puppetversion   => Puppet.version
-        }}
-
-      it { should compile.with_all_deps }
-      it { should contain_apt__source('varnish-cache').with(:repos => 'varnish-4.0',
-        :location => 'http://repo.varnish-cache.org/debian') }
-    end
-  end
-
-  context 'Varnish 3 on Debian 7' do
-    describe 'Varnish 3 on Debian 7' do
-      let(:params) {{
-          :varnish_version => '3.0'
-        }}
-        let (:facts) {{
-          :osfamily        => 'Debian',
-          :lsbdistid       => 'Debian',
-          :lsbdistcodename => 'wheezy',
-          :puppetversion   => Puppet.version
-        }}
-
-      it { should compile.with_all_deps }
-      it { should contain_apt__source('varnish-cache').with(:repos => 'varnish-3.0',
-        :location => 'http://repo.varnish-cache.org/debian') }
-    end
-  end
-
-  context 'Varnish 4 on Debian 8' do
-    describe 'Varnish 4 on Debian 8' do
-      let(:params) {{
-          :varnish_version => '4.0'
-        }}
-        let (:facts) {{
-          :osfamily        => 'Debian',
-          :lsbdistid       => 'Debian',
-          :lsbdistcodename => 'jessie',
-          :puppetversion   => Puppet.version
-        }}
-
-      it { should compile.with_all_deps }
-      it { should contain_apt__source('varnish-cache').with(:repos => 'varnish-4.0',
-        :location => 'http://repo.varnish-cache.org/debian') }
-    end
-  end
-
 end
