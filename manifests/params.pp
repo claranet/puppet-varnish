@@ -5,11 +5,8 @@
 #
 class varnish::params {
 
-  $package_name = 'varnish'
-  $service_name = 'varnish'
-
   case $::osfamily {
-    'RedHat', 'Amazon': {
+    'RedHat': {
 
       case $::operatingsystemmajrelease {
         '6': {
@@ -79,18 +76,19 @@ class varnish::params {
     }
   }
 
-  # Standard Varnish sysconfig settings
   $vcl_conf       = '/etc/varnish/default.vcl'
   $listen         = '0.0.0.0'
-  $listen_port    = 6081
+  $listen_port    = '6081'
   $admin_listen   = '127.0.0.1'
-  $admin_port     = 6082
+  $admin_port     = '6082'
   $secret_file    = '/etc/varnish/secret'
-  $min_threads    = 50
-  $max_threads    = 1000
-  $thread_timeout = 120
+  $min_threads    = '50'
+  $max_threads    = '1000'
+  $thread_timeout = '120'
   $storage_type   = 'file'
   $storage_file   = '/var/lib/varnish/varnish_storage.bin'
   $storage_size   = '1G'
   $package_ensure = 'present'
+  $package_name   = 'varnish'
+  $service_name   = 'varnish'
 }
