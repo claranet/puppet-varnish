@@ -1,17 +1,17 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
 group :test do
   gem 'rake'
-  gem 'puppet-lint'
-  gem 'rspec-puppet'
-  gem 'rspec-system-puppet'
-  gem 'puppetlabs_spec_helper'
-  gem 'puppet-syntax'
-  gem 'puppet', ENV['PUPPET_VERSION'] || '~> 3.7.0'
-  gem 'json_pure', '< 2.0.0'
-  gem 'json', '< 2.0.0'
-  # https://tickets.puppetlabs.com/browse/PUP-3796
+  gem 'puppet', ENV['PUPPET_VERSION'] || '~> 3.8.7'
   gem 'safe_yaml', '~> 1.0.4'
+  gem 'puppet-lint'
+  gem 'rspec-puppet', :git => 'https://github.com/rodjek/rspec-puppet.git'
+  gem 'rspec-puppet-facts'
+  gem 'puppet-syntax'
+  gem 'puppetlabs_spec_helper', '< 2.0.0'
+  gem 'metadata-json-lint', '1.1.0'
+  gem 'json', '< 2.0.0'
+  gem 'xmlrpc', :require => false if Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.4.0')
 end
 
 group :development do
@@ -19,4 +19,9 @@ group :development do
   gem 'travis-lint'
   gem 'vagrant-wrapper'
   gem 'puppet-blacksmith'
+  gem 'guard-rake'
+end
+
+group :system_tests do
+  gem 'beaker'
 end
