@@ -1,8 +1,8 @@
 # Add the Varnish repo
 class varnish::repo::debian {
-    include apt
+    include ::apt
 
-    apt::source { 'varnish-cache':
+    ::apt::source { 'varnish-cache':
         comment  => 'Apt source for Varnish 4',
         location => 'http://repo.varnish-cache.org/debian',
         repos    => "varnish-${::varnish::varnish_version}",
