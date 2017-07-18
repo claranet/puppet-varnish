@@ -7,7 +7,7 @@ class varnish::config {
   case $::osfamily {
     'RedHat', 'Amazon': {
       case $::varnish::varnish_version {
-        '3.0': {
+        /3.[0-1]/: {
           $sysconfig_template = "varnish/el${::operatingsystemmajrelease}/varnish-3.sysconfig.erb"
         }
         default: {
@@ -18,10 +18,10 @@ class varnish::config {
 
     'Debian': {
       case $::varnish::varnish_version {
-        '3.0': {
+        /3.[0-1]/: {
           $sysconfig_template = 'varnish/debian/varnish-3.default.erb'
         }
-        '4.0': {
+        /4.[0-1]/: {
           $sysconfig_template = 'varnish/debian/varnish-4.default.erb'
         }
         default: {
