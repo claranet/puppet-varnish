@@ -83,8 +83,8 @@ class varnish (
     require => Class['varnish::install'],
   }
 
-  class { 'varnish::install': } ->
-  class { 'varnish::config': } ~>
-  class { 'varnish::service': } ->
-  Class['varnish']
+  class { 'varnish::install': }
+  -> class { 'varnish::config': }
+  ~> class { 'varnish::service': }
+  -> Class['varnish']
 }
