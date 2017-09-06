@@ -2,9 +2,7 @@
 class varnish::repo::debian {
     include ::packagecloud
 
-    $version = "${::varnish::varnish_version}"
-
-    $ver = inline_template('<%= @version.sub(".","") %>')
+    $ver = delete($::varnish::varnish_version,'.')
 
     ::packagecloud::repo { "varnish-cache":
       fq_name => "varnishcache/varnish$ver",
