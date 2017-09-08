@@ -78,13 +78,13 @@ class varnish (
     }
   }
 
-  class { 'varnish::secret':
+  class { '::varnish::secret':
     secret  => $secret,
     require => Class['varnish::install'],
   }
 
-  class { 'varnish::install': }
-  -> class { 'varnish::config': }
-  ~> class { 'varnish::service': }
+  class { '::varnish::install': }
+  -> class { '::varnish::config': }
+  ~> class { '::varnish::service': }
   -> Class['varnish']
 }

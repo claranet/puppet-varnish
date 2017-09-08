@@ -4,8 +4,8 @@
 # It ensure the service is running
 #
 class varnish::service {
-  include varnish
-  include varnish::params
+  include ::varnish
+  include ::varnish::params
 
   service { $varnish::params::service_name:
     ensure     => running,

@@ -5,10 +5,11 @@
 # and Varnish will continue to run with the old config
 define varnish::vcl (
   $content,
-  $file = $name) {
+  $file = $name
+) {
 
-  include varnish
-  include varnish::params
+  include ::varnish
+  include ::varnish::params
 
   file { $file:
     content => $content,
