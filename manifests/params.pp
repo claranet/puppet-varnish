@@ -35,6 +35,13 @@ class varnish::params {
     }
     'Debian': {
       case $::lsbdistcodename {
+        'xenial': {
+          $addrepo            = false
+          $sysconfig          = '/etc/default/varnish'
+          $varnish_version    = '4.1'
+          $vcl_reload         = '/usr/share/varnish/reload-vcl'
+
+        }
         'precise': {
           $addrepo            = false
           $sysconfig          = '/etc/default/varnish'

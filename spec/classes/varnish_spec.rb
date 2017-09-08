@@ -16,11 +16,11 @@ describe 'varnish', :type => :class do
       let(:facts) {{
         :osfamily           => 'Debian',
         :operatingsystem    => 'Ubuntu',
-        :lsbdistcodename    => 'xenial',
-        :lsbdistdescription => 'Ubuntu 16.04.2 LTS'
+        :lsbdistcodename    => 'zesty',
+        :lsbdistdescription => 'Ubuntu 17.04'
       }}
 
-      it { is_expected.to raise_error(Puppet::Error, /Ubuntu \(Ubuntu 16.04.2 LTS, xenial\) not supported/) }
+      it { is_expected.to raise_error(Puppet::Error, /Ubuntu \(Ubuntu 17.04, zesty\) not supported/) }
     end
 
     describe "varnish with generated secret" do
