@@ -34,7 +34,7 @@ class varnish::repo::debian {
           source => "https://packagecloud.io/varnishcache/varnish${ver_num}/gpgkey",
           id     => $gpg_key_id,
         },
-        include => {
+        include  => {
           'deb' => true,
           'src' => true,
         },
