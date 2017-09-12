@@ -4,9 +4,16 @@
 #
 class varnish::config {
 
-  $config_version = $varnish::package_ensure ? {
-    /^\d/   => $varnish::package_ensure,
-    default => $::varnish_version,
+  $varnish_available = $::varnish_version
+  if $varnish::package_ensure =~ /\d/ {
+    $config_version = $varnish::package_ensure
+  }
+  elsif (addrepo == false or
+    versioncmp($varnish_available, $varnish::varnish_version) > 0) {
+      $config_version = $varnish_available
+  }
+  else {
+    $config_version = $varnish::varnish_version
   }
 
   case $::osfamily {
