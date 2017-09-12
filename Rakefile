@@ -10,20 +10,21 @@ end
 
 Rake::Task[:lint].clear
 
-exclude_paths = [
-  "bundle/**/*",
-  "pkg/**/*",
-  "vendor/**/*",
-  "spec/**/*",
-]
+exclude_paths = %w(
+  pkg/**/*
+  vendor/**/*
+  .vendor/**/*
+  spec/**/*
+)
 
 PuppetSyntax.exclude_paths = exclude_paths
 
 PuppetLint.configuration.relative = true
-PuppetLint.configuration.disable_80chars
-PuppetLint.configuration.disable_class_inherits_from_params_class
-PuppetLint.configuration.disable_class_parameter_defaults
 PuppetLint.configuration.fail_on_warnings = true
+PuppetLint.configuration.send('disable_80chars')
+PuppetLint.configuration.send('disable_140chars')
+PuppetLint.configuration.send('disable_class_inherits_from_params_class')
+PuppetLint.configuration.send('disable_legacy_facts')
 PuppetLint.configuration.ignore_paths = exclude_paths
 PuppetLint::RakeTask.new :lint do |config|
   config.ignore_paths = exclude_paths
@@ -34,11 +35,10 @@ task :contributors do
   system("git log --format='%aN' | sort -u > CONTRIBUTORS")
 end
 
-desc "Run syntax, lint, and spec tests."
-task :test => [
+desc 'Run metadata_lint, syntax, lint, spec tests'
+task test: [
   :metadata_lint,
   :syntax,
   :lint,
-#  :spec
-
+  :spec,
 ]
