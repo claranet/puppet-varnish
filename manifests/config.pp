@@ -4,6 +4,11 @@
 #
 class varnish::config {
 
+  $config_version = $varnish::package_ensure ? {
+    /^\d/   => $varnish::package_ensure,
+    default => $::varnish_version,
+  }
+
   case $::osfamily {
     'RedHat', 'Amazon': {
       case $::varnish::varnish_version {
