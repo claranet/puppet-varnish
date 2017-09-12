@@ -1,4 +1,5 @@
 Facter.add(:varnish_version) do
+  confine :osfamily => 'redhat'
   setcode do
     if Facter::Core::Execution.which('varnishd')
       Facter::Core::Execution.exec('varnishd -V 2>&1')[/varnish-([\d\.]+)/, 1]
