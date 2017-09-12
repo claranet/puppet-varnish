@@ -67,7 +67,6 @@ describe 'varnish', :type => :class do
           facts.merge({
             :kernel                    => 'Linux',
             :osreleasemaj              => facts[:operatingsystemrelease].split('.').first,
-            :operatingsystemmajrelease => facts[:operatingsystemrelease].split('.').first,
             :pygpgme_installed         => true,
           })
         end
@@ -78,10 +77,21 @@ describe 'varnish', :type => :class do
           case facts[:osfamily]
           when 'RedHat'
 
-            it { should contain_file('/etc/sysconfig/varnish') }
-            it { should contain_class('varnish::repo::redhat').that_comes_before('Class[varnish::install]') }
             it { should contain_packagecloud__repo('varnish-cache') }
-            it { should contain_exec('vcl_reload').with_command('/usr/bin/varnish_reload_vcl') }
+            it { should contain_class('varnish::repo::redhat').that_comes_before('Class[varnish::install]') }
+
+            case facts[:operatingsystemmajrelease]
+            when '6'
+              it { should contain_file('/etc/sysconfig/varnish') }
+              it { should contain_exec('vcl_reload').with_command('/usr/bin/varnish_reload_vcl') }
+            when '7'
+              it { should contain_file('/etc/varnish/varnish.params') }
+              it { should contain_exec('vcl_reload').with_command('/usr/sbin/varnish_reload_vcl') }
+            else
+              # Amazon Linux
+              it { should contain_file('/etc/sysconfig/varnish') }
+              it { should contain_exec('vcl_reload').with_command('/usr/sbin/varnish_reload_vcl') }
+            end
 
           when 'Debian'
 
