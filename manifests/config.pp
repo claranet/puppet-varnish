@@ -4,14 +4,21 @@
 #
 class varnish::config {
 
+  # Reads available or installed Varnish version from custom fact
   $varnish_available = $::varnish_version
+
+  # Choose conf file template version
+  # If user specified package_ensure, use this
   if $varnish::package_ensure =~ /\d/ {
     $config_version = $varnish::package_ensure
   }
+  # If user disabled Varnish repos, or available / installed version is newer,
+  # than version provided by params, use available / installed version
   elsif (addrepo == false or
     versioncmp($varnish_available, $varnish::varnish_version) > 0) {
       $config_version = $varnish_available
   }
+  # Otherwise, use version provided by params
   else {
     $config_version = $varnish::varnish_version
   }
