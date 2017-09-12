@@ -14,7 +14,7 @@ class varnish::config {
   }
   # If user disabled Varnish repos, or available / installed version is newer,
   # than version provided by params, use available / installed version
-  elsif (addrepo == false or
+  elsif ($varnish::addrepo == false or
     versioncmp($varnish_available, $varnish::varnish_version) > 0) {
       $config_version = $varnish_available
   }
