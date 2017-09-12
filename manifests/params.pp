@@ -7,18 +7,17 @@ class varnish::params {
 
   case $::osfamily {
     'RedHat': {
+      $repoclass          = 'varnish::repo::redhat'
 
       case $::operatingsystemmajrelease {
         '6': {
           $addrepo            = true
-          $repoclass          = "varnish::repo::el${::operatingsystemmajrelease}"
           $sysconfig          = '/etc/sysconfig/varnish'
           $varnish_version    = '3.0'
           $vcl_reload         = '/usr/bin/varnish_reload_vcl'
         }
         '7': {
           $addrepo            = true
-          $repoclass          = "varnish::repo::el${::operatingsystemmajrelease}"
           $sysconfig          = '/etc/varnish/varnish.params'
           $varnish_version    = '4.0'
           $vcl_reload         = '/usr/sbin/varnish_reload_vcl'
@@ -26,7 +25,6 @@ class varnish::params {
         default: {
           # Amazon Linux
           $addrepo            = true
-          $repoclass          = "varnish::repo::el${::operatingsystemmajrelease}"
           $sysconfig          = '/etc/sysconfig/varnish'
           $varnish_version    = '3.0'
           $vcl_reload         = '/usr/sbin/varnish_reload_vcl'
@@ -34,6 +32,7 @@ class varnish::params {
       }
     }
     'Debian': {
+      $repoclass          = 'varnish::repo::debian'
       case $::lsbdistcodename {
         'xenial': {
           $addrepo            = false
@@ -51,7 +50,6 @@ class varnish::params {
         }
         'trusty': {
           $addrepo            = true
-          $repoclass          = 'varnish::repo::debian'
           $sysconfig          = '/etc/default/varnish'
           $varnish_version    = '4.0'
           $vcl_reload         = '/usr/share/varnish/reload-vcl'
@@ -59,7 +57,6 @@ class varnish::params {
         }
         'wheezy': {
           $addrepo            = true
-          $repoclass          = 'varnish::repo::debian'
           $sysconfig          = '/etc/default/varnish'
           $varnish_version    = '3.0'
           $vcl_reload         = '/usr/share/varnish/reload-vcl'
@@ -67,7 +64,6 @@ class varnish::params {
         }
         'jessie': {
           $addrepo            = true
-          $repoclass          = 'varnish::repo::debian'
           $sysconfig          = '/etc/default/varnish'
           $varnish_version    = '4.0'
           $vcl_reload         = '/usr/share/varnish/reload-vcl'
