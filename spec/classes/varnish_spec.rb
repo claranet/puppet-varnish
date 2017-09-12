@@ -65,7 +65,10 @@ describe 'varnish', :type => :class do
       context "on #{os}" do
         let(:facts) do
           facts.merge({
-            :kernel => 'Linux',
+            :kernel                    => 'Linux',
+            :osreleasemaj              => facts[:operatingsystemrelease].split('.').first,
+            :operatingsystemmajrelease => facts[:operatingsystemrelease].split('.').first,
+            :pygpgme_installed         => true,
           })
         end
 
@@ -75,24 +78,10 @@ describe 'varnish', :type => :class do
           case facts[:osfamily]
           when 'RedHat'
 
-            case facts[:operatingsystemmajrelease]
-            when '6'
-              it { should contain_file('/etc/sysconfig/varnish') }
-              it { should contain_class('varnish::repo::el6').that_comes_before('Class[varnish::install]') }
-              it { should contain_yumrepo('varnish-cache').with_baseurl('https://repo.varnish-cache.org/redhat/varnish-3.0/el6/') }
-              it { should contain_exec('vcl_reload').with_command('/usr/bin/varnish_reload_vcl') }
-            when '7'
-              it { should contain_file('/etc/varnish/varnish.params') }
-              it { should contain_class('varnish::repo::el7').that_comes_before('Class[varnish::install]') }
-              it { should contain_yumrepo('varnish-cache').with_baseurl('https://repo.varnish-cache.org/redhat/varnish-4.0/el7/') }
-              it { should contain_exec('vcl_reload').with_command('/usr/sbin/varnish_reload_vcl') }
-            else
-              # Amazon Linux
-              it { should contain_file('/etc/sysconfig/varnish') }
-              it { should contain_class('varnish::repo::el6').that_comes_before('Class[varnish::install]') }
-              it { should contain_yumrepo('varnish-cache').with_baseurl('https://repo.varnish-cache.org/redhat/varnish-3.0/el6/') }
-              it { should contain_exec('vcl_reload').with_command('/usr/sbin/varnish_reload_vcl') }
-            end
+            it { should contain_file('/etc/sysconfig/varnish') }
+            it { should contain_class('varnish::repo::redhat').that_comes_before('Class[varnish::install]') }
+            it { should contain_packagecloud__repo('varnish-cache') }
+            it { should contain_exec('vcl_reload').with_command('/usr/bin/varnish_reload_vcl') }
 
           when 'Debian'
 
@@ -102,7 +91,7 @@ describe 'varnish', :type => :class do
               it { should_not contain_class('varnish::repo::debian').that_comes_before('Class[varnish::install]') }
             else
               it { should contain_class('varnish::repo::debian').that_comes_before('Class[varnish::install]') }
-              it { should contain_apt__source('varnish-cache') }
+              it { should contain_packagecloud__repo('varnish-cache') }
             end
 
             it { should contain_file('/etc/default/varnish') }
