@@ -1,4 +1,8 @@
-### This file created by Puppet, modification is probably futile
+############################################
+# WARNING:
+# Managed by Puppet - DO NOT modify locally!
+############################################
+
 RELOAD_VCL=1
 VARNISH_VCL_CONF=<%= scope['::varnish::vcl_conf'] %>
 VARNISH_LISTEN_ADDRESS=<%= scope['::varnish::listen'] %>
@@ -17,4 +21,6 @@ VARNISH_TTL=120
 
 DAEMON_OPTS="<% scope['::varnish::runtime_params'].each do |k,v| -%>-p <%= k %>=<%= v %> \
 <% end -%>
--w <%= scope['::varnish::min_threads'] %>,<%= scope['::varnish::max_threads'] %>,<%= scope['::varnish::thread_timeout'] %>"
+-p thread_pool_min=<%= scope['::varnish::min_threads'] %> \
+-p thread_pool_max=<%= scope['::varnish::max_threads'] %> \
+-p thread_pool_timeout=<%= scope['::varnish::thread_timeout'] %>"

@@ -6,7 +6,8 @@ fixtures:
     apt:
       repo: "https://github.com/puppetlabs/puppetlabs-apt.git"
       ref: "2.4.0"
-    packagecloud:
-      repo: "https://github.com/computology/computology-packagecloud.git"
+    epel:
+      repo: "https://github.com/stahnma/puppet-module-epel"
+      ref: "1.2.2"
   symlinks:
     varnish: "#{source_dir}"

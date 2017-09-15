@@ -10,5 +10,9 @@
 # http://docs.puppetlabs.com/guides/tests_smoke.html
 #
 node default {
-  include ::varnish
+  class { '::varnish':
+    varnish_version => '4.1',
+    storage_type    => 'malloc',
+    storage_size    => '64M',
+  }
 }
