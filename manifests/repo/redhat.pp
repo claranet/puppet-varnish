@@ -1,12 +1,14 @@
 # Add the Varnish repo
 class varnish::repo::redhat {
-    include ::packagecloud
 
     $ver = delete($::varnish::varnish_version,'.')
 
-    ::packagecloud::repo { 'varnish-cache':
-      fq_name => "varnishcache/varnish${ver}",
-      type    => 'rpm',
+    yumrepo { "varnish-cache-${ver}":
+      baseurl  => "https://packagecloud.io/varnishcache/varnish${ver}/el/\$releasever/\$basearch",
+      descr    => 'The varnish-cache repository',
+      enabled  => '1',
+      gpgcheck => '0',
+      gpgkey   => "https://packagecloud.io/varnishcache/varnish${ver}/gpgkey",
     }
 
 }
