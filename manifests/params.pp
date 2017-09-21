@@ -19,7 +19,7 @@ class varnish::params {
         '7': {
           $addrepo            = true
           $sysconfig          = '/etc/varnish/varnish.params'
-          $varnish_version    = '4.0'
+          $varnish_version    = '4.1'
           $vcl_reload         = '/usr/sbin/varnish_reload_vcl'
         }
         default: {
