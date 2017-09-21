@@ -9,5 +9,8 @@ fixtures:
     epel:
       repo: "https://github.com/stahnma/puppet-module-epel"
       ref: "1.2.2"
+    selinux:
+      repo: "https://github.com/voxpupuli/puppet-selinux.git"
+      ref: "1.1.0"
   symlinks:
     varnish: "#{source_dir}"

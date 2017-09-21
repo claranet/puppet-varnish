@@ -28,7 +28,7 @@
     },
     {
       "operatingsystem": "Ubuntu",
-      "operatingsystemrelease": [ "12.04", "14.04" ]
+      "operatingsystemrelease": [ "14.04", "16.04" ]
     },
     {
       "operatingsystem": "Debian",
@@ -40,6 +40,7 @@
   ],
   "dependencies": [
     { "name": "stahnma/epel", "version_requirement": ">= 1.2.0 < 2.0.0" },
+    { "name": "puppet/selinux", "version_requirement": ">= 1.0.0 < 2.0.0" },
     { "name": "puppetlabs/apt", "version_requirement": ">= 2.0.0 < 3.0.0" },
     { "name": "puppetlabs/stdlib", "version_requirement": ">=1.0.0 < 5.0.0" }
   ]

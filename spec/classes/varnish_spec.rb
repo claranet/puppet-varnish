@@ -76,10 +76,6 @@ describe 'varnish', :type => :class do
 
           case facts[:osfamily]
           when 'RedHat'
-
-            it { should contain_packagecloud__repo('varnish-cache') }
-            it { should contain_class('varnish::repo::redhat').that_comes_before('Class[varnish::install]') }
-
             case facts[:operatingsystemmajrelease]
             when '6'
               it { should contain_file('/etc/sysconfig/varnish') }
@@ -94,16 +90,6 @@ describe 'varnish', :type => :class do
             end
 
           when 'Debian'
-
-            case facts[:lsbdistcodename]
-
-            when 'precise'
-              it { should_not contain_class('varnish::repo::debian').that_comes_before('Class[varnish::install]') }
-            else
-              it { should contain_class('varnish::repo::debian').that_comes_before('Class[varnish::install]') }
-              it { should contain_packagecloud__repo('varnish-cache') }
-            end
-
             it { should contain_file('/etc/default/varnish') }
             it { should contain_exec('vcl_reload').with_command('/usr/share/varnish/reload-vcl') }
 

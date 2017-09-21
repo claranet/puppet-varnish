@@ -7,32 +7,45 @@ class varnish::params {
 
   case $::osfamily {
     'RedHat': {
+      $reload_vcl = 'varnish_reload_vcl'
       $sysconfig  = '/etc/sysconfig/varnish'
+
+      case $::operatingsystemmajrelease {
+        '6': {
+          $service_provider = 'sysvinit'
+        }
+
+        default: {
+          $service_provider = 'systemd'
+        }
+      }
     }
+
     'Debian': {
+      $reload_vcl = '/usr/share/varnish/reload-vcl'
       $sysconfig  = '/etc/default/varnish'
+
+      case $::operatingsystem {
+        'Ubuntu': {
+          $systemd_version = '16.04'
+        }
+        'Debian': {
+          $systemd_version = '8.0'
+        }
+        default: {
+          fail("Unsupported Debian OS: ${::operatingsystem}")
+        }
+      }
+
+      if versioncmp($::lsbdistrelease,$systemd_version) >= 0 {
+        $service_provider = 'systemd'
+      } else {
+        $service_provider = 'sysvinit'
+      }
     }
+
     default: {
       fail("${::osfamily} not supported")
     }
   }
-
-  $varnish_version = '4.1'
-  $addrepo         = true
-  $vcl_conf        = '/etc/varnish/default.vcl'
-  $listen          = '0.0.0.0'
-  $listen_port     = '6081'
-  $admin_listen    = '127.0.0.1'
-  $admin_port      = '6082'
-  $secret_file     = '/etc/varnish/secret'
-  $min_threads     = '50'
-  $max_threads     = '1000'
-  $thread_timeout  = '120'
-  $storage_type    = 'file'
-  $storage_file    = '/var/lib/varnish/varnish_storage.bin'
-  $storage_size    = '1G'
-  $package_ensure  = 'present'
-  $package_name    = 'varnish'
-  $service_name    = 'varnish'
-  $vcl_reload      = 'varnish_reload_vcl'
 }

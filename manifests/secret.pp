@@ -6,7 +6,7 @@ class varnish::secret (
 
   if $secret {
 
-    file { $varnish::params::secret_file:
+    file { $::varnish::secret_file:
       owner   => 'root',
       group   => 'root',
       mode    => '0600',
@@ -15,15 +15,15 @@ class varnish::secret (
 
   } else {
 
-    file { $varnish::params::secret_file:
+    file { $::varnish::secret_file:
       owner => 'root',
       group => 'root',
       mode  => '0600',
     }
 
     exec { 'Generate Varnish secret file':
-      unless  => "/bin/egrep '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' '${::varnish::params::secret_file}' >/dev/null",
-      command => "/bin/cp /proc/sys/kernel/random/uuid '${::varnish::params::secret_file}'",
+      unless  => "/bin/egrep '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' '${::varnish::secret_file}' >/dev/null",
+      command => "/bin/cp /proc/sys/kernel/random/uuid '${::varnish::secret_file}'",
     }
 
   }

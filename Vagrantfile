@@ -5,6 +5,7 @@ Vagrant.require_version ">= 1.6.5"
 # ===========================
 
 SSH_BASE_PORT  = 2610
+VARNISH_BASE_PORT = 6100
 PUPPET_VERSION = "4.10.6"
 
 BOXES = [
@@ -20,7 +21,11 @@ MODULES = [
   # Module dependencies
   { name: "puppetlabs-stdlib", version: "4.17.1" },
   { name: "puppetlabs-apt", version: "2.4.0" },
-  { name: "stahnma-epel", version: "1.2.2" }
+  { name: "stahnma-epel", version: "1.2.2" },
+  { name: "puppet-selinux", version: "1.3.0" },
+  # Test dependencies
+  { name: "puppetlabs-concat", version: "4.0.1" },
+  { name: "puppet-nginx", git: "https://github.com/voxpupuli/puppet-nginx.git" }
 ]
 
 # ==============
@@ -64,6 +69,10 @@ Vagrant.configure("2") do |config|
       c.vm.network :forwarded_port, guest: 22, host: 2222, id: "ssh", disabled: "true"
       c.ssh.port = new_ssh_port
       c.vm.network :forwarded_port, guest: 22, host: new_ssh_port
+
+      # == Add forwarded port for Varnish (8080)
+      new_varnish_port = VARNISH_BASE_PORT + idx
+      c.vm.network :forwarded_port, guest: 6081, host: new_varnish_port
 
       # == Set resources if configured
       c.vm.provider "virtualbox" do |v|

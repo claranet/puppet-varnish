@@ -1,18 +1,68 @@
-# The baseline for module testing used by Puppet Labs is that each manifest
-# should have a corresponding test manifest that declares that class or defined
-# type.
-#
-# Tests are then run by using puppet apply --noop (to check for compilation
-# errors and view a log of events) or by fully applying the test in a virtual
-# environment (to compare the resulting system state to the desired state).
-#
-# Learn more about module testing here:
-# http://docs.puppetlabs.com/guides/tests_smoke.html
-#
 node default {
+
+  $version = '5.0'
+
+  # == Package Versions
+
+  case $::osfamily {
+    'Debian': {
+      if $::operatingsystem == 'Debian' and versioncmp($::lsbdistrelease,'8.0') >= 0 and $version == '3.0' {
+        $package_ensure = '3.0.7-1~jessie'
+      } elsif $::operatingsystem == 'Ubuntu' and versioncmp($::lsbdistrelease,'16.04') >= 0 and $version == '4.0' {
+        $package_ensure = '4.0.5-1~xenial'
+      } else {
+        $package_ensure = 'present'
+      }
+    }
+
+    'RedHat': {
+      if $::operatingsystemmajrelease == '7' and $version == '4.0' {
+        $package_ensure = '4.0.3-1.el7'
+      } else {
+        $package_ensure = 'present'
+      }
+    }
+
+    default: {
+      $package_ensure = 'present'
+    }
+  }
+
+  # == Varnish
+
   class { '::varnish':
-    varnish_version => '4.1',
+    varnish_version => $version,
+    package_ensure  => $package_ensure,
     storage_type    => 'malloc',
     storage_size    => '64M',
   }
+
+  # == Nginx + test file
+
+  class { '::nginx':
+    server_purge => true,
+    confd_purge  => true,
+  }
+
+  if $::osfamily == 'Debian' {
+    $nginx_port = 8080
+  } else {
+    $nginx_port = 80
+  }
+
+  ::nginx::resource::server { 'default':
+    listen_port => $nginx_port,
+    listen_ip   => '127.0.0.1',
+    www_root    => '/usr/share/nginx/html',
+  }
+
+  file { '/usr/share/nginx/html/index.html':
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => "<html><head><title>Varnish</title></head><body>Hello, I am Varnish ${version} running on ${::hostname}</body></html>\n",
+    require => Package['nginx'],
+  }
+
 }
