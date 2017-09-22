@@ -110,7 +110,7 @@ class varnish (
   }
 
   class { '::varnish::config':
-    require => Class['::varnish::install'],
+    require => Class['::varnish::secret'],
     notify  => Class['::varnish::service'],
   }
 

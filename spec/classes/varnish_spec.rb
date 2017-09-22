@@ -1,101 +1,92 @@
 require 'spec_helper'
 
 describe 'varnish', :type => :class do
+
+  ['3.0', '4.0', '4.1', '5.0', '5.1', '5.2'].each do |version|
+
+    on_supported_os.each do |os, facts|
+      context "Varnish #{version} on #{os}" do
+
+        let(:facts) do
+          facts.merge({
+            :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/snap/bin:/opt/puppetlabs/bin',
+          })
+        end
+
+        let (:params) {{
+          :varnish_version => version,
+          :addrepo         => true
+        }}
+
+        should_fail = 0
+        case version
+        when '3.0'
+          if facts[:lsbdistcodename] == 'xenial'
+            it { is_expected.to raise_error(Puppet::Error, /Varnish 3 from Packagecloud is not supported on Ubuntu 16.04 \(Xenial\)/) }
+            should_fail = 1
+          end
+        when '5.0'
+          if facts[:osfamily] == 'RedHat'
+            case facts[:operatingsystemmajrelease]
+            when '6'
+              it { is_expected.to raise_error(Puppet::Error, /Varnish 5.0 from Packagecloud is not supported on RHEL\/CentOS 6/) }
+              should_fail = 1
+            when '7'
+              it { is_expected.to raise_error(Puppet::Error, /Varnish 5.0 on RHEL\/CentOS 7 has a known packaging bug in the varnish_reload_vcl script, please use 5.1 instead. If the bug has been fixed, please submit a pull request to remove this message./) }
+              should_fail = 1
+            end
+          elsif facts[:osfamily] == 'Debian'
+            case facts[:lsbdistcodename]
+            when 'wheezy'
+              it { is_expected.to raise_error(Puppet::Error, /Varnish 5.0 from Packagecloud is not supported on Debian 7 \(Wheezy\)/) }
+              should_fail = 1
+            when 'trusty'
+              it { is_expected.to raise_error(Puppet::Error, /Varnish 5.0 has a known packaging bug in the reload-vcl script, please use 5.1 instead. If the bug has been fixed, please submit a pull request to remove this message./) }
+              should_fail = 1
+            end
+          end
+        end
+
+        if should_fail == 0
+          it { should compile.with_all_deps }
+          it { is_expected.to contain_class('varnish::params') }
+          it { is_expected.to contain_class('varnish::repo').that_comes_before('Class[varnish::install]') }
+          it { is_expected.to contain_class('varnish::install').that_comes_before('Class[varnish::secret]') }
+          it { is_expected.to contain_class('varnish::secret').that_comes_before('Class[varnish::config]') }
+          it { is_expected.to contain_class('varnish::config').that_notifies('Class[varnish::service]') }
+          it { is_expected.to contain_class('varnish::config').that_comes_before('Class[varnish::service]') }
+          it { is_expected.to contain_class('varnish::service') }
+        end
+      end
+    end
+  end
+
   context 'supported operating systems' do
-
-    describe "varnish class fail on unsupported OS" do
-      let(:facts) {{
-        :osfamily        => 'Darwin',
-        :operatingsystem => 'Darwin'
-      }}
-
-      it { is_expected.to raise_error(Puppet::Error, /Darwin not supported/) }
-    end
-
-    describe "varnish class fail on unsupported Debian OS" do
-      let(:facts) {{
-        :osfamily           => 'Debian',
-        :operatingsystem    => 'Ubuntu',
-        :lsbdistcodename    => 'zesty',
-        :lsbdistdescription => 'Ubuntu 17.04'
-      }}
-
-      it { is_expected.to raise_error(Puppet::Error, /Ubuntu \(Ubuntu 17.04, zesty\) not supported/) }
-    end
-
-    describe "varnish with generated secret" do
-
-      let(:facts) {{
-        :osfamily           => 'Debian',
-        :operatingsystem    => 'Ubuntu',
-        :lsbdistcodename    => 'precise',
-      }}
-
-      it { should compile.with_all_deps }
-      it { should contain_class('varnish::params') }
-      it { should contain_class('varnish::secret') }
-      it { should contain_class('varnish::install').that_comes_before('Class[varnish::config]') }
-      it { should contain_class('varnish::config') }
-      it { should contain_file('/etc/varnish/secret') }
-      it { should contain_exec('Generate Varnish secret file').with_command("/bin/cp /proc/sys/kernel/random/uuid '/etc/varnish/secret'") }
-      it { should contain_class('varnish::service').that_subscribes_to('Class[varnish::config]') }
-
-      it { should contain_package('varnish') }
-      it { should contain_service('varnish') }
-    end
-
-    describe "varnish with hardcoded secret" do
-
-      let(:params) {{
-        :secret => 'foobar',
-      }}
-
-      let(:facts) {{
-        :osfamily           => 'Debian',
-        :operatingsystem    => 'Ubuntu',
-        :lsbdistcodename    => 'precise',
-      }}
-
-      it { should compile.with_all_deps }
-      it { should contain_file('/etc/varnish/secret').with_content("foobar\n") }
-    end
-
     on_supported_os.each do |os, facts|
 
       context "on #{os}" do
         let(:facts) do
           facts.merge({
-            :kernel                    => 'Linux',
-            :osreleasemaj              => facts[:operatingsystemrelease].split('.').first,
-            :pygpgme_installed         => true,
+            'kernel'           => 'Linux',
+            'staging_http_get' => 'curl',
+            'concat_basedir'   => '/var/lib/puppet/concat'
           })
         end
-
-        describe "varnish class" do
-          it { should compile.with_all_deps }
-
-          case facts[:osfamily]
-          when 'RedHat'
-            case facts[:operatingsystemmajrelease]
-            when '6'
-              it { should contain_file('/etc/sysconfig/varnish') }
-              it { should contain_exec('vcl_reload').with_command('/usr/bin/varnish_reload_vcl') }
-            when '7'
-              it { should contain_file('/etc/varnish/varnish.params') }
-              it { should contain_exec('vcl_reload').with_command('/usr/sbin/varnish_reload_vcl') }
-            else
-              # Amazon Linux
-              it { should contain_file('/etc/sysconfig/varnish') }
-              it { should contain_exec('vcl_reload').with_command('/usr/sbin/varnish_reload_vcl') }
-            end
-
-          when 'Debian'
-            it { should contain_file('/etc/default/varnish') }
-            it { should contain_exec('vcl_reload').with_command('/usr/share/varnish/reload-vcl') }
-
-          end
-        end
       end
+    end
+  end
+
+  context 'unsupported operating systems' do
+
+    describe "varnish class fail on unsupported OS" do
+      let(:facts) {{
+        :osfamily        => 'Darwin',
+        :operatingsystem => 'Darwin',
+        :path            => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/snap/bin:/opt/puppetlabs/bin',
+        :lsbdistrelease  => nil
+      }}
+
+      it { is_expected.to raise_error(Puppet::Error, /Darwin not supported/) }
     end
   end
 end

@@ -65,7 +65,7 @@ class varnish::repo {
 
       ensure_packages('apt-transport-https')
 
-      $os_lower        = downcase($facts['os']['name'])
+      $os_lower        = downcase($::operatingsystem)
       $package_require = Exec['apt_update']
       $gpg_key_id      = "${::varnish::version_major}.${::varnish::version_minor}" ? {
         '5.2' => '91CFD5635A1A5FAC0662BEDD2E9BA3FE86BE909D',

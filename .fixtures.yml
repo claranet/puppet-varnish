@@ -7,10 +7,10 @@ fixtures:
       repo: "https://github.com/puppetlabs/puppetlabs-apt.git"
       ref: "2.4.0"
     epel:
-      repo: "https://github.com/stahnma/puppet-module-epel"
+      repo: "https://github.com/stahnma/puppet-module-epel.git"
       ref: "1.2.2"
     selinux:
       repo: "https://github.com/voxpupuli/puppet-selinux.git"
-      ref: "1.1.0"
+      ref: "v1.1.0"
   symlinks:
     varnish: "#{source_dir}"

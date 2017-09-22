@@ -14,8 +14,8 @@ class varnish::service {
   }
 
   service { $::varnish::service_name:
-    ensure     => 'running',
-    enable     => true,
+    ensure => 'running',
+    enable => true,
   }
 
 }
