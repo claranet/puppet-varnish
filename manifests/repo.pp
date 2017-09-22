@@ -6,6 +6,15 @@ class varnish::repo {
   case $::osfamily {
     'RedHat': {
 
+      if $ver == '50' {
+        if $::operatingsystemmajrelease == '6'  {
+          fail('Varnish 5.0 from Packagecloud is not supported on RHEL/CentOS 6')
+        } elsif $::operatingsystemmajrelease == '7' {
+          # https://github.com/varnishcache/pkg-varnish-cache/issues/42
+          fail('Varnish 5.0 on RHEL/CentOS 7 has a known packaging bug in the varnish_reload_vcl script, please use 5.1 instead. If the bug has been fixed, please submit a pull request to remove this message.')
+        }
+      }
+
       $package_require = undef
 
       # Varnish 4 and above need EPEL for jemalloc
@@ -42,8 +51,16 @@ class varnish::repo {
 
     'Debian': {
 
-      if $::varnish::version_major == '5' and $::lsbdistcodename == 'wheezy' {
-        fail("Packagecloud repository not supported for Varnish 5 on ${::operatingsystem} ${::lsbdistcodename}")
+      if $ver == '30' and $::lsbdistcodename == 'xenial' {
+        fail('Varnish 3 from Packagecloud is not supported on Ubuntu 16.04 (Xenial)')
+      }
+
+      if $ver == '50' {
+        if $::lsbdistcodename == 'wheezy' {
+          fail('Varnish 5.0 from Packagecloud is not supported on Debian 7 (Wheezy)')
+        } elsif $::lsbdistcodename == 'trusty' {
+          fail('Varnish 5.0 has a known packaging bug in the reload-vcl script, please use 5.1 instead. If the bug has been fixed, please submit a pull request to remove this message.')
+        }
       }
 
       ensure_packages('apt-transport-https')

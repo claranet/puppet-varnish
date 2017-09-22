@@ -7,22 +7,35 @@ class varnish::params {
 
   case $::osfamily {
     'RedHat': {
-      $reload_vcl = 'varnish_reload_vcl'
+
       $sysconfig  = '/etc/sysconfig/varnish'
 
       case $::operatingsystemmajrelease {
+
         '6': {
-          $service_provider = 'sysvinit'
+          $os_service_provider = 'sysvinit'
+          $vcl_reload          = 'varnish_reload_vcl'
+        }
+
+        '7': {
+          $os_service_provider = 'systemd'
+
+          if "${::varnish::version_major}.${::varnish::version_minor}" == '5.1' {
+            $vcl_reload = '/sbin/varnish_reload_vcl'
+          } else {
+            $vcl_reload = 'varnish_reload_vcl'
+          }
         }
 
         default: {
-          $service_provider = 'systemd'
+          $os_service_provider = 'systemd'
+          $vcl_reload          = 'varnish_reload_vcl'
         }
       }
     }
 
     'Debian': {
-      $reload_vcl = '/usr/share/varnish/reload-vcl'
+      $vcl_reload = '/usr/share/varnish/reload-vcl'
       $sysconfig  = '/etc/default/varnish'
 
       case $::operatingsystem {
@@ -38,9 +51,9 @@ class varnish::params {
       }
 
       if versioncmp($::lsbdistrelease,$systemd_version) >= 0 {
-        $service_provider = 'systemd'
+        $os_service_provider = 'systemd'
       } else {
-        $service_provider = 'sysvinit'
+        $os_service_provider = 'sysvinit'
       }
     }
 
@@ -48,4 +61,21 @@ class varnish::params {
       fail("${::osfamily} not supported")
     }
   }
+
+  # == Service provider depends on Varnish version and OS
+
+  if $::varnish::version_major == '3' {
+    if $::operatingsystem == 'Debian' {
+      if versioncmp($::lsbdistrelease,'8.0') >= 1 {
+        $service_provider = 'systemd'
+      } else {
+        $service_provider = 'sysvinit'
+      }
+    } else {
+      $service_provider = 'sysvinit'
+    }
+  } else {
+    $service_provider = $os_service_provider
+  }
+
 }

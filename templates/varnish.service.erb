@@ -8,7 +8,6 @@ LimitMEMLOCK=82000
 LimitCORE=infinity
 PrivateTmp=true
 
-ExecStartPre=/usr/sbin/varnishd -C <% scope['::varnish::runtime_params'].each do |k,v| -%> -p <%= k %>=<%= v %><% end -%> -f <%= scope['::varnish::vcl_conf'] %>
 ExecReload=<%= scope['::varnish::vcl_reload'] %>
 ExecStart=/usr/sbin/varnishd <%= scope['::varnish::config::jail_opt'] %> \
   -P /var/run/varnish.pid \

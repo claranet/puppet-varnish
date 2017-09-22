@@ -58,9 +58,9 @@ class varnish (
   $package_ensure  = 'present',
   $package_name    = 'varnish',
   $service_name    = 'varnish',
-  $vcl_reload      = $::varnish::params::reload_vcl,
+  $vcl_reload_cmd  = undef,
   $vcl_reload_path = $::path,
-) inherits varnish::params {
+) {
 
   if $package_ensure == 'present' {
     $version_major = regsubst($varnish_version, '^(\d+)\.(\d+).*$', '\1')
@@ -73,6 +73,14 @@ class varnish (
     if $varnish_version != "${version_major}.${version_minor}" {
       fail("Version mismatch, varnish_version is ${varnish_version}, but package_ensure is ${version_full}")
     }
+  }
+
+  include ::varnish::params
+
+  if $vcl_reload_cmd == undef {
+    $vcl_reload = $::varnish::params::vcl_reload
+  } else {
+    $vcl_relaod = $vcl_reload_cmd
   }
 
   validate_bool($addrepo)
@@ -88,13 +96,6 @@ class varnish (
   validate_re("${version_major}.${version_minor}", '^[3-5]\.[0-9]')
 
   if $addrepo {
-
-    if $::operatingsystem == 'Ubuntu' {
-      if $::lsbdistrelease == '16.04' and $version_major == '3' {
-        fail('Varnish 3 from Pacakgecloud is not supported on Ubuntu 16.04')
-      }
-    }
-
     class { '::varnish::repo':
       before => Class['::varnish::install'],
     }
