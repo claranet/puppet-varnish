@@ -66,7 +66,7 @@ class varnish::params {
 
   if $::varnish::version_major == '3' {
     if $::operatingsystem == 'Debian' {
-      if versioncmp($::lsbdistrelease,'8.0') >= 1 {
+      if versioncmp($::lsbdistrelease,'8.0') >= 0 {
         $service_provider = 'systemd'
       } else {
         $service_provider = 'sysvinit'

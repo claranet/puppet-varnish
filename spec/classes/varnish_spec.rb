@@ -15,7 +15,6 @@ describe 'varnish', :type => :class do
 
         let (:params) {{
           :varnish_version => version,
-          :addrepo         => true
         }}
 
         should_fail = 0
@@ -49,35 +48,64 @@ describe 'varnish', :type => :class do
 
         if should_fail == 0
           it { should compile.with_all_deps }
-          it { is_expected.to contain_class('varnish::params') }
-          it { is_expected.to contain_class('varnish::repo').that_comes_before('Class[varnish::install]') }
-          it { is_expected.to contain_class('varnish::install').that_comes_before('Class[varnish::secret]') }
-          it { is_expected.to contain_class('varnish::secret').that_comes_before('Class[varnish::config]') }
-          it { is_expected.to contain_class('varnish::config').that_notifies('Class[varnish::service]') }
-          it { is_expected.to contain_class('varnish::config').that_comes_before('Class[varnish::service]') }
-          it { is_expected.to contain_class('varnish::service') }
+
+          case facts[:osfamily]
+          when 'RedHat'
+
+            if facts[:operatingsystemmajrelease] == '7' and version != '3.0'
+              it { is_expected.to contain_file('/etc/systemd/system/varnish.service') }
+              it { is_expected.to contain_exec('varnish_systemctl_daemon_reload') }
+            end
+
+            if facts[:operatingsystemmajrelease] == '6' and version != '3.0'
+              it { is_expected.to contain_selinux__module('varnishpol') }
+            end
+
+            it { is_expected.to contain_file('/etc/sysconfig/varnish') }
+            it { is_expected.to contain_yumrepo('varnish-cache') }
+            it { is_expected.to contain_yumrepo('varnish-cache-source') }
+          when 'Debian'
+            if facts[:lsbdistcodename] == 'jessie' or facts[:lsbdistcodename] == 'xenial'
+              it { is_expected.to contain_file('/etc/systemd/system/varnish.service') }
+              it { is_expected.to contain_exec('varnish_systemctl_daemon_reload') }
+            end
+
+            it { is_expected.to contain_file('/etc/default/varnish') }
+            it { is_expected.to contain_package('apt-transport-https') }
+            it { is_expected.to contain_apt__source('varnish-cache') }
+          end
+
         end
       end
     end
   end
 
   context 'supported operating systems' do
-    on_supported_os.each do |os, facts|
 
-      context "on #{os}" do
-        let(:facts) do
-          facts.merge({
-            'kernel'           => 'Linux',
-            'staging_http_get' => 'curl',
-            'concat_basedir'   => '/var/lib/puppet/concat'
-          })
-        end
-      end
-    end
+    let(:facts) {{
+      :osfamily                  => 'RedHat',
+      :operatingsystem           => 'CentOS',
+      :operatingsystemmajrelease => '7',
+      :path                      => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/snap/bin:/opt/puppetlabs/bin',
+      :lsbdistrelease            => nil
+    }}
+
+    it { is_expected.to contain_class('varnish::params') }
+    it { is_expected.to contain_class('varnish::repo').that_comes_before('Class[varnish::install]') }
+    it { is_expected.to contain_class('varnish::install').that_comes_before('Class[varnish::secret]') }
+    it { is_expected.to contain_class('varnish::secret').that_comes_before('Class[varnish::config]') }
+    it { is_expected.to contain_class('varnish::config').that_notifies('Class[varnish::service]') }
+    it { is_expected.to contain_class('varnish::config').that_comes_before('Class[varnish::service]') }
+    it { is_expected.to contain_class('varnish::service') }
+
+    it { is_expected.to contain_file('/etc/varnish/secret') }
+    it { is_expected.to contain_exec('Generate Varnish secret file') }
+    it { is_expected.to contain_package('varnish') }
+    it { is_expected.to contain_service('varnish') }
+    it { is_expected.to contain_exec('vcl_reload') }
   end
 
   context 'unsupported operating systems' do
-
     describe "varnish class fail on unsupported OS" do
       let(:facts) {{
         :osfamily        => 'Darwin',
@@ -89,4 +117,5 @@ describe 'varnish', :type => :class do
       it { is_expected.to raise_error(Puppet::Error, /Darwin not supported/) }
     end
   end
+
 end
