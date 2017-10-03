@@ -39,25 +39,49 @@
 #   Hash of runtime parameters
 #
 class varnish (
-  $addrepo         = $varnish::params::addrepo,
+  $runtime_params  = {},
+  $addrepo         = true,
+  $admin_listen    = '127.0.0.1',
+  $admin_port      = '6082',
+  $listen          = '0.0.0.0',
+  $listen_port     = '6081',
   $secret          = undef,
-  $secret_file     = $varnish::params::secret_file,
-  $vcl_conf        = $varnish::params::vcl_conf,
-  $listen          = $varnish::params::listen,
-  $listen_port     = $varnish::params::listen_port,
-  $admin_listen    = $varnish::params::admin_listen,
-  $admin_port      = $varnish::params::admin_port,
-  $min_threads     = $varnish::params::min_threads,
-  $max_threads     = $varnish::params::max_threads,
-  $thread_timeout  = $varnish::params::thread_timeout,
-  $storage_type    = $varnish::params::storage_type,
-  $storage_file    = $varnish::params::storage_file,
-  $storage_size    = $varnish::params::storage_size,
-  $varnish_version = $varnish::params::varnish_version,
-  $vcl_reload      = $varnish::params::vcl_reload,
-  $package_ensure  = $varnish::params::package_ensure,
-  $runtime_params  = {}
-) inherits varnish::params {
+  $secret_file     = '/etc/varnish/secret',
+  $vcl_conf        = '/etc/varnish/default.vcl',
+  $storage_type    = 'file',
+  $storage_file    = '/var/lib/varnish/varnish_storage.bin',
+  $storage_size    = '1G',
+  $min_threads     = '50',
+  $max_threads     = '1000',
+  $thread_timeout  = '120',
+  $varnish_version = '4.1',
+  $package_ensure  = 'present',
+  $package_name    = 'varnish',
+  $service_name    = 'varnish',
+  $vcl_reload_cmd  = undef,
+  $vcl_reload_path = $::path,
+) {
+
+  if $package_ensure == 'present' {
+    $version_major = regsubst($varnish_version, '^(\d+)\.(\d+).*$', '\1')
+    $version_minor = regsubst($varnish_version, '^(\d+)\.(\d+).*$', '\2')
+    $version_full  = $varnish_version
+  } else {
+    $version_major = regsubst($package_ensure, '^(\d+)\.(\d+).*$', '\1')
+    $version_minor = regsubst($package_ensure, '^(\d+)\.(\d+).*$', '\2')
+    $version_full = "${version_major}.${version_minor}"
+    if $varnish_version != "${version_major}.${version_minor}" {
+      fail("Version mismatch, varnish_version is ${varnish_version}, but package_ensure is ${version_full}")
+    }
+  }
+
+  include ::varnish::params
+
+  if $vcl_reload_cmd == undef {
+    $vcl_reload = $::varnish::params::vcl_reload
+  } else {
+    $vcl_relaod = $vcl_reload_cmd
+  }
 
   validate_bool($addrepo)
   validate_string($secret)
@@ -68,23 +92,30 @@ class varnish (
   unless is_integer($max_threads) { fail('max_threads invalid') }
   validate_absolute_path($storage_file)
   validate_hash($runtime_params)
-  validate_re($varnish_version, '^[3-5]\.[0-1]')
   validate_re($storage_type, '^(malloc|file)$')
+  validate_re("${version_major}.${version_minor}", '^[3-5]\.[0-9]')
 
-  if ($addrepo) {
-
-    class { $varnish::params::repoclass:
-      before => Class['varnish::install'],
+  if $addrepo {
+    class { '::varnish::repo':
+      before => Class['::varnish::install'],
     }
   }
 
+  include ::varnish::install
+
+
   class { '::varnish::secret':
     secret  => $secret,
-    require => Class['varnish::install'],
+    require => Class['::varnish::install'],
   }
 
-  class { '::varnish::install': }
-  -> class { '::varnish::config': }
-  ~> class { '::varnish::service': }
-  -> Class['varnish']
+  class { '::varnish::config':
+    require => Class['::varnish::secret'],
+    notify  => Class['::varnish::service'],
+  }
+
+  class { '::varnish::service':
+    require => Class['::varnish::config'],
+  }
+
 }
