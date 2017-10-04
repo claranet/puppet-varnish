@@ -7,9 +7,9 @@
 1. [Overview - What is the puppet-varnish module?](#overview)
 1. [Module Description - What does the module do?](#module-description)
 1. [Setup - The basics of getting started with puppet-varnish](#setup)
-    * [What puppet-varnish affects](#what-puppet-varnish-affects)
-    * [Beginning with puppet-varnish](#beginning-with-registry)
 1. [Usage - Configuration options and additional functionality](#usage)
+    * [Examples](#examples)
+    * [Parameter Reference](#parameter-reference)
 1. [Limitations - OS compatibility, etc.](#limitations)
 1. [Development - Guide for contributing to the module](#development)
 
@@ -22,8 +22,6 @@ This module Installs and configures Varnish.
 This module Supports Varnish versions 3.0, 4.0, 4.1, 5.0, 5.1 and 5.2 across
 Ubuntu 14.04/16.04, Debian 7/8 and RedHat derivates 6/7.
 
-## Setup
-
 This module will install Varnish, **by default version 4.1** from the official
 Packagecloud repositories, adding EPEL for RedHat-like systems and working
 around a SELinux policy bug in RHEL/CentOS 6 for Varnish 4.0 and above.
@@ -35,7 +33,7 @@ If necessary, you can specify any of the Varnish versions above, although there
 are imcompatibilities with some versions of Varnish and some OS versions, see
 [Limitations](#limitations).
 
-### Beginning with puppet-varnish
+## Setup
 
 To accept all default parameters - at minimum it is suggested you set a
 secret (if not explicitly set, one will be created via
@@ -51,7 +49,9 @@ secret (if not explicitly set, one will be created via
   }
 ```
 
-### Advanced Usage
+## Usage
+
+### Examples
 
 To use a static file with `varnish::vcl` rather than a template:
 
@@ -72,7 +72,7 @@ the module will automatically calculate `varnish_version` if not set:
   }
 ```
 
-#### Parameter Reference
+### Parameter Reference
 
 |Parameter|Description|
 |---------|-----------|
