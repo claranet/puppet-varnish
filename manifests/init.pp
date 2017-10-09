@@ -55,6 +55,7 @@ class varnish (
   $max_threads     = '1000',
   $thread_timeout  = '120',
   $varnish_version = '4.1',
+  $instance_name   = undef,
   $package_ensure  = 'present',
   $package_name    = 'varnish',
   $service_name    = 'varnish',
@@ -86,7 +87,6 @@ class varnish (
   validate_bool($addrepo)
   validate_string($secret)
   validate_absolute_path($secret_file)
-  unless is_integer($listen_port) { fail('listen_port invalid') }
   unless is_integer($admin_port) { fail('admin_port invalid') }
   unless is_integer($min_threads) { fail('min_threads invalid') }
   unless is_integer($max_threads) { fail('max_threads invalid') }
