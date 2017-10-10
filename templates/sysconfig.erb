@@ -9,8 +9,11 @@ MEMLOCK=82000
 
 RELOAD_VCL=1
 VARNISH_VCL_CONF=<%= scope['::varnish::vcl_conf'] %>
-VARNISH_LISTEN_ADDRESS=<%= scope['::varnish::listen'] %>
-VARNISH_LISTEN_PORT=<%= scope['::varnish::listen_port'] %>
+<% if scope['::varnish::listen'].is_a?(Array) -%>
+VARNISH_LISTEN=<% scope['::varnish::listen'].each_with_index do |addr, idx| %><%= addr %><% unless addr.include?(':') %>:<%= scope['::varnish::listen_port'] %><% end -%><% if idx != (scope['::varnish::listen'].length-1) -%>,<% end -%><% end %>
+<% else -%>
+VARNISH_LISTEN=<%= scope['::varnish::listen'] %>:<%= scope['::varnish::listen_port'] %>
+<% end -%>
 VARNISH_ADMIN_LISTEN_ADDRESS=<%= scope['::varnish::admin_listen'] %>
 VARNISH_ADMIN_LISTEN_PORT=<%= scope['::varnish::admin_port'] %>
 VARNISH_SECRET_FILE=<%= scope['::varnish::secret_file'] %>
@@ -21,7 +24,7 @@ VARNISH_STORAGE=<%= scope['::varnish::storage_type'] %>,<% if scope['::varnish::
 VARNISH_TTL=120
 
 DAEMON_OPTS="<% if scope['::varnish::params::service_provider'] == 'sysvinit' -%><%= scope['::varnish::config::jail_opt'] %> \<% end %>
-             -a ${VARNISH_LISTEN_ADDRESS}:${VARNISH_LISTEN_PORT} \
+             -a ${VARNISH_LISTEN} \
 <% if scope['::varnish::instance_name'] != :undefined -%>
              -n <%= scope['::varnish::instance_name'] %> \
 <% end -%>

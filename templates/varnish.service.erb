@@ -16,7 +16,11 @@ ExecStart=/usr/sbin/varnishd <%= scope['::varnish::config::jail_opt'] %> \
   -n <%= scope['::varnish::instance_name'] %> \
 <% end -%>
   -f <%= scope['::varnish::vcl_conf'] %> \
-  -a <%= scope['::varnish::listen'] %>:<%= scope['::varnish::listen_port'] %> \
+  <% if scope['::varnish::listen'].is_a?(Array) -%>
+  -a <% scope['::varnish::listen'].each_with_index do |addr, idx| %><%= addr %><% unless addr.include?(':') %>:<%= scope['::varnish::listen_port'] %><% end -%><% if idx != (scope['::varnish::listen'].length-1) -%>,<% end -%><% end %> \
+  <% else -%>
+  -a %= scope['::varnish::listen'] %>:<%= scope['::varnish::listen_port'] %> \
+  <% end -%>
   -T <%= scope['::varnish::admin_listen'] %>:<%= scope['::varnish::admin_port'] %> \
 <% if scope['::varnish::version_major'] == '3' -%>
   -w <%= scope['::varnish::min_threads'] %>,<%= scope['::varnish::max_threads'] %>,<%= scope['::varnish::thread_timeout'] %> \
