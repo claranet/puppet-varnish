@@ -1,6 +1,8 @@
 # puppet-varnish
 
 [![Build Status](https://secure.travis-ci.org/claranet/puppet-varnish.png?branch=master)](http://travis-ci.org/claranet/puppet-varnish)
+[![Puppet Forge](http://img.shields.io/puppetforge/v/claranet/varnish.svg)](https://forge.puppetlabs.com/claranet/varnish)
+[![Forge Downloads](https://img.shields.io/puppetforge/dt/claranet/varnish.svg)](https://forge.puppetlabs.com/claranet/varnish)
 
 #### Table of Contents
 
