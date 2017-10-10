@@ -49,6 +49,16 @@ secret (if not explicitly set, one will be created via
   }
 ```
 
+### Multiple Listen Interfaces
+
+Varnish supports listening on multiple interfaces. The module implements this
+by exposing a `listen` parameter, which can either be set to a String value for
+one interface (e.g. `127.0.0.1` or `0.0.0.0`), or an array of values.
+
+By default, the the module will append `listen_port` to each element of the
+array - however to set a different port for each interface, just append it
+using standard notation, for example: `127.0.0.1:8080`.
+
 ## Usage
 
 ### Examples
@@ -69,6 +79,25 @@ the module will automatically calculate `varnish_version` if not set:
 ```puppet
   class { '::varnish':
     package_ensure => '4.0.5-1~xenial',
+  }
+```
+
+To configure Varnish to listen on port 8080 on localhost and port 6081 on
+`172.16.100.10`:
+
+```puppet
+  class { '::varnish':
+    listen => ['127.0.0.1:8080','172.16.100.10:6081'],
+  }
+```
+
+To configure Varnish to listen on port 80, specifically on localhost and
+`192.168.1.195`:
+
+```puppet
+  class { '::varnish':
+    listen      => ['127.0.0.1','192.168.1.195'],
+    listen_port => '80',
   }
 ```
 
