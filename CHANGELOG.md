@@ -4,6 +4,10 @@ Release notes for the claranet/puppet-varnish module.
 
 ------------------------------------------
 
+## 4.1.0 - 2017-10-10
+    * New parameter: `varnish::instance_name` - allows setting Varnish's instance name - fixes [#44](https://github.com/claranet/puppet-varnish/issues/44)
+    * Parameter `listen` now accepts an array to set multiple listen interfaces - fixes [#33](https://github.com/claranet/puppet-varnish/issues/33)
+
 ## 4.0.0 - 2017-10-04
     * Major version increase after module move to Claranet GitHub org
     * Adds Varnish 5 support (5.0, 5.1 and 5.2)
