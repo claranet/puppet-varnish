@@ -33,7 +33,7 @@ node default {
   class { '::varnish':
     varnish_version => $version,
     package_ensure  => $package_ensure,
-    listen          => ['127.0.0.1:6099','10.0.254.254:80'],
+    listen          => ['127.0.0.1:8890',"${::ipaddress}:8888"],
     storage_type    => 'malloc',
     storage_size    => '64M',
     instance_name   => "vagrant-varnish${version}",
