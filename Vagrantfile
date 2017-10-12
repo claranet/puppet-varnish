@@ -22,10 +22,10 @@ MODULES = [
   { name: "puppetlabs-stdlib", version: "4.17.1" },
   { name: "puppetlabs-apt", version: "2.4.0" },
   { name: "stahnma-epel", version: "1.2.2" },
-  { name: "puppet-selinux", version: "1.3.0" },
+  { name: "puppet-selinux", version: "0.8.0" },
   # Test dependencies
-  { name: "puppetlabs-concat", version: "4.0.1" },
-  { name: "puppet-nginx", git: "https://github.com/voxpupuli/puppet-nginx.git" }
+  { name: "puppetlabs-concat", version: "2.2.1" },
+  { name: "puppet-nginx", version: "0.6.0" }
 ]
 
 # ==============
