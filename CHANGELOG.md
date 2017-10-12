@@ -4,6 +4,9 @@ Release notes for the claranet/puppet-varnish module.
 
 ------------------------------------------
 
+## 4.1.2 - 2017-10-12
+  * Fixing syntax error in previous release
+
 ## 4.1.1 - 2017-10-12
   * Varnish 4+ requires passing multiple listen interfaces by specifying multiple `-a` flags, not a single comma-separated value.
   * Various Puppet 3 fixes
