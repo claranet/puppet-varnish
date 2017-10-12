@@ -30,9 +30,9 @@ class varnish::repo {
         baseurl         => "https://packagecloud.io/varnishcache/varnish${ver}/el/${::operatingsystemmajrelease}/\$basearch",
         gpgkey          => "https://packagecloud.io/varnishcache/varnish${ver}/gpgkey",
         metadata_expire => '300',
-        repo_gpgcheck   => true,
-        gpgcheck        => false,
-        sslverify       => true,
+        repo_gpgcheck   => '1',
+        gpgcheck        => '0',
+        sslverify       => '1',
         sslcacert       => '/etc/pki/tls/certs/ca-bundle.crt',
       }
 
@@ -41,9 +41,9 @@ class varnish::repo {
         baseurl         => "https://packagecloud.io/varnishcache/varnish${ver}/el/${::operatingsystemmajrelease}/SRPMS",
         gpgkey          => "https://packagecloud.io/varnishcache/varnish${ver}/gpgkey",
         metadata_expire => '300',
-        repo_gpgcheck   => true,
-        gpgcheck        => false,
-        sslverify       => true,
+        repo_gpgcheck   => '1',
+        gpgcheck        => '0',
+        sslverify       => '1',
         sslcacert       => '/etc/pki/tls/certs/ca-bundle.crt',
       }
     }
