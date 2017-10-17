@@ -81,7 +81,7 @@ class varnish (
   if $vcl_reload_cmd == undef {
     $vcl_reload = $::varnish::params::vcl_reload
   } else {
-    $vcl_relaod = $vcl_reload_cmd
+    $vcl_reload = $vcl_reload_cmd
   }
 
   validate_bool($addrepo)
