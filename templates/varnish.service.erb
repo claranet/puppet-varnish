@@ -12,7 +12,7 @@ ExecReload=<%= scope['::varnish::vcl_reload'] %>
 ExecStart=/usr/sbin/varnishd <%= scope['::varnish::config::jail_opt'] %> \
   -P /var/run/varnish.pid \
   -t 120 \
-<% if scope['::varnish::instance_name'] != :undefined -%>
+<% if @instance_name != nil -%>
   -n <%= scope['::varnish::instance_name'] %> \
 <% end -%>
   -f <%= scope['::varnish::vcl_conf'] %> \
