@@ -4,6 +4,9 @@ Release notes for the claranet/puppet-varnish module.
 
 ------------------------------------------
 
+## 4.1.3 - 2017-10-17
+  * Fixing other syntax errors, pull requests [#45](https://github.com/claranet/puppet-varnish/issues/45) and [#46](https://github.com/claranet/puppet-varnish/issues/46)
+
 ## 4.1.2 - 2017-10-12
   * Fixing syntax error in previous release
 
