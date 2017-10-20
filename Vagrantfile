@@ -39,6 +39,16 @@ end
 Vagrant.configure("2") do |config|
 
   local_username ||= `whoami`.strip
+  config.puppet_install.puppet_version = PUPPET_VERSION
+
+  # Handle Puppet 3 and 4 paths
+  if PUPPET_VERSION.start_with?('4')
+    puppet_bin_path = '/opt/puppetlabs/bin/puppet'
+    module_path = '/etc/puppetlabs/code/environments/production/modules'
+  else
+    puppet_bin_path = '/usr/bin/puppet'
+    module_path = '/etc/puppet/modules'
+  end
 
   # = Actually do some work
   BOXES.each_with_index do |definition,idx|
@@ -46,7 +56,6 @@ Vagrant.configure("2") do |config|
     name = definition[:name]
     ip = 254 - idx
 
-    config.puppet_install.puppet_version = PUPPET_VERSION
     config.vm.define name, autostart: false do |c|
 
       # == Basic box setup
@@ -82,7 +91,7 @@ Vagrant.configure("2") do |config|
       end
 
       # == Install git ... with Puppet!
-      c.vm.provision :shell, :inline => "/opt/puppetlabs/bin/puppet resource package git ensure=present"
+      c.vm.provision :shell, :inline => "#{puppet_bin_path} resource package git ensure=present"
 
       # == Install modules
       MODULES.each do |mod|
@@ -92,16 +101,16 @@ Vagrant.configure("2") do |config|
           else
             mod_version = " --version #{mod[:version]}"
           end
-          c.vm.provision :shell, :inline => "/opt/puppetlabs/bin/puppet module install #{mod[:name]}#{mod_version}"
+          c.vm.provision :shell, :inline => "#{puppet_bin_path} module install #{mod[:name]}#{mod_version}"
         else
           mod_name = mod[:name].split('-').last
-          c.vm.provision :shell, :inline => "if [ ! -d /etc/puppetlabs/code/environments/production/modules/#{mod_name} ]; then git clone #{mod[:git]} /etc/puppetlabs/code/environments/production/modules/#{mod_name}; fi"
+          c.vm.provision :shell, :inline => "if [ ! -d #{module_path}/#{mod_name} ]; then git clone #{mod[:git]} #{module_path}/#{mod_name}; fi"
         end
       end
-      c.vm.provision :shell, :inline => "if [ ! -L /etc/puppetlabs/code/environments/production/modules/varnish ]; then ln -s /vagrant /etc/puppetlabs/code/environments/production/modules/varnish; fi"
+      c.vm.provision :shell, :inline => "if [ ! -L #{module_path}/varnish ]; then ln -s /vagrant #{module_path}/varnish; fi"
 
       # == Finally, run Puppet!
-      c.vm.provision :shell, :inline => "STDLIB_LOG_DEPRECATIONS=false /opt/puppetlabs/puppet/bin/puppet apply --verbose --show_diff /vagrant/tests/init.pp"
+      c.vm.provision :shell, :inline => "STDLIB_LOG_DEPRECATIONS=false #{puppet_bin_path} apply --verbose --show_diff /vagrant/tests/init.pp"
     end
   end
 end
