@@ -4,6 +4,9 @@ Release notes for the claranet/puppet-varnish module.
 
 ------------------------------------------
 
+## 4.1.4 - 2017-10-20
+  * Fixing Puppet 3 bug in handling of `undef` values of `varnish::instance_name` in ERB templates
+
 ## 4.1.3 - 2017-10-17
   * Fixing other syntax errors, pull requests [#45](https://github.com/claranet/puppet-varnish/issues/45) and [#46](https://github.com/claranet/puppet-varnish/issues/46)
 
