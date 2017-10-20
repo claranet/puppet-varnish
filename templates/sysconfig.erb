@@ -33,7 +33,7 @@ VARNISH_TTL=120
 
 DAEMON_OPTS="<% if scope['::varnish::params::service_provider'] == 'sysvinit' -%><%= scope['::varnish::config::jail_opt'] %> \<% end %>
              ${VARNISH_LISTEN} \
-<% if scope['::varnish::instance_name'] != :undefined -%>
+<% if scope['::varnish::instance_name'] != :undef -%>
              -n <%= scope['::varnish::instance_name'] %> \
 <% end -%>
              -f ${VARNISH_VCL_CONF} \
