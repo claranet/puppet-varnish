@@ -22,6 +22,8 @@ class varnish::params {
 
           if "${::varnish::version_major}.${::varnish::version_minor}" == '5.1' {
             $vcl_reload = '/sbin/varnish_reload_vcl'
+          } elsif "${::varnish::version_major}.${::varnish::version_minor}" == '4.1' {
+            $vcl_reload = '/usr/sbin/varnish_reload_vcl'
           } else {
             $vcl_reload = 'varnish_reload_vcl'
           }
