@@ -14,24 +14,21 @@ class varnish::params {
 
         '6': {
           $os_service_provider = 'sysvinit'
-          $vcl_reload          = 'varnish_reload_vcl'
+          $vcl_reload          = '/usr/bin/varnish_reload_vcl'
         }
 
         '7': {
           $os_service_provider = 'systemd'
-
-          if "${::varnish::version_major}.${::varnish::version_minor}" == '5.1' {
-            $vcl_reload = '/sbin/varnish_reload_vcl'
-          } elsif "${::varnish::version_major}.${::varnish::version_minor}" == '4.1' {
-            $vcl_reload = '/usr/sbin/varnish_reload_vcl'
-          } else {
-            $vcl_reload = 'varnish_reload_vcl'
+          $vcl_reload          = $::varnish::version_major ? {
+            '5' => '/sbin/varnish_reload_vcl',
+            '4' => '/usr/sbin/varnish_reload_vcl',
+            '3' => '/bin/varnish_reload_vcl',
           }
         }
 
         default: {
           $os_service_provider = 'systemd'
-          $vcl_reload          = 'varnish_reload_vcl'
+          $vcl_reload          = '/sbin/varnish_reload_vcl'
         }
       }
     }
