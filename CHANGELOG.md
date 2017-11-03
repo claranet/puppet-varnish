@@ -4,6 +4,9 @@ Release notes for the claranet/puppet-varnish module.
 
 ------------------------------------------
 
+## 4.1.5 - 2017-11-03
+  * Adding fully-qualified paths to `varnish_reload_vcl` for all Varnish versions in CentOS 6 and 7
+
 ## 4.1.4 - 2017-10-20
   * Fixing Puppet 3 bug in handling of `undef` values of `varnish::instance_name` in ERB templates
 
@@ -24,7 +27,7 @@ Release notes for the claranet/puppet-varnish module.
 ## 4.0.0 - 2017-10-04
   * Major version increase after module move to Claranet GitHub org
   * Adds Varnish 5 support (5.0, 5.1 and 5.2)
-  * Removes old repository and moves to Pacakgecloud
+  * Removes old repository and moves to PackageCloud
   * Default Varnish version changed to 4.1 for all OS families
   * Systemd service set up depending on Varnish/OS version
 
