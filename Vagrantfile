@@ -41,13 +41,13 @@ Vagrant.configure("2") do |config|
   local_username ||= `whoami`.strip
   config.puppet_install.puppet_version = PUPPET_VERSION
 
-  # Handle Puppet 3 and 4 paths
-  if PUPPET_VERSION.start_with?('4')
-    puppet_bin_path = '/opt/puppetlabs/bin/puppet'
-    module_path = '/etc/puppetlabs/code/environments/production/modules'
-  else
+  # Handle Puppet 3 and 4/5 paths
+  if PUPPET_VERSION.start_with?('3')
     puppet_bin_path = '/usr/bin/puppet'
     module_path = '/etc/puppet/modules'
+  else
+    puppet_bin_path = '/opt/puppetlabs/bin/puppet'
+    module_path = '/etc/puppetlabs/code/environments/production/modules'
   end
 
   # = Actually do some work
