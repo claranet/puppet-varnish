@@ -17,7 +17,7 @@ node default {
 
     'RedHat': {
       if $::operatingsystemmajrelease == '7' and $version == '4.0' {
-        $package_ensure = '4.0.3-1.el7'
+        $package_ensure = '4.0.4-1.el7'
       } else {
         $package_ensure = 'present'
       }
