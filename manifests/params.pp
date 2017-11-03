@@ -9,26 +9,24 @@ class varnish::params {
     'RedHat': {
 
       $sysconfig  = '/etc/sysconfig/varnish'
+      $vcl_reload = $::varnish::version_major ? {
+        '5' => '/sbin/varnish_reload_vcl',
+        '4' => '/usr/sbin/varnish_reload_vcl',
+        '3' => '/bin/varnish_reload_vcl',
+      }
 
       case $::operatingsystemmajrelease {
 
         '6': {
           $os_service_provider = 'sysvinit'
-          $vcl_reload          = '/usr/bin/varnish_reload_vcl'
         }
 
         '7': {
           $os_service_provider = 'systemd'
-          $vcl_reload          = $::varnish::version_major ? {
-            '5' => '/sbin/varnish_reload_vcl',
-            '4' => '/usr/sbin/varnish_reload_vcl',
-            '3' => '/bin/varnish_reload_vcl',
-          }
         }
 
         default: {
           $os_service_provider = 'systemd'
-          $vcl_reload          = '/sbin/varnish_reload_vcl'
         }
       }
     }
