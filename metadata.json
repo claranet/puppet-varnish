@@ -1,6 +1,6 @@
 {
   "name"                   : "claranet-varnish",
-  "version"                : "4.1.5",
+  "version"                : "4.1.6",
   "source"                 : "https://github.com/claranet/puppet-varnish",
   "author"                 : "Claranet",
   "license"                : "Apache-2.0",

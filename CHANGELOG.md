@@ -4,6 +4,9 @@ Release notes for the claranet/puppet-varnish module.
 
 ------------------------------------------
 
+## 4.1.6 - 2017-12-13
+  * Fixing version-comparison bug for Debian 8.0
+
 ## 4.1.5 - 2017-11-03
   * Adding fully-qualified paths to `varnish_reload_vcl` for all Varnish versions in CentOS 6 and 7
 
