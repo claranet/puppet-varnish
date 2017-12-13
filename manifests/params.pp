@@ -46,7 +46,7 @@ class varnish::params {
           $systemd_version = '16.04'
         }
         'Debian': {
-          $systemd_version = '8.0'
+          $systemd_version = '8'
         }
         default: {
           fail("Unsupported Debian OS: ${::operatingsystem}")
