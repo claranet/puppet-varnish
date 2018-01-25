@@ -50,4 +50,7 @@ DAEMON_OPTS="<% if scope['::varnish::params::service_provider'] == 'sysvinit' -%
              -p <%= k %>=<%= v %> \
 <% end -%>
              -S ${VARNISH_SECRET_FILE} \
-             -s ${VARNISH_STORAGE}"
+             -s ${VARNISH_STORAGE} \
+<% scope['::varnish::storage_additional'].each do |k| -%>
+             -s <%= k %> \
+<% end -%>"

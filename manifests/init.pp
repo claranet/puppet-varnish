@@ -29,6 +29,8 @@
 #   Whether to use malloc (RAM only) or file storage for cache
 # [*storage_size*]
 #   Size of cache
+# [*storage_additional*]
+#   Hash of additional storage backends containing strings in the varnish format (passed to -s)
 # [*varnish_version*]
 #   Major Varnish version to use
 # [*vcl_reload*]
@@ -39,28 +41,29 @@
 #   Hash of key:value runtime parameters
 #
 class varnish (
-  $runtime_params  = {},
-  $addrepo         = true,
-  $admin_listen    = '127.0.0.1',
-  $admin_port      = '6082',
-  $listen          = '0.0.0.0',
-  $listen_port     = '6081',
-  $secret          = undef,
-  $secret_file     = '/etc/varnish/secret',
-  $vcl_conf        = '/etc/varnish/default.vcl',
-  $storage_type    = 'file',
-  $storage_file    = '/var/lib/varnish/varnish_storage.bin',
-  $storage_size    = '1G',
-  $min_threads     = '50',
-  $max_threads     = '1000',
-  $thread_timeout  = '120',
-  $varnish_version = '4.1',
-  $instance_name   = undef,
-  $package_ensure  = 'present',
-  $package_name    = 'varnish',
-  $service_name    = 'varnish',
-  $vcl_reload_cmd  = undef,
-  $vcl_reload_path = $::path,
+  $runtime_params     = {},
+  $addrepo            = true,
+  $admin_listen       = '127.0.0.1',
+  $admin_port         = '6082',
+  $listen             = '0.0.0.0',
+  $listen_port        = '6081',
+  $secret             = undef,
+  $secret_file        = '/etc/varnish/secret',
+  $vcl_conf           = '/etc/varnish/default.vcl',
+  $storage_type       = 'file',
+  $storage_file       = '/var/lib/varnish/varnish_storage.bin',
+  $storage_size       = '1G',
+  $storage_additional = [],
+  $min_threads        = '50',
+  $max_threads        = '1000',
+  $thread_timeout     = '120',
+  $varnish_version    = '4.1',
+  $instance_name      = undef,
+  $package_ensure     = 'present',
+  $package_name       = 'varnish',
+  $service_name       = 'varnish',
+  $vcl_reload_cmd     = undef,
+  $vcl_reload_path    = $::path,
 ) {
 
   if $package_ensure == 'present' {
