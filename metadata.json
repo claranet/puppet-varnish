@@ -1,6 +1,6 @@
 {
   "name"                   : "claranet-varnish",
-  "version"                : "4.2.0",
+  "version"                : "5.0.0",
   "source"                 : "https://github.com/claranet/puppet-varnish",
   "author"                 : "Claranet",
   "license"                : "Apache-2.0",
@@ -35,9 +35,7 @@
       "operatingsystemrelease": [ "7", "8" ]
     }
   ],
-  "requirements": [
-    { "name": "puppet", "version_requirement": ">= 3.8.7" }
-  ],
+  "requirements": [ { "name": "puppet", "version_requirement": ">= 4.7.1 < 6.0.0" } ],
   "dependencies": [
     { "name": "stahnma/epel", "version_requirement": ">= 1.2.0 < 2.0.0" },
     { "name": "puppet/selinux", "version_requirement": ">= 0.8.0 < 1.0.0" },

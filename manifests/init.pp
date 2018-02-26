@@ -41,29 +41,29 @@
 #   Hash of key:value runtime parameters
 #
 class varnish (
-  $runtime_params     = {},
-  $addrepo            = true,
-  $admin_listen       = '127.0.0.1',
-  $admin_port         = '6082',
-  $listen             = '0.0.0.0',
-  $listen_port        = '6081',
-  $secret             = undef,
-  $secret_file        = '/etc/varnish/secret',
-  $vcl_conf           = '/etc/varnish/default.vcl',
-  $storage_type       = 'file',
-  $storage_file       = '/var/lib/varnish/varnish_storage.bin',
-  $storage_size       = '1G',
-  $storage_additional = [],
-  $min_threads        = '50',
-  $max_threads        = '1000',
-  $thread_timeout     = '120',
-  $varnish_version    = '4.1',
-  $instance_name      = undef,
-  $package_ensure     = 'present',
-  $package_name       = 'varnish',
-  $service_name       = 'varnish',
-  $vcl_reload_cmd     = undef,
-  $vcl_reload_path    = $::path,
+  Hash $runtime_params                      = {},
+  Boolean $addrepo                          = true,
+  String $admin_listen                      = '127.0.0.1',
+  Integer $admin_port                       = 6082,
+  Variant[String,Array] $listen             = '0.0.0.0',
+  Integer $listen_port                      = 6081,
+  Optional[String] $secret                  = undef,
+  Stdlib::AbsolutePath $secret_file         = '/etc/varnish/secret',
+  Stdlib::AbsolutePath $vcl_conf            = '/etc/varnish/default.vcl',
+  Enum['file','malloc'] $storage_type       = 'file',
+  Stdlib::AbsolutePath $storage_file        = '/var/lib/varnish/varnish_storage.bin',
+  String $storage_size                      = '1G',
+  Array $storage_additional                 = [],
+  Integer $min_threads                      = 50,
+  Integer $max_threads                      = 1000,
+  Integer $thread_timeout                   = 120,
+  Pattern[/^[3-5]\.[0-9]/] $varnish_version = '4.1',
+  Optional[String] $instance_name           = undef,
+  String $package_ensure                    = 'present',
+  String $package_name                      = 'varnish',
+  String $service_name                      = 'varnish',
+  Optional[String] $vcl_reload_cmd          = undef,
+  String $vcl_reload_path                   = $::path,
 ) {
 
   if $package_ensure == 'present' {
@@ -86,17 +86,6 @@ class varnish (
   } else {
     $vcl_reload = $vcl_reload_cmd
   }
-
-  validate_bool($addrepo)
-  validate_string($secret)
-  validate_absolute_path($secret_file)
-  unless is_integer($admin_port) { fail('admin_port invalid') }
-  unless is_integer($min_threads) { fail('min_threads invalid') }
-  unless is_integer($max_threads) { fail('max_threads invalid') }
-  validate_absolute_path($storage_file)
-  validate_hash($runtime_params)
-  validate_re($storage_type, '^(malloc|file)$')
-  validate_re("${version_major}.${version_minor}", '^[3-5]\.[0-9]')
 
   if $addrepo {
     class { '::varnish::repo':

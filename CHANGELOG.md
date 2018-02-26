@@ -4,6 +4,12 @@ Release notes for the claranet/puppet-varnish module.
 
 ------------------------------------------
 
+## 5.0.0 - 2018-02-27
+
+### Breaking/Backwards-Incompatible Changes - Puppet 4 Syntax
+  * Parameters are validated against Puppet 4 data types
+  * Stdlib version requirements have been raised
+
 ## 4.2.0 - 2018-02-26
   * New parameter: `varnish::storage_additional` - allows setting multiple storage backends, pull request [#52](https://github.com/claranet/puppet-varnish/issues/52)
   * Adding deprecation notices for Puppet 3
