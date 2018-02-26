@@ -31,12 +31,13 @@ node default {
   # == Varnish
 
   class { '::varnish':
-    varnish_version => $version,
-    package_ensure  => $package_ensure,
-    listen          => ['127.0.0.1:8890',"${::ipaddress}:8888"],
-    storage_type    => 'malloc',
-    storage_size    => '64M',
-    instance_name   => "vagrant-varnish${version}",
+    varnish_version    => $version,
+    package_ensure     => $package_ensure,
+    listen             => ['127.0.0.1:8888',"${::ipaddress}:6081"],
+    storage_additional => ['file,/var/lib/varnish/varnish_additional.bin,1G'],
+    storage_type       => 'malloc',
+    storage_size       => '64M',
+    instance_name      => "vagrant-varnish${version}",
   }
 
   # == Nginx + test file

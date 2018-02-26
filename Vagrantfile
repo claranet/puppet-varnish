@@ -110,7 +110,8 @@ Vagrant.configure("2") do |config|
       c.vm.provision :shell, :inline => "if [ ! -L #{module_path}/varnish ]; then ln -s /vagrant #{module_path}/varnish; fi"
 
       # == Finally, run Puppet!
-      c.vm.provision :shell, :inline => "STDLIB_LOG_DEPRECATIONS=false #{puppet_bin_path} apply --verbose --show_diff /vagrant/tests/init.pp"
+      c.vm.provision :shell, :inline => "STDLIB_LOG_DEPRECATIONS=false #{puppet_bin_path} apply --verbose --show_diff /vagrant/examples/init.pp"
+      c.vm.provision :shell, :inline => "echo 'Varnish test at http://127.0.0.1:#{new_varnish_port}'"
     end
   end
 end
