@@ -4,6 +4,10 @@ Release notes for the claranet/puppet-varnish module.
 
 ------------------------------------------
 
+## 4.2.0 - 2018-02-26
+  * New parameter: `varnish::storage_additional` - allows setting multiple storage backends, pull request [#52](https://github.com/claranet/puppet-varnish/issues/52)
+  * Adding deprecation notices for Puppet 3
+
 ## 4.1.6 - 2017-12-13
   * Fixing version-comparison bug for Debian 8.0
 
