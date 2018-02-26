@@ -103,6 +103,19 @@ To configure Varnish to listen on port 80, specifically on localhost and
   }
 ```
 
+To use multiple storage backends in varnish for example a primary `4GB memory backend` and a `50GB file backend`:
+
+```puppet
+  class { '::varnish':
+    storage_type => 'malloc',
+    storage_size => '4G',
+    storage_additional => [
+      'file,/var/lib/varnish/varnish_additional.bin,50G',
+
+    ]
+  }
+```
+
 ### Parameter Reference
 
 |Parameter|Description|
@@ -122,6 +135,7 @@ To configure Varnish to listen on port 80, specifically on localhost and
 |storage_type|malloc or file|
 |storage_file|File to mmap on disk for cache storage|
 |storage_size|Size of storage file or RAM, eg 10G or 50%|
+|storage_additional|Hash of additional storage backends, passed plainly to varnishd -s after the normal configured storage backends|
 |package_ensure|Version of Varnish package to install, eg 3.0.5-1.el6|
 |runtime_params|hash of run-time parameters to be specified at startup|
 

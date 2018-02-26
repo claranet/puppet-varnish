@@ -41,7 +41,10 @@ ExecStart=/usr/sbin/varnishd <%= scope['::varnish::config::jail_opt'] %> \
   -p <%= k %>=<%= v %> \
 <% end -%>
   -S <%= scope['::varnish::secret_file'] %> \
-  -s <%= scope['::varnish::storage_type'] %>,<% if scope['::varnish::storage_type'] == 'file' -%><%= scope['::varnish::storage_file'] %>,<% end -%><%= scope['::varnish::storage_size'] %>
+  -s <%= scope['::varnish::storage_type'] %>,<% if scope['::varnish::storage_type'] == 'file' -%><%= scope['::varnish::storage_file'] %>,<% end -%><%= scope['::varnish::storage_size'] %> \
+<% scope['::varnish::storage_additional'].each do |k| -%>
+  -s <%= k %> \
+<% end -%>
 
 [Install]
 WantedBy=multi-user.target
