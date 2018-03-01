@@ -14,10 +14,10 @@ class varnish::config {
   if $::osfamily == 'RedHat' and $::operatingsystemmajrelease == '6' and $::varnish::version_major != '3' {
     if $::selinux_current_mode == 'enforcing' {
       ::selinux::module { 'varnishpol':
-        ensure => present,
-        source => 'puppet:///modules/varnish/varnishpol.te',
-        before => Service[$::varnish::service_name],
-        notify => Service[$::varnish::service_name],
+        ensure    => present,
+        source_te => 'puppet:///modules/varnish/varnishpol.te',
+        before    => Service[$::varnish::service_name],
+        notify    => Service[$::varnish::service_name],
       }
     }
   }
