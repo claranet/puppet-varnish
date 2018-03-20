@@ -4,7 +4,7 @@ Release notes for the claranet/puppet-varnish module.
 
 ------------------------------------------
 
-## 5.0.0 - 2018-02-27
+## 5.0.0 - 2018-03-20
 
 ### Breaking/Backwards-Incompatible Changes - Puppet 4 Syntax
   * Parameters are validated against Puppet 4 data types
