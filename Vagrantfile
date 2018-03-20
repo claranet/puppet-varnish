@@ -19,13 +19,13 @@ BOXES = [
 
 MODULES = [
   # Module dependencies
-  { name: "puppetlabs-stdlib", version: "4.17.1" },
-  { name: "puppetlabs-apt", version: "2.4.0" },
-  { name: "stahnma-epel", version: "1.2.2" },
-  { name: "puppet-selinux", version: "0.8.0" },
+  { name: "puppetlabs-stdlib", version: "4.25.0" },
+  { name: "puppetlabs-apt", version: "4.5.1" },
+  { name: "stahnma-epel", version: "1.3.0" },
+  { name: "puppet-selinux", version: "1.5.2" },
   # Test dependencies
-  { name: "puppetlabs-concat", version: "2.2.1" },
-  { name: "puppet-nginx", version: "0.6.0" }
+  { name: "puppetlabs-concat", version: "4.2.0" },
+  { name: "puppet-nginx", version: "0.11.0" }
 ]
 
 # ==============
