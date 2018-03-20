@@ -6,7 +6,7 @@ Vagrant.require_version ">= 1.6.5"
 
 SSH_BASE_PORT  = 2610
 VARNISH_BASE_PORT = 6100
-PUPPET_VERSION = "4.10.6"
+PUPPET_VERSION = "5.4.0"
 
 BOXES = [
   { name: "debian7",  box: "debian/wheezy64", version: "7.11.2" },
