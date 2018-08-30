@@ -4,6 +4,11 @@ Release notes for the claranet/puppet-varnish module.
 
 ------------------------------------------
 
+## 5.0.1 - 2018-08-30
+
+### PDK Support
+  * This module is now compatible with the Puppet Development Kit - this can be verified by running `pdk validate`
+
 ## 5.0.0 - 2018-03-20
 
 ### Breaking/Backwards-Incompatible Changes - Puppet 4 Syntax
