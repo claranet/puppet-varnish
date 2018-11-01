@@ -65,7 +65,7 @@ Varnish supports listening on multiple interfaces. The module implements this
 by exposing a `listen` parameter, which can either be set to a String value for
 one interface (e.g. `127.0.0.1` or `0.0.0.0`), or an array of values.
 
-By default, the the module will append `listen_port` to each element of the
+By default, the module will append `listen_port` to each element of the
 array - however to set a different port for each interface, just append it
 using standard notation, for example: `127.0.0.1:8080`.
 
