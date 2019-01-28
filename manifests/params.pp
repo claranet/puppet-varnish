@@ -15,6 +15,7 @@ class varnish::params {
         '6': {
           $os_service_provider = 'sysvinit'
           $vcl_reload          = $::varnish::version_major ? {
+            '6' => '/usr/sbin/varnishreload',
             '5' => '/usr/sbin/varnish_reload_vcl',
             '4' => '/usr/sbin/varnish_reload_vcl',
             '3' => '/usr/bin/varnish_reload_vcl',
