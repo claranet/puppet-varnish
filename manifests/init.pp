@@ -57,7 +57,7 @@ class varnish (
   Integer $min_threads                      = 50,
   Integer $max_threads                      = 1000,
   Integer $thread_timeout                   = 120,
-  Pattern[/^[3-5]\.[0-9]/] $varnish_version = '4.1',
+  Pattern[/^[3-6]\.[0-9]/] $varnish_version = '4.1',
   Optional[String] $instance_name           = undef,
   String $package_ensure                    = 'present',
   String $package_name                      = 'varnish',
