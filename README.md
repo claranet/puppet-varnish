@@ -29,8 +29,9 @@ please use the latest version [4.x version from the Puppet Forge](https://forge.
 
 ## Module Description
 
-This module Supports Varnish versions 3.0, 4.0, 4.1, 5.0, 5.1 and 5.2 across
-Ubuntu 14.04/16.04, Debian 7/8 and RedHat derivates 6/7.
+This module Supports Varnish versions 3.0, 4.0, 4.1, 5.0, 5.1, 5.2,
+6.0, 6.1 across Ubuntu 14.04/16.04, Debian 7/8 and RedHat derivates
+6/7.
 
 This module will install Varnish, **by default version 4.1** from the official
 Packagecloud repositories, adding EPEL for RedHat-like systems and working
@@ -154,7 +155,7 @@ There are several limitations with various Varnish and OS combinations. The
 module will attempt to flag known issues, however:
 
 * Varnish 3.0 is not supported on Ubuntu 16.04
-* Varnish 5.0 supports **only** Debian 8 and Ubuntu 16.04
+* Varnish 5.x, 6.x, supports **only** Debian 8 and Ubuntu 16.04
 
 ## Development
 
