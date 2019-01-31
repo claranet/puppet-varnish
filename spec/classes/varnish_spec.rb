@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'varnish', type: :class do
-  ['3.0', '4.0', '4.1', '5.0', '5.1', '5.2'].each do |version|
+  ['3.0', '4.0', '4.1', '5.0', '5.1', '5.2', '6.0', '6.1'].each do |version|
     on_supported_os.each do |os, facts|
       context "Varnish #{version} on #{os}" do
         let(:facts) do
