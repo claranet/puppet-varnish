@@ -12,5 +12,11 @@ fixtures:
     selinux:
       repo: "https://github.com/voxpupuli/puppet-selinux.git"
       ref: "v1.5.2"
+    yumrepo_core:
+      repo: "https://github.com/puppetlabs/puppetlabs-yumrepo_core.git"
+      ref: "1.0.3"
+    selinux_core:
+      repo: "https://github.com/puppetlabs/puppetlabs-selinux_core.git"
+      ref: "1.0.1"
   symlinks:
     varnish: "#{source_dir}"
