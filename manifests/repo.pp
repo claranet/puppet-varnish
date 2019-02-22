@@ -1,7 +1,7 @@
 # Add the Varnish repo
 class varnish::repo {
 
-  $ver = "${::varnish::version_major}${::varnish::version_minor}"
+  $ver = "${::varnish::version_major}${::varnish::version_minor}${::varnish::version_lts}"
 
   case $::osfamily {
     'RedHat': {
@@ -67,19 +67,20 @@ class varnish::repo {
 
       $os_lower        = downcase($::operatingsystem)
       $package_require = Exec['apt_update']
-      $gpg_key_id      = "${::varnish::version_major}.${::varnish::version_minor}" ? {
-        '6.1' => '4A066C99B76A0F55A40E3E1E387EF1F5742D76CC',
-        '6.0' => '7C5B46721AF00FD57E68E6E8D2605BF74E8B9DBA',
-        '5.2' => '91CFD5635A1A5FAC0662BEDD2E9BA3FE86BE909D',
-        '5.1' => '54DC32329C37703D8B2819E6414C46826B880524',
-        '5.0' => '1487779B0E6C440214F07945632B6ED0FF6A1C76',
-        '4.1' => '9C96F9CA0DC3F4EA78FF332834BF6E8ECBF5C49E',
-        '4.0' => 'B7B16293AE0CC24216E9A83DD4E49AD8DE3FFEA4',
-        '3.0' => '246BE381150865E2DC8C6B01FC1318ACEE2C594C',
+      $gpg_key_id      = "${::varnish::version_major}.${::varnish::version_minor}${::varnish::version_lts}" ? {
+        '6.1'    => '4A066C99B76A0F55A40E3E1E387EF1F5742D76CC',
+        '6.0lts' => '48D81A24CB0456F5D59431D94CFCFD6BA750EDCD',
+        '6.0'    => '7C5B46721AF00FD57E68E6E8D2605BF74E8B9DBA',
+        '5.2'    => '91CFD5635A1A5FAC0662BEDD2E9BA3FE86BE909D',
+        '5.1'    => '54DC32329C37703D8B2819E6414C46826B880524',
+        '5.0'    => '1487779B0E6C440214F07945632B6ED0FF6A1C76',
+        '4.1'    => '9C96F9CA0DC3F4EA78FF332834BF6E8ECBF5C49E',
+        '4.0'    => 'B7B16293AE0CC24216E9A83DD4E49AD8DE3FFEA4',
+        '3.0'    => '246BE381150865E2DC8C6B01FC1318ACEE2C594C',
       }
 
       ::apt::source { 'varnish-cache':
-        comment  => "Apt source for Varnish ${::varnish::version_major}.${::varnish::version_minor}",
+        comment  => "Apt source for Varnish ${::varnish::version_major}.${::varnish::version_minor}${::varnish::version_lts}",
         location => "https://packagecloud.io/varnishcache/varnish${ver}/${os_lower}/",
         repos    => 'main',
         require  => Package['apt-transport-https'],
