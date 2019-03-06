@@ -45,7 +45,7 @@ describe 'varnish', type: :class do
               should_fail = 1
             end
           end
-        when /6/
+        when %r{6}
           if facts[:osfamily] == 'RedHat'
             if facts[:operatingsystemmajrelease] == '6'
               it { is_expected.to raise_error(Puppet::Error, %r{Varnish 6.0 and above from Packagecloud is not supported on RHEL\/CentOS 6}) }
