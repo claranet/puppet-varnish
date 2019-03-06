@@ -6,15 +6,19 @@ Vagrant.require_version ">= 1.6.5"
 
 SSH_BASE_PORT  = 2610
 VARNISH_BASE_PORT = 6100
-PUPPET_VERSION = "5.4.0"
+PUPPET_VERSION = "5.5.10"
 
 BOXES = [
-  { name: "debian7",  box: "debian/wheezy64", version: "7.11.2" },
-  { name: "debian8",  box: "debian/jessie64", version: "8.9.0" },
-  { name: "ubuntu14", box: "ubuntu/trusty64", version: "20170810.0.0" },
-  { name: "ubuntu16", box: "ubuntu/xenial64", version: "20170811.0.0" },
-  { name: "centos6",  box: "centos/6", version: "1707.01" },
-  { name: "centos7",  box: "centos/7", version: "1707.01" }
+  { name: "debian7",  box: "debian/wheezy64",  version: "7.11.2" },
+  { name: "debian8",  box: "debian/jessie64",  version: "8.11.0" },
+  { name: "debian8",  box: "debian/stretch64", version: "9.8.0" },
+
+  { name: "ubuntu14", box: "ubuntu/trusty64", version: "20190301.0.1" },
+  { name: "ubuntu16", box: "ubuntu/xenial64", version: "20190221.0.0" },
+  { name: "ubuntu18", box: "ubuntu/bionic64", version: "20190225.0.0" },
+  
+  { name: "centos6",  box: "centos/6", version: "1902.01" },
+  { name: "centos7",  box: "centos/7", version: "1902.01" }
 ]
 
 MODULES = [
