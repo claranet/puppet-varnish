@@ -1,6 +1,6 @@
 {
   "name": "claranet-varnish",
-  "version": "5.0.1",
+  "version": "5.1.0",
   "author": "Claranet",
   "summary": "Install and configure Varnish Cache",
   "license": "Apache-2.0",

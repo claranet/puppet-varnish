@@ -4,7 +4,7 @@ Release notes for the claranet/puppet-varnish module.
 
 ------------------------------------------
 
-## 5.1.0 - Unreleased
+## 5.1.0 - 2019-03-06
 
   * Set permissions for `/etc/varnish/secret` to prevent varnish-agent startup issues as described [here](https://github.com/varnish/vagent2/issues/191), pull request [#61](https://github.com/claranet/puppet-varnish/issues/61)
   * Add support for Varnish 6.0, 6.0LTS and 6.1 - pull requests [#59](https://github.com/claranet/puppet-varnish/issues/59) and [#60](https://github.com/claranet/puppet-varnish/issues/60)
