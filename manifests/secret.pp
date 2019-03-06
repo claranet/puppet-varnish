@@ -8,8 +8,8 @@ class varnish::secret (
 
     file { $::varnish::secret_file:
       owner   => 'root',
-      group   => 'root',
-      mode    => '0600',
+      group   => 'varnish',
+      mode    => '0640',
       content => "${secret}\n",
     }
 
@@ -17,8 +17,8 @@ class varnish::secret (
 
     file { $::varnish::secret_file:
       owner => 'root',
-      group => 'root',
-      mode  => '0600',
+      group => 'varnish',
+      mode  => '0640',
     }
 
     exec { 'Generate Varnish secret file':
