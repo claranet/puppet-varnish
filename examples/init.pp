@@ -1,6 +1,6 @@
 node default {
 
-  $version = '4.1'
+  $version = '6.0lts'
 
   # == Package Versions
 
