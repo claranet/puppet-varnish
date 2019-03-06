@@ -15,6 +15,10 @@ class varnish::repo {
         }
       }
 
+      if $::varnish::version_major == '6' and $::operatingsystemmajrelease == '6' {
+        fail('Varnish 6.0 and above from Packagecloud is not supported on RHEL/CentOS 6')
+      }
+
       $package_require = undef
 
       # Varnish 4 and above need EPEL for jemalloc
@@ -50,16 +54,33 @@ class varnish::repo {
 
 
     'Debian': {
+      case $::operatingsystem {
+        'Debian': {
+          if $ver == '50' and $::lsbdistcodename == 'wheezy' {
+            fail('Varnish 5.0 from Packagecloud is not supported on Debian 7 (Wheezy)')
+          }
 
-      if $ver == '30' and $::lsbdistcodename == 'xenial' {
-        fail('Varnish 3 from Packagecloud is not supported on Ubuntu 16.04 (Xenial)')
-      }
+          if $::varnish::version_major == '6' and $::lsbdistcodename != 'stretch' {
+            fail('Varnish 6.0 and above is only supported on Debian 9 (Stretch)')
+          }
+        }
 
-      if $ver == '50' {
-        if $::lsbdistcodename == 'wheezy' {
-          fail('Varnish 5.0 from Packagecloud is not supported on Debian 7 (Wheezy)')
-        } elsif $::lsbdistcodename == 'trusty' {
-          fail('Varnish 5.0 has a known packaging bug in the reload-vcl script, please use 5.1 instead. If the bug has been fixed, please submit a pull request to remove this message.')
+        'Ubuntu': {
+          if $ver == '30' and versioncmp($::operatingsystemmajrelease,'16.04') >= 0 {
+            fail('Varnish 3 from Packagecloud is not supported after Ubuntu 14.04 (Trusty)')
+          }
+
+          if $ver == '50' and $::lsbdistcodename == 'trusty' {
+            fail('Varnish 5.0 has a known packaging bug in the reload-vcl script, please use 5.1 instead. If the bug has been fixed, please submit a pull request to remove this message.')
+          }
+
+          if $::varnish::version_major == '6' and versioncmp($::operatingsystemmajrelease,'16.04') == -1 {
+            fail('Varnish 6.0 and above is only supported on Ubuntu 16.04 (Xenial) and newer')
+          }
+        }
+
+        default: {
+          fail("Unsupported Debian OS: ${::operatingsystem}")
         }
       }
 

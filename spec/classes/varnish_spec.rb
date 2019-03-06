@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'varnish', type: :class do
-  ['3.0', '4.0', '4.1', '5.0', '5.1', '5.2', '6.0', '6.1'].each do |version|
+  ['3.0', '4.0', '4.1', '5.0', '5.1', '5.2', '6.0', '6.0lts', '6.1'].each do |version|
     on_supported_os.each do |os, facts|
       context "Varnish #{version} on #{os}" do
         let(:facts) do
@@ -17,8 +17,8 @@ describe 'varnish', type: :class do
         should_fail = 0
         case version
         when '3.0'
-          if facts[:lsbdistcodename] == 'xenial'
-            it { is_expected.to raise_error(Puppet::Error, %r{Varnish 3 from Packagecloud is not supported on Ubuntu 16.04 \(Xenial\)}) }
+          if facts[:operatingsystem] == 'Ubuntu' && Gem::Version.new(facts[:operatingsystemmajrelease]) >= Gem::Version.new('16.04')
+            it { is_expected.to raise_error(Puppet::Error, %r{Varnish 3 from Packagecloud is not supported after Ubuntu 14.04 \(Trusty\)}) }
             should_fail = 1
           end
         when '5.0'
@@ -42,6 +42,23 @@ describe 'varnish', type: :class do
               # rubocop:disable LineLength
               it { is_expected.to raise_error(Puppet::Error, %r{Varnish 5.0 has a known packaging bug in the reload-vcl script, please use 5.1 instead. If the bug has been fixed, please submit a pull request to remove this message.}) }
               # rubocop:enable LineLength
+              should_fail = 1
+            end
+          end
+        when /6/
+          if facts[:osfamily] == 'RedHat'
+            if facts[:operatingsystemmajrelease] == '6'
+              it { is_expected.to raise_error(Puppet::Error, %r{Varnish 6.0 and above from Packagecloud is not supported on RHEL\/CentOS 6}) }
+              should_fail = 1
+            end
+          elsif facts[:osfamily] == 'Debian'
+            if facts[:operatingsystem] == 'Debian' && facts[:lsbdistcodename] != 'stretch'
+              it { is_expected.to raise_error(Puppet::Error, %r{Varnish 6.0 and above is only supported on Debian 9 \(Stretch\)}) }
+              should_fail = 1
+            end
+
+            if facts[:operatingsystem] == 'Ubuntu' && Gem::Version.new(facts[:operatingsystemmajrelease]) < Gem::Version.new('16.04')
+              it { is_expected.to raise_error(Puppet::Error, %r{Varnish 6.0 and above is only supported on Ubuntu 16.04 \(Xenial\) and newer}) }
               should_fail = 1
             end
           end
