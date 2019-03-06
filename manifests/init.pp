@@ -57,7 +57,7 @@ class varnish (
   Integer $min_threads                      = 50,
   Integer $max_threads                      = 1000,
   Integer $thread_timeout                   = 120,
-  Pattern[/^[3-6]\.[0-9]/] $varnish_version = '4.1',
+  Pattern[/^[3-6]\.[0-9](lts)?/] $varnish_version = '4.1',
   Optional[String] $instance_name           = undef,
   String $package_ensure                    = 'present',
   String $package_name                      = 'varnish',
@@ -77,6 +77,10 @@ class varnish (
     if $varnish_version != "${version_major}.${version_minor}" {
       fail("Version mismatch, varnish_version is ${varnish_version}, but package_ensure is ${version_full}")
     }
+  }
+  $version_lts   = $varnish_version ? {
+    /lts$/ => 'lts',
+    default => '',
   }
 
   include ::varnish::params
