@@ -52,8 +52,8 @@ describe 'varnish', type: :class do
               should_fail = 1
             end
           elsif facts[:osfamily] == 'Debian'
-            if facts[:operatingsystem] == 'Debian' && facts[:lsbdistcodename] != 'stretch'
-              it { is_expected.to raise_error(Puppet::Error, %r{Varnish 6.0 and above is only supported on Debian 9 \(Stretch\)}) }
+            if facts[:operatingsystem] == 'Debian' && (facts[:lsbdistcodename] == 'wheezy' || facts[:lsbdistcodename] == 'jessie')
+              it { is_expected.to raise_error(Puppet::Error, %r{Varnish 6.0 and above is only supported on Debian 9 \(Stretch\) and newer}) }
               should_fail = 1
             end
 
