@@ -96,7 +96,7 @@ class varnish (
   validate_absolute_path($storage_file)
   validate_hash($runtime_params)
   validate_re($storage_type, '^(malloc|file)$')
-  validate_re("${version_major}.${version_minor}", '^[3-5]\.[0-9]')
+  validate_re("${version_major}.${version_minor}", '^[3-6]\.[0-9]')
 
   if $addrepo {
     class { '::varnish::repo':
