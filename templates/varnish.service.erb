@@ -45,6 +45,7 @@ ExecStart=/usr/sbin/varnishd <%= scope['::varnish::config::jail_opt'] %> \
 <% scope['::varnish::storage_additional'].each do |k| -%>
   -s <%= k %> \
 <% end -%>
+  --
 
 [Install]
 WantedBy=multi-user.target
