@@ -40,7 +40,7 @@ class varnish::params {
     }
 
     'Debian': {
-      if versioncmp($varnish::version_full,'6.1') >= 0 {
+      if versioncmp($varnish::version_full,'6.1') >= 0 and versioncmp($::lsbdistrelease,'10.0') >= 0 {
         $vcl_reload = $::varnish::version_full ? {
           '6.1' => '/usr/share/varnish/varnishreload',
         }
