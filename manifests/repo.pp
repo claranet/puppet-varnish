@@ -60,8 +60,8 @@ class varnish::repo {
             fail('Varnish 5.0 from Packagecloud is not supported on Debian 7 (Wheezy)')
           }
 
-          if $::varnish::version_major == '6' and $::lsbdistcodename != 'stretch' {
-            fail('Varnish 6.0 and above is only supported on Debian 9 (Stretch)')
+          if $::varnish::version_major == '6' and versioncmp($::lsbdistrelease,'8.0') >= 0 {
+            fail('Varnish 6.0 and above is only supported on Debian 9 (Stretch) and above')
           }
         }
 
@@ -89,6 +89,8 @@ class varnish::repo {
       $os_lower        = downcase($::operatingsystem)
       $package_require = Exec['apt_update']
       $gpg_key_id      = "${::varnish::version_major}.${::varnish::version_minor}${::varnish::version_lts}" ? {
+        '6.3'    => '920A8A7AA7120A8604BCCD294A42CD6EB810E55D',
+        '6.2'    => 'B54813B54CA95257D3590B3F1B0096460868C7A9',
         '6.1'    => '4A066C99B76A0F55A40E3E1E387EF1F5742D76CC',
         '6.0lts' => '48D81A24CB0456F5D59431D94CFCFD6BA750EDCD',
         '6.0'    => '7C5B46721AF00FD57E68E6E8D2605BF74E8B9DBA',
