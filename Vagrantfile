@@ -12,6 +12,8 @@ BOXES = [
   { name: "debian7",  box: "debian/wheezy64",  version: "7.11.2" },
   { name: "debian8",  box: "debian/jessie64",  version: "8.11.0" },
   { name: "debian8",  box: "debian/stretch64", version: "9.8.0" },
+  { name: "debian9",  box: "debian/stretch64", version: "9.8.0" },
+  { name: "debian10", box: "debian/buster64",  version: "10.0.0" },
 
   { name: "ubuntu14", box: "ubuntu/trusty64", version: "20190301.0.1" },
   { name: "ubuntu16", box: "ubuntu/xenial64", version: "20190221.0.0" },
