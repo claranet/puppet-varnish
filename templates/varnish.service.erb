@@ -44,7 +44,14 @@ ExecStart=/usr/sbin/varnishd <%= scope['::varnish::config::jail_opt'] %> \
   -p <%= k %>=<%= v %> \
 <% end -%>
   -S <%= scope['::varnish::secret_file'] %> \
-  -s <%= scope['::varnish::storage_type'] %>,<% if scope['::varnish::storage_type'] == 'file' -%><%= scope['::varnish::storage_file'] %>,<% end -%><%= scope['::varnish::storage_size'] %> \
-<% scope['::varnish::storage_additional'].each do |k| -%>
+  -s <%= scope['::varnish::storage_type'] %>,<% if scope['::varnish::storage_type'] == 'file' -%><%= scope['::varnish::storage_file'] %>,<% end -%><%= scope['::varnish::storage_size'] -%>
+<% unless [nil, :undefined, :undef, []].include?(scope['::varnish::storage_additional']) -%>
+ \
+<% end %>
+<% scope['::varnish::storage_additional'].each_with_index do |k, idx| -%>
+<% if (idx + 1 ) == scope['::varnish::storage_additional'].length -%>
+  -s <%= k %>
+<% else -%>
   -s <%= k %> \
+<% end -%>
 <% end -%>
