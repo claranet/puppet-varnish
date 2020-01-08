@@ -1,6 +1,9 @@
 [Unit]
 Description=Varnish HTTP accelerator
 
+[Install]
+WantedBy=multi-user.target
+
 [Service]
 Type=forking
 LimitNOFILE=131072
@@ -45,6 +48,3 @@ ExecStart=/usr/sbin/varnishd <%= scope['::varnish::config::jail_opt'] %> \
 <% scope['::varnish::storage_additional'].each do |k| -%>
   -s <%= k %> \
 <% end -%>
-
-[Install]
-WantedBy=multi-user.target

@@ -60,7 +60,7 @@ class varnish::repo {
             fail('Varnish 5.0 from Packagecloud is not supported on Debian 7 (Wheezy)')
           }
 
-          if $::varnish::version_major == '6' and versioncmp($::lsbdistrelease,'8.0') >= 0 {
+          if $::varnish::version_major == '6' and versioncmp($::lsbdistrelease,'8.0') == -1 {
             fail('Varnish 6.0 and above is only supported on Debian 9 (Stretch) and above')
           }
         }
