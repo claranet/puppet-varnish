@@ -47,7 +47,7 @@ ExecStart=/usr/sbin/varnishd <%= scope['::varnish::config::jail_opt'] %> \
   -s <%= scope['::varnish::storage_type'] %>,<% if scope['::varnish::storage_type'] == 'file' -%><%= scope['::varnish::storage_file'] %>,<% end -%><%= scope['::varnish::storage_size'] -%>
 <% unless [nil, :undefined, :undef, []].include?(scope['::varnish::storage_additional']) -%>
  \
-<% end %>
+<% end -%>
 <% scope['::varnish::storage_additional'].each_with_index do |k, idx| -%>
 <% if (idx + 1 ) == scope['::varnish::storage_additional'].length -%>
   -s <%= k %>
