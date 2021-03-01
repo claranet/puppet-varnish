@@ -25,9 +25,9 @@ ExecStart=/usr/sbin/varnishd <%= scope['::varnish::config::jail_opt'] %> \
 
     if scope['::varnish::listen'].is_a?(Array)
   -%>
-  -a <% scope['::varnish::listen'].each_with_index do |addr, idx| %><%= addr %><% unless addr.include?(':') %>:<%= scope['::varnish::listen_port'] %><% end -%><% if idx != (scope['::varnish::listen'].length-1) -%><%= sep %><% end -%><% end %> \
+  -a <% scope['::varnish::listen'].each_with_index do |addr, idx| %><%= addr %><% unless addr.include?(':') %>:<%= scope['::varnish::listen_port'] %><% unless scope['::varnish::proxy_protocol'] %>,PROXY<% end -%><% end -%><% if idx != (scope['::varnish::listen'].length-1) -%><%= sep %><% end -%><% end %> \
   <% else -%>
-  -a <%= scope['::varnish::listen'] %>:<%= scope['::varnish::listen_port'] %> \
+  -a <%= scope['::varnish::listen'] %>:<%= scope['::varnish::listen_port'] %><% unless scope['::varnish::proxy_protocol'] %>,PROXY<% end -%> \
   <% end -%>
   -T <%= scope['::varnish::admin_listen'] %>:<%= scope['::varnish::admin_port'] %> \
 <% if scope['::varnish::version_major'] == '3' -%>
