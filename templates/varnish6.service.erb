@@ -23,7 +23,6 @@ LimitCORE=infinity
 
 ExecReload=<%= scope['::varnish::vcl_reload'] %>
 ExecStart=/usr/sbin/varnishd -t 120 \
-  -t 120 \
 <% unless [nil, :undefined, :undef, ''].include?(scope['::varnish::instance_name']) -%>
   -n <%= scope['::varnish::instance_name'] %> \
 <% end -%>
