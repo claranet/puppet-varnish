@@ -30,10 +30,33 @@ class varnish::params {
             '4' => '/usr/sbin/varnish_reload_vcl',
             '3' => '/usr/bin/varnish_reload_vcl',
           }
+          $service_template    = $::varnish::version_major ? {
+            '6' => 'varnish6.service.erb',
+            '5' => 'varnish.service.erb',
+            '4' => 'varnish.service.erb',
+            '3' => 'varnish.service.erb',
+          }
+        }
+
+        '8': {
+          $os_service_provider = 'systemd'
+          $vcl_reload          = $::varnish::version_major ? {
+            '6' => '/usr/sbin/varnishreload',
+            '5' => '/sbin/varnish_reload_vcl',
+            '4' => '/usr/sbin/varnish_reload_vcl',
+            '3' => '/usr/bin/varnish_reload_vcl',
+          }
+          $service_template    = $::varnish::version_major ? {
+            '6' => 'varnish6.service.erb',
+            '5' => 'varnish.service.erb',
+            '4' => 'varnish.service.erb',
+            '3' => 'varnish.service.erb',
+          }
         }
 
         default: {
           $os_service_provider = 'systemd'
+          $service_template    = 'varnish.service.erb'
           $vcl_reload          = '/usr/sbin/varnish_reload_vcl'
         }
       }
@@ -62,6 +85,7 @@ class varnish::params {
 
       if versioncmp($::lsbdistrelease,$systemd_version) >= 0 {
         $os_service_provider = 'systemd'
+        $service_template    = 'varnish.service.erb'
       } else {
         $os_service_provider = 'sysvinit'
       }
@@ -78,6 +102,7 @@ class varnish::params {
     if $::operatingsystem == 'Debian' {
       if versioncmp($::lsbdistrelease,'8.0') >= 0 {
         $service_provider = 'systemd'
+        $service_template = 'varnish.service.erb'
       } else {
         $service_provider = 'sysvinit'
       }

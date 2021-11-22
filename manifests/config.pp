@@ -31,13 +31,14 @@ class varnish::config {
 
 
   if $::varnish::params::service_provider == 'systemd' {
+    $template = $::varnish::params::service_template
 
     file { '/etc/systemd/system/varnish.service':
       ensure  => file,
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      content => template('varnish/varnish.service.erb'),
+      content => template("varnish/${::template}"),
       notify  => Exec['varnish_systemctl_daemon_reload'],
     }
 

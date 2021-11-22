@@ -1,0 +1,62 @@
+[Unit]
+Description=Varnish Cache, a high-performance HTTP accelerator
+After=network-online.target
+
+[Service]
+Type=forking
+KillMode=process
+
+# Maximum number of open files (for ulimit -n)
+LimitNOFILE=131072
+
+# Locked shared memory - should suffice to lock the shared memory log
+# (varnishd -l argument)
+# Default log size is 80MB vsl + 1M vsm + header -> 82MB
+# unit is bytes
+LimitMEMLOCK=85983232
+
+# Enable this to avoid "fork failed" on reload.
+TasksMax=infinity
+
+# Maximum size of the corefile.
+LimitCORE=infinity
+
+ExecReload=<%= scope['::varnish::vcl_reload'] %>
+ExecStart=/usr/sbin/varnishd -t 120 \
+  -t 120 \
+<% unless [nil, :undefined, :undef, ''].include?(scope['::varnish::instance_name']) -%>
+  -n <%= scope['::varnish::instance_name'] %> \
+<% end -%>
+  -f <%= scope['::varnish::vcl_conf'] %> \
+  <%
+    if scope['::varnish::version_major'] == 3
+      sep = ','
+    else
+      sep = ' -a '
+    end
+
+    if scope['::varnish::listen'].is_a?(Array)
+  -%>
+  -a <% scope['::varnish::listen'].each_with_index do |addr, idx| %><%= addr %><% unless addr.include?(':') %>:<%= scope['::varnish::listen_port'] %><% end -%><% if idx != (scope['::varnish::listen'].length-1) -%><%= sep %><% end -%><% end %> \
+  <% else -%>
+  -a <%= scope['::varnish::listen'] %>:<%= scope['::varnish::listen_port'] %> \
+  <% end -%>
+  -T <%= scope['::varnish::admin_listen'] %>:<%= scope['::varnish::admin_port'] %> \
+<% if scope['::varnish::version_major'] == '3' -%>
+  -w <%= scope['::varnish::min_threads'] %>,<%= scope['::varnish::max_threads'] %>,<%= scope['::varnish::thread_timeout'] %> \
+<% else -%>
+  -p thread_pool_min=<%= scope['::varnish::min_threads'] %> \
+  -p thread_pool_max=<%= scope['::varnish::max_threads'] %> \
+  -p thread_pool_timeout=<%= scope['::varnish::thread_timeout'] %> \
+<% end -%>
+<% scope['::varnish::runtime_params'].each do |k,v| -%>
+  -p <%= k %>=<%= v %> \
+<% end -%>
+  -S <%= scope['::varnish::secret_file'] %> \
+  -s <%= scope['::varnish::storage_type'] %>,<% if scope['::varnish::storage_type'] == 'file' -%><%= scope['::varnish::storage_file'] %>,<% end -%><%= scope['::varnish::storage_size'] %> \
+<% scope['::varnish::storage_additional'].each do |k| -%>
+  -s <%= k %> \
+<% end -%>
+
+[Install]
+WantedBy=multi-user.target
