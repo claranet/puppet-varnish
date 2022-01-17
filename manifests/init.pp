@@ -39,6 +39,8 @@
 #   Ensure specific package version for Varnish, eg 3.0.5-1.el6
 # [*runtime_params*]
 #   Hash of key:value runtime parameters
+# [*proxy_protocol*]
+#   Boolean toggle support for the PROXY protocol.
 #
 class varnish (
   Hash $runtime_params                      = {},
@@ -64,6 +66,7 @@ class varnish (
   String $service_name                      = 'varnish',
   Optional[String] $vcl_reload_cmd          = undef,
   String $vcl_reload_path                   = $::path,
+  Boolean $proxy_protocol                   = false,
 ) {
 
   if $package_ensure == 'present' {
