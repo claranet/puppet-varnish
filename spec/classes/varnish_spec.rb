@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'varnish', type: :class do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
+
       it { is_expected.to compile.with_all_deps }
 
       # Temporary variable before remove init support
@@ -12,7 +15,7 @@ describe 'varnish', type: :class do
         facts[:os]['release']['major'].to_i >= 7
       ) || (
         facts[:os]['release']['name'] == 'Ubuntu' &&
-        facts[:os]['release']['major'].to_f >- 16.04
+        facts[:os]['release']['major'].to_f >= 16.04
       ) || (
         facts[:os]['release']['name'] == 'Debian' &&
         facts[:os]['release']['major'].to_i >= 8
@@ -27,39 +30,39 @@ describe 'varnish', type: :class do
         it { is_expected.to contain_class('varnish::service') }
 
         if facts[:os]['family'] == 'RedHat'
-           it { is_expected.to contain_class('epel') }
+          it { is_expected.to contain_class('epel') }
 
-           it do
-             is_expected.to contain_yumrepo('varnish-cache').with(
-               descr: 'varnishcache_varnish41',
-               baseurl: format(
-                 'https://packagecloud.io/varnishcache/varnish41/el/%s/$basearch',
-                 facts[:os]['release']['major'],
-               ),
-               gpgkey: 'https://packagecloud.io/varnishcache/varnish41/gpgkey',
-               metadata_expire: '300',
-               repo_gpgcheck: '1',
-               gpgcheck: '0',
-               sslverify: '1',
-               sslcacert: '/etc/pki/tls/certs/ca-bundle.crt'
-             )
-           end
+          it do
+            is_expected.to contain_yumrepo('varnish-cache').with(
+              descr: 'varnishcache_varnish41',
+              baseurl: format(
+                'https://packagecloud.io/varnishcache/varnish41/el/%s/$basearch',
+                facts[:os]['release']['major']
+              ),
+              gpgkey: 'https://packagecloud.io/varnishcache/varnish41/gpgkey',
+              metadata_expire: '300',
+              repo_gpgcheck: '1',
+              gpgcheck: '0',
+              sslverify: '1',
+              sslcacert: '/etc/pki/tls/certs/ca-bundle.crt'
+            )
+          end
 
-           it do
-             is_expected.to contain_yumrepo('varnish-cache-source').with(
-               descr: 'varnishcache_varnish41-source',
-               baseurl: format(
-                 'https://packagecloud.io/varnishcache/varnish41/el/%s/SRPMS',
-                 facts[:os]['release']['major'],
-               ),
-               gpgkey: 'https://packagecloud.io/varnishcache/varnish41/gpgkey',
-               metadata_expire: '300',
-               repo_gpgcheck: '1',
-               gpgcheck: '0',
-               sslverify: '1',
-               sslcacert: '/etc/pki/tls/certs/ca-bundle.crt'
-             )
-           end
+          it do
+            is_expected.to contain_yumrepo('varnish-cache-source').with(
+              descr: 'varnishcache_varnish41-source',
+              baseurl: format(
+                'https://packagecloud.io/varnishcache/varnish41/el/%s/SRPMS',
+                facts[:os]['release']['major']
+              ),
+              gpgkey: 'https://packagecloud.io/varnishcache/varnish41/gpgkey',
+              metadata_expire: '300',
+              repo_gpgcheck: '1',
+              gpgcheck: '0',
+              sslverify: '1',
+              sslcacert: '/etc/pki/tls/certs/ca-bundle.crt'
+            )
+          end
         else
           it { is_expected.to contain_package('apt-transport-https') }
 
@@ -129,35 +132,35 @@ describe 'varnish', type: :class do
                 group: 'root',
                 mode: '0644',
                 notify: 'Exec[varnish_systemctl_daemon_reload]',
-                content: <<EOF
-[Unit]
-Description=Varnish HTTP accelerator
-After=network.target
+                content: <<~EOF
+                  [Unit]
+                  Description=Varnish HTTP accelerator
+                  After=network.target
 
-[Service]
-Type=forking
-LimitNOFILE=131072
-LimitMEMLOCK=82000
-LimitCORE=infinity
-PrivateTmp=true
+                  [Service]
+                  Type=forking
+                  LimitNOFILE=131072
+                  LimitMEMLOCK=82000
+                  LimitCORE=infinity
+                  PrivateTmp=true
 
-ExecReload=#{varnish_reload}
-ExecStart=/usr/sbin/varnishd -j unix,user=varnish,ccgroup=varnish \\
-  -P /var/run/varnish.pid \\
-  -t 120 \\
-  -f /etc/varnish/default.vcl \\
-    -a 0.0.0.0:6081 \\
-    -T 127.0.0.1:6082 \\
-  -p thread_pool_min=50 \\
-  -p thread_pool_max=1000 \\
-  -p thread_pool_timeout=120 \\
-  -S /etc/varnish/secret \\
-  -s file,/var/lib/varnish/varnish_storage.bin,1G \\
+                  ExecReload=#{varnish_reload}
+                  ExecStart=/usr/sbin/varnishd -j unix,user=varnish,ccgroup=varnish \\
+                    -P /var/run/varnish.pid \\
+                    -t 120 \\
+                    -f /etc/varnish/default.vcl \\
+                      -a 0.0.0.0:6081 \\
+                      -T 127.0.0.1:6082 \\
+                    -p thread_pool_min=50 \\
+                    -p thread_pool_max=1000 \\
+                    -p thread_pool_timeout=120 \\
+                    -S /etc/varnish/secret \\
+                    -s file,/var/lib/varnish/varnish_storage.bin,1G \\
 
-[Install]
-WantedBy=multi-user.target
-EOF
-            )
+                  [Install]
+                  WantedBy=multi-user.target
+                EOF
+              )
           end
 
           it do
@@ -188,7 +191,7 @@ EOF
         describe 'with selinux_current_mode to enforcing' do
           let(:facts) { super().merge(selinux_current_mode: 'enforcing') }
 
-          if facts[:os]['family'] == 'RedHat' and facts[:os]['release']['major'] == '6'
+          if facts[:os]['family'] == 'RedHat' && facts[:os]['release']['major'] == '6'
             it do
               is_expected.to contain_selinux__module('varnishpol').with(
                 ensure: 'present',
@@ -286,7 +289,7 @@ EOF
       context 'with lts version' do
         let(:params) { { varnish_version: '6.0lts' } }
 
-        if facts[:os]['family'] =='RedHat'
+        if facts[:os]['family'] == 'RedHat'
           unless facts[:os]['release']['major'] == '6'
             it do
               is_expected.to contain_yumrepo('varnish-cache').with(
@@ -311,7 +314,7 @@ EOF
             end
           end
         else
-          unless facts[:os]['release']['major'] =~ /(7|8|14\.04)/
+          unless facts[:os]['release']['major'] =~ %r{(7|8|14\.04)}
             it do
               is_expected.to contain_apt__source('varnish-cache').with(
                 comment: 'Apt source for Varnish 6.0lts',
