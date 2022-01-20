@@ -3,35 +3,34 @@
 # This class is called from varnish
 #
 class varnish::config {
-
-  if versioncmp("${::varnish::version_major}.${::varnish::version_minor}",'4.1') >= 0 {
+  if versioncmp("${varnish::version_major}.${varnish::version_minor}",'4.1') >= 0 {
     $jail_opt = '-j unix,user=varnish,ccgroup=varnish'
   } else {
     $jail_opt = '-u varnish -g varnish'
   }
 
   # Deploy Varnish 4+ SELinux hack on RHEL6
-  if $::osfamily == 'RedHat' and $::operatingsystemmajrelease == '6' and $::varnish::version_major != '3' {
-    if $::selinux_current_mode == 'enforcing' {
-      ::selinux::module { 'varnishpol':
+  if $facts['os']['family'] == 'RedHat' and $facts['os']['release']['major'] == '6' and $varnish::version_major != '3' {
+    # lint:ignore:legacy_facts
+    if $facts['selinux_current_mode'] == 'enforcing' {
+      selinux::module { 'varnishpol':
         ensure    => present,
         source_te => 'puppet:///modules/varnish/varnishpol.te',
-        before    => Service[$::varnish::service_name],
-        notify    => Service[$::varnish::service_name],
+        before    => Service[$varnish::service_name],
+        notify    => Service[$varnish::service_name],
       }
     }
+    # lint:endignore
   }
 
-  file { $::varnish::params::sysconfig:
+  file { $varnish::params::sysconfig:
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
     content => template('varnish/sysconfig.erb'),
   }
 
-
-  if $::varnish::params::service_provider == 'systemd' {
-
+  if $varnish::params::service_provider == 'systemd' {
     file { '/etc/systemd/system/varnish.service':
       ensure  => file,
       owner   => 'root',
@@ -45,8 +44,7 @@ class varnish::config {
       command     => '/bin/systemctl daemon-reload',
       refreshonly => true,
       require     => File['/etc/systemd/system/varnish.service'],
-      notify      => Service[$::varnish::service_name],
+      notify      => Service[$varnish::service_name],
     }
   }
-
 }
