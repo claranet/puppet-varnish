@@ -1,3 +1,4 @@
+---
 fixtures:
   repositories:
     stdlib:
@@ -18,5 +19,3 @@ fixtures:
     selinux_core:
       repo: "https://github.com/puppetlabs/puppetlabs-selinux_core.git"
       ref: "1.0.1"
-  symlinks:
-    varnish: "#{source_dir}"
