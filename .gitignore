@@ -22,5 +22,9 @@
 /convert_report.txt
 /update_report.txt
 .DS_Store
+.project
+.envrc
+/inventory.yaml
+/spec/fixtures/litmus_inventory.yaml
 *.log
 convert_report.txt
