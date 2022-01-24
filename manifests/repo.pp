@@ -86,6 +86,11 @@ class varnish::repo {
       $os_lower        = downcase($facts['os']['name'])
       $package_require = Exec['apt_update']
       $gpg_key_id      = "${varnish::version_major}.${varnish::version_minor}${varnish::version_lts}" ? {
+        '6.6'    => 'A0378A38E4EACA3660789E570BAC19E3F6C90CD5',
+        '6.5'    => 'A487F9BE81D9DF5121488CFE1C7B4E9FF149D65B',
+        '6.4'    => 'A9897320C397E3A60C03E8BF821AD320F71BFF3D',
+        '6.3'    => '920A8A7AA7120A8604BCCD294A42CD6EB810E55D',
+        '6.2'    => 'B54813B54CA95257D3590B3F1B0096460868C7A9',
         '6.1'    => '4A066C99B76A0F55A40E3E1E387EF1F5742D76CC',
         '6.0lts' => '48D81A24CB0456F5D59431D94CFCFD6BA750EDCD',
         '6.0'    => '7C5B46721AF00FD57E68E6E8D2605BF74E8B9DBA',
