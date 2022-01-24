@@ -30,7 +30,7 @@ please use the latest version [4.x version from the Puppet Forge](https://forge.
 ## Module Description
 
 This module Supports Varnish versions 3.0, 4.0, 4.1, 5.0, 5.1, 5.2,
-6.0, 6.1 across Ubuntu 14.04/16.04/18.04, Debian 7/8/9 and RedHat derivates
+6.0, 6.1 across Ubuntu 14.04/16.04/18.04, Debian 7/8/9/10 and RedHat derivates
 6/7.
 
 This module will install Varnish, **by default version 4.1** from the official

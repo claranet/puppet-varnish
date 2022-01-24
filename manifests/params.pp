@@ -37,11 +37,16 @@ class varnish::params {
     }
 
     'Debian': {
-      $vcl_reload = $varnish::version_major ? {
-        '6' => '/usr/sbin/varnishreload',
-        '5' => '/usr/share/varnish/reload-vcl -q',
-        '4' => '/usr/share/varnish/reload-vcl -q',
-        '3' => '/usr/share/varnish/reload-vcl -q',
+      if versioncmp($varnish::version_full,'6.1') >= 0 and versioncmp($facts['os']['release']['full'],'10.0') >= 0 {
+        $vcl_reload = '/usr/share/varnish/varnishreload'
+      }
+      else {
+        $vcl_reload = $varnish::version_major ? {
+          '6' => '/usr/sbin/varnishreload',
+          '5' => '/usr/share/varnish/reload-vcl -q',
+          '4' => '/usr/share/varnish/reload-vcl -q',
+          '3' => '/usr/share/varnish/reload-vcl -q',
+        }
       }
       $sysconfig  = '/etc/default/varnish'
 
