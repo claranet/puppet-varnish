@@ -137,6 +137,9 @@ describe 'varnish', type: :class do
                   Description=Varnish HTTP accelerator
                   After=network.target
 
+                  [Install]
+                  WantedBy=multi-user.target
+
                   [Service]
                   Type=forking
                   LimitNOFILE=131072
@@ -155,10 +158,7 @@ describe 'varnish', type: :class do
                     -p thread_pool_max=1000 \\
                     -p thread_pool_timeout=120 \\
                     -S /etc/varnish/secret \\
-                    -s file,/var/lib/varnish/varnish_storage.bin,1G \\
-
-                  [Install]
-                  WantedBy=multi-user.target
+                    -s file,/var/lib/varnish/varnish_storage.bin,1G
                 EOF
               )
           end

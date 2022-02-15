@@ -2,6 +2,9 @@
 Description=Varnish HTTP accelerator
 After=network.target
 
+[Install]
+WantedBy=multi-user.target
+
 [Service]
 Type=forking
 LimitNOFILE=131072
@@ -42,10 +45,7 @@ ExecStart=/usr/sbin/varnishd <%= scope['::varnish::config::jail_opt'] %> \
   -p <%= k %>=<%= v %> \
 <% end -%>
   -S <%= scope['::varnish::secret_file'] %> \
-  -s <%= scope['::varnish::storage_type'] %>,<% if scope['::varnish::storage_type'] == 'file' -%><%= scope['::varnish::storage_file'] %>,<% end -%><%= scope['::varnish::storage_size'] %> \
-<% scope['::varnish::storage_additional'].each do |k| -%>
-  -s <%= k %> \
-<% end -%>
-
-[Install]
-WantedBy=multi-user.target
+<% _default_storage_parts = [ scope['varnish::storage_type'], scope['varnish::storage_size'] ]
+   _default_storage_parts.insert(1, scope['varnish::storage_file']) if scope['varnish::storage_type'] == 'file'
+   _default_storage = _default_storage_parts.join(',') -%>
+  -s <%= [ [ _default_storage ] + scope['varnish::storage_additional'] ].join(" \\\n  -s ") %>
