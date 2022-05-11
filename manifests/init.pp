@@ -64,6 +64,8 @@ class varnish (
   String $service_name                      = 'varnish',
   Optional[String] $vcl_reload_cmd          = undef,
   String $vcl_reload_path                   = $::path,
+  Optional[Boolean] $use_domain_sockets     = false,
+  Optional[Boolean] $use_tls_proxy          = false,
 ) {
 
   if $package_ensure == 'present' {

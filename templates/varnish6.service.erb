@@ -37,6 +37,8 @@ ExecStart=/usr/sbin/varnishd -t 120 \
     if scope['::varnish::listen'].is_a?(Array)
   -%>
   -a <% scope['::varnish::listen'].each_with_index do |addr, idx| %><%= addr %><% unless addr.include?(':') %>:<%= scope['::varnish::listen_port'] %><% end -%><% if idx != (scope['::varnish::listen'].length-1) -%><%= sep %><% end -%><% end %> \
+<%- if scope['::varnish::use_tls_proxy'] %>  -a proxy=:8443,PROXY \<%- end -%>
+<%- if scope['::varnish::use_domain_sockets'] %>  -a uds=/run/varnish.sock,PROXY,user=varnish,group=varnish,mode=660 \<%- end -%>
   <% else -%>
   -a <%= scope['::varnish::listen'] %>:<%= scope['::varnish::listen_port'] %> \
   <% end -%>
