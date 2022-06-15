@@ -29,6 +29,14 @@ class varnish::config {
     content => template('varnish/sysconfig.erb'),
   }
 
+  if $::varnish::use_domain_sockets {
+    file { '/var/run/varnish':
+      ensure => directory,
+      owner  => 'varnish',
+      group  => 'varnish',
+      mode   => '0755',
+    }
+  }
 
   if $::varnish::params::service_provider == 'systemd' {
     $service_template = $::varnish::params::service_template
