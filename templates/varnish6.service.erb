@@ -41,7 +41,7 @@ ExecStart=/usr/sbin/varnishd -t 120 \
   -a <%= scope['::varnish::listen'] %>:<%= scope['::varnish::listen_port'] %> \
   <% end -%>
 <% if scope['::varnish::use_tls_proxy'] -%>
-  -a proxy=:8443,PROXY \
+  -a proxy=:<%= scope['::varnish::tls_proxy_port'] %>,PROXY \
 <% end -%>
 <% if scope['::varnish::use_domain_sockets'] -%>
   -a uds=/var/run/varnish/varnish.sock,PROXY,user=varnish,group=varnish,mode=660 \

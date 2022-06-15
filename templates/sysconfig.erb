@@ -34,7 +34,7 @@ VARNISH_TTL=120
 DAEMON_OPTS="<% if scope['::varnish::params::service_provider'] == 'sysvinit' -%><%= scope['::varnish::config::jail_opt'] %> \<% end %>
              ${VARNISH_LISTEN} \
 <% if scope['::varnish::use_tls_proxy'] -%>
-             -a proxy=:8443,PROXY \
+             -a proxy=:<%= scope['::varnish::tls_proxy_port'] %>,PROXY \
 <% end -%>
 <% if scope['::varnish::use_domain_sockets'] -%>
              -a uds=/var/run/varnish/varnish.sock,PROXY,user=varnish,group=varnish,mode=660 \
