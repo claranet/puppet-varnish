@@ -31,6 +31,9 @@ ExecStart=/usr/sbin/varnishd <%= scope['::varnish::config::jail_opt'] %> \
   -a <%= scope['::varnish::listen'] %>:<%= scope['::varnish::listen_port'] %> \
   <% end -%>
   -T <%= scope['::varnish::admin_listen'] %>:<%= scope['::varnish::admin_port'] %> \
+<% if scope['::varnish::use_tls_proxy'] -%>
+  -a proxy=:<%= scope['::varnish::tls_proxy_port'] %>,PROXY \
+<% end -%>
 <% if scope['::varnish::version_major'] == '3' -%>
   -w <%= scope['::varnish::min_threads'] %>,<%= scope['::varnish::max_threads'] %>,<%= scope['::varnish::thread_timeout'] %> \
 <% else -%>
