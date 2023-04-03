@@ -20,7 +20,9 @@ TasksMax=infinity
 
 # Maximum size of the corefile.
 LimitCORE=infinity
-
+<% if scope['::varnish::use_domain_sockets'] -%>
+ExecStartPre=/bin/bash -c 'mkdir -p /var/run/varnish && chown varnish:varnish /var/run/varnish'
+<% end -%>
 ExecReload=<%= scope['::varnish::vcl_reload'] %>
 ExecStart=/usr/sbin/varnishd -t 120 \
 <% unless [nil, :undefined, :undef, ''].include?(scope['::varnish::instance_name']) -%>
